@@ -136,5 +136,24 @@ namespace Test.Assets.scripts {
             manager.Player1.Choose(c1121);
             Assert.Contains("Temple", manager.Player1.KnownLocation);
         }
+
+        [Fact]
+        public void ChoosingC1122MakesItNotPossibleToChooseItAgain() {
+            var brothel = manager.Locations[1];
+            var q11 = brothel.Quests.RepeatableQuest[0];
+            manager.Player1.Goto(brothel);
+            manager.Player1.StartQuest(q11);
+            var c112 = manager.PossibleChoices[1];
+            manager.Player1.Choose(c112);
+            var c1122 = manager.PossibleChoices[1];
+            Assert.Equal("C1.1.2.2", c1122.name);
+            manager.Player1.Choose(c1122);
+
+            manager.Player1.StartQuest(q11);
+            c112 = manager.PossibleChoices[1];
+            manager.Player1.Choose(c112);
+            c1122 = manager.PossibleChoices[1];
+            Assert.NotEqual("C1.1.2.2", c1122.name);
+        }
     }
 }

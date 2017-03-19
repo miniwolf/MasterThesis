@@ -44,7 +44,17 @@ namespace Assets.scripts {
         }
 
         public void Choose(choicesChoice choice) {
-            var results = FindChoice(choice.name).results;
+            var realChoice = FindChoice(choice.name);
+            var results = realChoice.results;
+
+            if (realChoice.GetType() == typeof(choicesOnceChoice)) {
+                var location = Manager.Locations.First(loc => loc == CurrentLocation);
+                location.Choices.onceChoice = location.Choices.onceChoice
+                    .Where(c => c.name.value != choice.name)
+                    .ToArray();
+                CurrentLocation = location;
+            }
+
             if (results.effectResults != null) {
                 State.AddRange(results.effectResults.Effect.Select(effect => effect.value));
             }
@@ -59,7 +69,11 @@ namespace Assets.scripts {
             }
 
             Manager.PossibleChoices.Clear();
-            Manager.PossibleChoices.AddRange(results.choicesResults.choice);
+            foreach (var c in results.choicesResults.choice) {
+                if (FindChoice(c.name) != null) {
+                    Manager.PossibleChoices.Add(c);
+                }
+            }
         }
 
         private Choice FindChoice(string choiceName) {
