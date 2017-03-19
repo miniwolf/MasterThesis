@@ -120,11 +120,12 @@ namespace Test.Assets.scripts {
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             Assert.Contains("Wench Angry", manager.Player1.State);
-            Assert.Equal(3, manager.PossibleChoices.Count);
+            Assert.Equal(1, manager.PossibleChoices.Count);
         }
 
         [Fact]
         public void ChoosingC1121WillGiveTempleLocation() {
+            manager.Player1.State.Add("Wizard Angry");
             var brothel = manager.Locations[1];
             var q11 = brothel.Quests.RepeatableQuest[0];
             manager.Player1.Goto(brothel);
@@ -140,6 +141,8 @@ namespace Test.Assets.scripts {
         [Fact]
         public void ChoosingC1122MakesItNotPossibleToChooseItAgain() {
             var brothel = manager.Locations[1];
+            manager.Player1.State.Add("Wizard Angry");
+            manager.Player1.KnownLocation.Add("Temple");
             var q11 = brothel.Quests.RepeatableQuest[0];
             manager.Player1.Goto(brothel);
             manager.Player1.StartQuest(q11);
@@ -154,6 +157,17 @@ namespace Test.Assets.scripts {
             manager.Player1.Choose(c112);
             c1122 = manager.PossibleChoices[1];
             Assert.NotEqual("C1.1.2.2", c1122.name);
+        }
+
+        [Fact]
+        public void CannotChooseC1122WithoutTempleLocation() {
+            var brothel = manager.Locations[1];
+            var q11 = brothel.Quests.RepeatableQuest[0];
+            manager.Player1.Goto(brothel);
+            manager.Player1.StartQuest(q11);
+            var c112 = manager.PossibleChoices[1];
+            manager.Player1.Choose(c112);
+            Assert.DoesNotContain("C1.1.2.2", manager.PossibleChoices.Select(choice => choice.name));
         }
     }
 }

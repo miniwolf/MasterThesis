@@ -56,6 +56,9 @@ public partial class pre {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Has")]
     public Has[] Has { get; set; }
+
+    [System.Xml.Serialization.XmlElementAttribute("KnowsLocation")]
+    public KnowsLocation[] KnowsLocations { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("global")]
@@ -82,6 +85,19 @@ public partial class preAT {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class Has {
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string value { get; set; }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class KnowsLocation {
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public string value { get; set; }
@@ -154,6 +170,10 @@ public class Choice {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("name")]
     public name name { get; set; } = new name();
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("pre")]
+    public pre Pres { get; set; }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("results")]

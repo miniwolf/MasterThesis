@@ -70,10 +70,25 @@ namespace Assets.scripts {
 
             Manager.PossibleChoices.Clear();
             foreach (var c in results.choicesResults.choice) {
-                if (FindChoice(c.name) != null) {
+                var foundChoice = FindChoice(c.name);
+                if (foundChoice != null && HasPre(foundChoice)) {
                     Manager.PossibleChoices.Add(c);
                 }
             }
+        }
+
+        private bool HasPre(Choice choice) {
+            var pres = choice.Pres;
+            //foreach (var at in choice.Pres.At)
+            if (choice.Pres?.Has != null
+                && !choice.Pres.Has.All(has => State.Contains(has.value))) {
+                return false;
+            }
+            if (choice.Pres?.KnowsLocations != null
+                && !choice.Pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
+                return false;
+            }
+            return true;
         }
 
         private Choice FindChoice(string choiceName) {
