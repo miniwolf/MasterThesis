@@ -44,9 +44,9 @@
                     <effect value="Wench Angry"/>
                 </effectResults>
                 <choices>
-                    <choice value="C1.1.2.1"/>
-                    <choice value="C1.1.2.2"/>
-                    <choice value="C1.1.2.3"/>
+                    <choice name="C1.1.2.1"/>
+                    <choice name="C1.1.2.2"/>
+                    <choice name="C1.1.2.3"/>
                 </choices>
             </results>
         </repeatChoice>

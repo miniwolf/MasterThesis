@@ -7,6 +7,7 @@ namespace Assets.scripts {
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
         public List<string> State { get; set; } = new List<string>();
+        public List<string> KnownLocation { get; set; } = new List<string>();
 
         public void Goto(location location) {
             if (CurrentQuest != null) {
@@ -15,7 +16,9 @@ namespace Assets.scripts {
             if (location.Name.value.Equals("Temple")) {
                 return;
             }
-            Manager.PossibleQuests = CollectQuests(location.Quests);
+            if (location.Quests != null) {
+                Manager.PossibleQuests = CollectQuests(location.Quests);
+            }
             CurrentLocation = location;
         }
 
@@ -40,17 +43,18 @@ namespace Assets.scripts {
             Manager.PossibleChoices.AddRange(quest.Choices.choice);
         }
 
-        public void Choose(choicesChoice c111) {
-            var results = FindChoice(c111.name).results;
-            if (results.effectResults == null) {
-                return;
+        public void Choose(choicesChoice choice) {
+            var results = FindChoice(choice.name).results;
+            if (results.effectResults != null) {
+                State.AddRange(results.effectResults.Effect.Select(effect => effect.value));
             }
 
-            foreach (var effect in results.effectResults.Effect) {
-                State.Add(effect.value);
+            if (results.locationResults != null) {
+                KnownLocation.AddRange(results.locationResults.Select(location => location.value));
             }
 
             if (results.choicesResults == null) {
+                CurrentQuest = null;
                 return;
             }
 
@@ -58,14 +62,14 @@ namespace Assets.scripts {
             Manager.PossibleChoices.AddRange(results.choicesResults.choice);
         }
 
-        private Choice FindChoice(string c111Name) {
+        private Choice FindChoice(string choiceName) {
             foreach (var choice in CurrentLocation.Choices.repeatChoice) {
-                if (choice.name.value.Equals(c111Name)) {
+                if (choice.name.value.Equals(choiceName)) {
                     return choice;
                 }
             }
             return CurrentLocation.Choices.onceChoice.FirstOrDefault(choice =>
-                choice.name.value.Equals(c111Name));
+                choice.name.value.Equals(choiceName));
         }
     }
 }

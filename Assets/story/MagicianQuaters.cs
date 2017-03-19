@@ -144,7 +144,6 @@ public partial class choices {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class choicesChoice {
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -294,7 +293,6 @@ public class Quest {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class locationQuestsRepeatableQuest : Quest {
 }
 

@@ -100,7 +100,19 @@ namespace Test.Assets.scripts {
         }
 
         [Fact]
-        public void ChoosingC112WillGiveWenchHappy() {
+        public void ChoosingC111WillMakeItPossibleToLeaveBrothel() {
+            var brothel = manager.Locations[1];
+            var q11 = brothel.Quests.RepeatableQuest[0];
+            manager.Player1.Goto(brothel);
+            manager.Player1.StartQuest(q11);
+            var c111 = manager.PossibleChoices[0];
+            manager.Player1.Choose(c111);
+            manager.Player1.Goto(new location());
+            Assert.Equal("", manager.Player1.CurrentLocation.Name.value);
+        }
+
+        [Fact]
+        public void ChoosingC112WillGiveWenchAngryAnd3NewChoices() {
             var brothel = manager.Locations[1];
             var q11 = brothel.Quests.RepeatableQuest[0];
             manager.Player1.Goto(brothel);
@@ -109,6 +121,20 @@ namespace Test.Assets.scripts {
             manager.Player1.Choose(c112);
             Assert.Contains("Wench Angry", manager.Player1.State);
             Assert.Equal(3, manager.PossibleChoices.Count);
+        }
+
+        [Fact]
+        public void ChoosingC1121WillGiveTempleLocation() {
+            var brothel = manager.Locations[1];
+            var q11 = brothel.Quests.RepeatableQuest[0];
+            manager.Player1.Goto(brothel);
+            manager.Player1.StartQuest(q11);
+            var c112 = manager.PossibleChoices[1];
+            manager.Player1.Choose(c112);
+            var c1121 = manager.PossibleChoices[0];
+            Assert.Equal("C1.1.2.1", c1121.name);
+            manager.Player1.Choose(c1121);
+            Assert.Contains("Temple", manager.Player1.KnownLocation);
         }
     }
 }
