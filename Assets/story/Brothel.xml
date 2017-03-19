@@ -1,0 +1,105 @@
+<location>
+    <name value="Brothel"/>
+    <npcs>
+        <npc name="Wench"/>
+    </npcs>
+    <quests>
+        <repeatableQuest>
+            <name value="Q1.1"/>
+            <pre>
+                <At location="Brothel"/>
+            </pre>
+            <choices>
+                <choice name="C1.1.1"/>
+                <choice name="C1.1.2"/>
+            </choices>
+        </repeatableQuest>
+        <randomQuest>
+            <name value="R1a"/>
+            <npc>
+                <npc name="Magician"/>
+            </npc>
+            <pre>
+                <At location="Brothel"/>
+                <Has value="Key"/>
+            </pre>
+            <choices>
+                <choice name=""/>
+            </choices>
+        </randomQuest>
+    </quests>
+    <choices>
+        <repeatChoice>
+            <name value="C1.1.1"/>
+            <results>
+                <effectResults>
+                    <effect value="Wench Happy"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C1.1.2"/>
+            <results>
+                <effectResults>
+                    <effect value="Wench Angry"/>
+                </effectResults>
+                <choices>
+                    <choice value="C1.1.2.1"/>
+                    <choice value="C1.1.2.2"/>
+                    <choice value="C1.1.2.3"/>
+                </choices>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C1.1.2.1"/>
+            <pre>
+                <Has value="Wizard Angry"/>
+            </pre>
+            <results>
+                <effectResults>
+                    <effect value="Wizard Happy"/>
+                </effectResults>
+                <locationResults>
+                    <name value="Temple"/>
+                </locationResults>
+            </results>
+        </repeatChoice>
+        <onceChoice>
+            <name value="C1.1.2.2"/>
+            <pre>
+                <Has value="Wizard Angry"/>
+                <KnowsLocation value="Temple"/>
+            </pre>
+            <results>
+                <effectResults>
+                    <effect value="Wench Happy"/>
+                    <effect value="Wench Companion"/>
+                </effectResults>
+            </results>
+        </onceChoice>
+        <onceChoice>
+            <name value="C1.1.2.3"/>
+            <results>
+                <effectResults>
+                    <effect value="Wench Revealed"/>
+                </effectResults>
+            </results>
+        </onceChoice>
+        <repeatChoice>
+            <name value="C1a.1"/>
+            <results>
+                <effectResults>
+                    <effect value="Magician Companion"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C1a.2"/>
+            <results>
+                <effectResults>
+                    <effect value="Wench Companion"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+    </choices>
+</location>

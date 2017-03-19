@@ -1,0 +1,68 @@
+<location>
+    <name value="Temple"/>
+    <quest>
+        <randomQuest>
+            <name value="R3a"/>
+            <npcs>
+                <npc>
+                    <name value="Wench"/>
+                </npc>
+            </npcs>
+            <pre>
+                <At location="Temple"/>
+                <Has value="!Key"/>
+                <Has value="Wench Happy"/>
+                <global>
+                    <Has value="!RevealWench"/>
+                </global>
+            </pre>
+            <choices>
+                <choice name="Q3.1.1"/>
+                <choice name="C3.1.2"/>
+            </choices>
+        </randomQuest>
+        <oneshotQuest>
+            <name value="Q3.2"/>
+            <pre>
+                <At location="Temple"/>
+                <OR>
+                    <Has value="Key"/>
+                    <Has value="Wench Companion"/>
+                </OR>
+            </pre>
+            <results>
+                <effectResults>
+                    <effect value="Amulet"/>
+                    <effect value="!Key"/>
+                </effectResults>
+            </results>
+        </oneshotQuest>
+    </quest>
+    <choices>
+        <repeatChoice>
+            <name value="C3a.1"/>
+            <pre>
+                <Has value="Wench Angry"/>
+            </pre>
+            <results>
+                <effectResults>
+                    <global>
+                        <effect value="Wench Elminated"/>
+                        <effect value="Wench Reveal"/>
+                    </global>
+                </effectResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C3a.2"/>
+            <pre>
+                <Has value="Wench Happy"/>
+            </pre>
+            <results>
+                <effectResults>
+                    <effect value="Wench Companion"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+    </choices>
+</location>

@@ -1,26 +1,28 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
-using UnityEngine;
 
 namespace Assets.scripts {
-    public class GameStateManager : MonoBehaviour {
-        private int idx = 0;
+    public class GameStateManager {
+        private int idx;
 
-        private void Start() {
-            Next();
+        public Player Player1 { get; } = new Player();
+        public Player Player2 { get; } = new Player();
+        public List<location> Locations { get; } = new List<location>();
+        public List<Quest> PossibleQuests { get; set; } = new List<Quest>();
+        public List<choicesChoice> PossibleChoices { get; set; } = new List<choicesChoice>();
+
+        public GameStateManager() {
+            Player1.Manager = this;
+            Player2.Manager = this;
+            Locations.Add(Load("C:/Users/miniwolf/Documents/MasterThesis/Assets/story/MagicianQuaters.xml"));
+            Locations.Add(Load("C:/Users/miniwolf/Documents/MasterThesis/Assets/story/Brothel.xml"));
+            Locations.Add(Load("C:/Users/miniwolf/Documents/MasterThesis/Assets/story/Temple.xml"));
         }
 
-        public void Next() {
-            //var parser = new XMLParser();
-            var content = Load("Assets/story/story.xml");
-            //var LevelXML = parser.Parse(content);
-            Debug.Log(content);
-            idx++;
-        }
-
-        public static StoryContainer Load(string fileName) {
-            var serializer = new XmlSerializer(typeof(StoryContainer));
-            return (StoryContainer) serializer.Deserialize(new XmlTextReader(fileName));
+        public static location Load(string fileName) {
+            var serializer = new XmlSerializer(typeof(location));
+            return (location) serializer.Deserialize(new XmlTextReader(fileName));
         }
     }
 }

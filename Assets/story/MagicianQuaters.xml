@@ -1,0 +1,162 @@
+<location>
+    <name value="Magic Quaters"/>
+    <npcs>
+        <npc name="Magician"/>
+    </npcs>
+    <quests>
+        <repeatableQuest>
+            <name value="Q2.1"/>
+            <pre>
+                <At location="Magician Quaters"/>
+            </pre>
+            <choices>
+                <choice name="C2.1.1"/>
+                <choice name="C2.1.2"/>
+            </choices>
+        </repeatableQuest>
+        <repeatableQuest>
+            <name value="Q2.2"/>
+            <pre>
+                <At location="Magician Quaters"/>
+                <Has value="Magician Happy"/>
+                <global>
+                    <Has value="!Reveal Wench"/>
+                </global>
+            </pre>
+            <choices>
+                <choice name="C2.2.1"/>
+                <choice name="C2.2.2"/>
+            </choices>
+        </repeatableQuest>
+        <oneshotQuest>
+            <name value="Q2.3"/>
+            <pre>
+                <At location="Magician Quaters"/>
+                <global>
+                    <Has value="Reveal Wench"/>
+                </global>
+            </pre>
+            <choices>
+                <choice name="C2.3.1"/>
+            </choices>
+        </oneshotQuest>
+        <oneshotQuest>
+            <name value="Q2.4"/>
+            <pre>
+                <At location="Magician Quaters"/>
+                <Has value="Amulet"/>
+            </pre>
+            <choices>
+                <choice name="C2.4.1"/>
+                <choice name="C2.4.2"/>
+            </choices>
+        </oneshotQuest>
+        <randomQuest>
+            <name value="R2a"/>
+            <npc>
+                <npc name="Wench"/>
+            </npc>
+            <pre>
+                <At location="Magician Quaters"/>
+                <Has value="Wench Happy"/>
+                <global>
+                    <Has value="Reveal Wench"/>
+                </global>
+            </pre>
+            <choices>
+                <choice name="C2a.1"/>
+                <choice name="C2a.2"/>
+            </choices>
+        </randomQuest>
+    </quests>
+    <choices>
+        <repeatChoice>
+            <name value="C2.1.1"/>
+            <results>
+                <effectResults>
+                    <effect value="Magician Happy"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C2.1.2"/>
+            <results>
+                <effectResults>
+                    <effect value="Magician Angry"/>
+                </effectResults>
+                <locationResults>
+                    <name value="Temple"/>
+                </locationResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="Q2.2.1"/>
+            <results>
+                <effectResults>
+                    <effect value="Magician Angry"/>
+                </effectResults>
+                <locationResults>
+                    <name value="Temple"/>
+                </locationResults>
+            </results>
+        </repeatChoice>
+        <onceChoice>
+            <name value="C2.2.2"/>
+            <results>
+                <choicesResults>
+                    <name value="C2.2.1.1"/>
+                </choicesResults>
+            </results>
+        </onceChoice>
+        <repeatChoice>
+            <name value="C2.3.1"/>
+            <results>
+                <effectResults>
+                    <effect value="Key"/>
+                </effectResults>
+                <locationResults>
+                    <name value="Temple"/>
+                </locationResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C2.4.1"/>
+            <results>
+                <effectResults>
+                    <global>
+                        <effect value="Magician Elminated"/>
+                    </global>
+                </effectResults>
+                <wingame/>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C2.4.2"/>
+            <results>
+                <effectResults>
+                    <effect value="Magician Companion"/>
+                    <effect value="!Amulet"/>
+                </effectResults>
+                <wingame/>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C2a.1"/>
+            <results>
+                <effectResults>
+                    <global>
+                        <effect value="Wench Elminated"/>
+                    </global>
+                </effectResults>
+            </results>
+        </repeatChoice>
+        <repeatChoice>
+            <name value="C2a.2"/>
+            <results>
+                <effectResults>
+                    <effect value="Wench Companion"/>
+                </effectResults>
+            </results>
+        </repeatChoice>
+    </choices>
+</location>
