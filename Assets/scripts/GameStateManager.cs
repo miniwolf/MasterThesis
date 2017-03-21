@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -11,6 +12,7 @@ namespace Assets.scripts {
         public List<location> Locations { get; } = new List<location>();
         public List<Quest> PossibleQuests { get; set; } = new List<Quest>();
         public List<choicesChoice> PossibleChoices { get; set; } = new List<choicesChoice>();
+        public List<Has> GlobalHas { get; set; } = new List<Has>();
 
         public GameStateManager() {
             Player1.Manager = this;
@@ -23,6 +25,10 @@ namespace Assets.scripts {
         public static location Load(string fileName) {
             var serializer = new XmlSerializer(typeof(location));
             return (location) serializer.Deserialize(new XmlTextReader(fileName));
+        }
+
+        public bool HasPre(global gHas) {
+            return gHas.Has.All(has => GlobalHas.Contains(has));
         }
     }
 }

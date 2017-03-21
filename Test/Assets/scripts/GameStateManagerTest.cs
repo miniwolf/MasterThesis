@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Management.Instrumentation;
 using Assets.scripts;
+using UnityEngine.Apple.ReplayKit;
 using Xunit;
 
 namespace Test.Assets.scripts {
@@ -168,6 +171,52 @@ namespace Test.Assets.scripts {
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             Assert.DoesNotContain("C1.1.2.2", manager.PossibleChoices.Select(choice => choice.name));
+        }
+
+        [Fact]
+        public void CanGoToTempleAfterReceivingKnownLocation() {
+            manager.Player1.State.Add("Wizard Angry");
+            var brothel = manager.Locations[1];
+            var q11 = brothel.Quests.RepeatableQuest[0];
+            manager.Player1.Goto(brothel);
+            manager.Player1.StartQuest(q11);
+            var c112 = manager.PossibleChoices[1];
+            manager.Player1.Choose(c112);
+            var c1121 = manager.PossibleChoices[0];
+            Assert.Equal("C1.1.2.1", c1121.name);
+            manager.Player1.Choose(c1121);
+            Assert.Contains("Temple", manager.Player1.KnownLocation);
+
+            var temple = manager.Locations[2];
+            Assert.Equal("Temple", temple.Name.value);
+            manager.Player1.Goto(temple);
+            Assert.Equal("Temple", manager.Player1.CurrentLocation.Name.value);
+        }
+
+        [Fact]
+        public void CannotTakeQ23WithoutRevealedWench() {
+            var magicianQuaters = manager.Locations[0];
+            var q23 = magicianQuaters.Quests.OneshotQuest[0];
+            Assert.Equal("Q2.3", q23.Name.value);
+
+            manager.Player1.Goto(magicianQuaters);
+            var quest = manager.PossibleQuests.FirstOrDefault(q => q.Name.value.Equals("Q2.3"));
+            Assert.Null(quest);
+        }
+
+        [Fact]
+        public void CanOnlyTakeQ23MoreThanOneTime() {
+            var magicianQuaters = manager.Locations[0];
+            var q23 = magicianQuaters.Quests.OneshotQuest[0];
+            Assert.Equal("Q2.3", q23.Name.value);
+
+            manager.Player1.Goto(magicianQuaters);
+            manager.Player1.StartQuest(q23);
+            var c231 = manager.PossibleChoices[0];
+            manager.Player1.Choose(c231);
+
+            var nQ23 = magicianQuaters.Quests.OneshotQuest[0];
+            Assert.NotEqual("Q2.3", nQ23.Name.value);
         }
     }
 }

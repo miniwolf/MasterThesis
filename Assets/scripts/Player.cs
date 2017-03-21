@@ -13,7 +13,7 @@ namespace Assets.scripts {
             if (CurrentQuest != null) {
                 return;
             }
-            if (location.Name.value.Equals("Temple")) {
+            if (!HasPre(location.Pre)) {
                 return;
             }
             if (location.Quests != null) {
@@ -22,14 +22,14 @@ namespace Assets.scripts {
             CurrentLocation = location;
         }
 
-        private static List<Quest> CollectQuests(locationQuests locationQuests) {
+        private List<Quest> CollectQuests(locationQuests locationQuests) {
             var list = new List<Quest>();
             if (locationQuests.OneshotQuest != null)
-                list.AddRange(locationQuests.OneshotQuest);
+                list.AddRange(locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres)).ToList());
             if (locationQuests.RandomQuest != null)
-                list.AddRange(locationQuests.RandomQuest);
+                list.AddRange(locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres)).ToList());
             if (locationQuests.RepeatableQuest != null)
-                list.AddRange(locationQuests.RepeatableQuest);
+                list.AddRange(locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres)).ToList());
 
             return list;
         }
@@ -64,6 +64,12 @@ namespace Assets.scripts {
             }
 
             if (results.choicesResults == null) {
+                if (CurrentQuest.GetType() == typeof(locationQuestsOneshotQuests)) {
+                    var location = Manager.Locations.First(loc => loc == CurrentLocation);
+                    location.Quests.OneshotQuest = location.Quests.OneshotQuest
+                        .Where(q => q.Name.value != CurrentQuest.Name.value)
+                        .ToArray();
+                }
                 CurrentQuest = null;
                 return;
             }
@@ -71,21 +77,24 @@ namespace Assets.scripts {
             Manager.PossibleChoices.Clear();
             foreach (var c in results.choicesResults.choice) {
                 var foundChoice = FindChoice(c.name);
-                if (foundChoice != null && HasPre(foundChoice)) {
+                if (foundChoice != null && HasPre(foundChoice.Pres)) {
                     Manager.PossibleChoices.Add(c);
                 }
             }
         }
 
-        private bool HasPre(Choice choice) {
-            var pres = choice.Pres;
+        private bool HasPre(pre Pres) {
             //foreach (var at in choice.Pres.At)
-            if (choice.Pres?.Has != null
-                && !choice.Pres.Has.All(has => State.Contains(has.value))) {
+            if (Pres?.Has != null
+                && !Pres.Has.All(has => State.Contains(has.value))) {
                 return false;
             }
-            if (choice.Pres?.KnowsLocations != null
-                && !choice.Pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
+            if (Pres?.KnowsLocations != null
+                && !Pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
+                return false;
+            }
+            if (Pres?.global != null
+                && !Pres.global.All(gHas => Manager.HasPre(gHas))) {
                 return false;
             }
             return true;

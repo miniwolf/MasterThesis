@@ -1,5 +1,8 @@
 <location>
     <name value="Temple"/>
+    <pre>
+        <KnowsLocation value="Temple"/>
+    </pre>
     <quest>
         <randomQuest>
             <name value="R3a"/>

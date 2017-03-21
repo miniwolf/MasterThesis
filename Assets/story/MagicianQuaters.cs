@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Management.Instrumentation;
 using System.Xml.Serialization;
 
 // 
@@ -252,6 +253,9 @@ public partial class location {
     [System.Xml.Serialization.XmlElementAttribute("choices", typeof(choices))]
     public choices Choices { get; set; }
 
+    [System.Xml.Serialization.XmlElementAttribute("pre", typeof(pre))]
+    public pre Pre { get; set; }
+
     [System.Xml.Serialization.XmlElementAttribute("name", typeof(name))]
     public name Name { get; set; } = new name();
 
@@ -301,7 +305,7 @@ public class Quest {
     public name Name { get; set; } = new name();
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("pre")]
-    public pre[] Pres { get; set; }
+    public pre Pres { get; set; }
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("choices")]
     public choices Choices { get; set; }
