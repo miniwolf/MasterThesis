@@ -10,8 +10,21 @@ namespace Assets.scripts {
         }
 
         public void Goto(location location) {
-            SceneManager.LoadScene("scenes/ChooseNpc");
-            manager.Player1.Goto(location);
+            if (manager.Player1.Goto(location)) {
+                SceneManager.LoadScene("scenes/Quest");
+            }
+        }
+
+        public void StartQuest(Quest quest) {
+            manager.Player1.StartQuest(quest);
+            SceneManager.LoadScene("scenes/Choice");
+        }
+
+        public void Choose(choicesChoice choiceCopy) {
+            manager.Player1.Choose(choiceCopy);
+            SceneManager.LoadScene(manager.Player1.CurrentQuest == null
+                ? "scenes/Quest"
+                : "scenes/Choice");
         }
     }
 }

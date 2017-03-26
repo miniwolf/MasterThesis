@@ -24,32 +24,33 @@ namespace Assets.scripts {
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
 
-        public void Goto(location location) {
+        public bool Goto(location location) {
             if (CurrentQuest != null) {
-                return;
+                return false;
             }
             if (location.Pre != null && !HasPre(location.Pre)) {
-                return;
+                return false;
             }
             if (location.Quests != null) {
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
+            return true;
         }
 
         private List<Quest> CollectQuests(locationQuests locationQuests) {
             var list = new List<Quest>();
             if (locationQuests.OneshotQuest != null) {
-                var ie = (IEnumerable<Quest>) locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres));
-                list.AddRange(new List<Quest>(ie));
+                var ie = locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(ie.Cast<Quest>());
             }
             if (locationQuests.RandomQuest != null) {
-                var ie = (IEnumerable<Quest>) locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres));
-                list.AddRange(new List<Quest>(ie));
+                var ie = locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(ie.Cast<Quest>());
             }
             if (locationQuests.RepeatableQuest != null) {
-                var ie = (IEnumerable<Quest>) locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres));
-                list.AddRange(new List<Quest>(ie));
+                var ie = locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(ie.Cast<Quest>());
             }
 
             return list;
