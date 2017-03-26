@@ -26,5 +26,9 @@ namespace Assets.scripts {
                 ? "scenes/Quest"
                 : "scenes/Choice");
         }
+
+        public void BackToLocations() {
+            SceneManager.LoadScene("scenes/Locations");
+        }
     }
 }
