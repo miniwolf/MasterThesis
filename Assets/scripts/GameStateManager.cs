@@ -6,13 +6,32 @@ using System.Xml.Serialization;
 namespace Assets.scripts {
     public class GameStateManager {
         private int idx;
+        private readonly Player player1 = new Player();
+        private readonly Player player2 = new Player();
 
-        public Player Player1 { get; } = new Player();
-        public Player Player2 { get; } = new Player();
-        public List<location> Locations { get; } = new List<location>();
-        public List<Quest> PossibleQuests { get; set; } = new List<Quest>();
-        public List<choicesChoice> PossibleChoices { get; set; } = new List<choicesChoice>();
-        public List<Has> GlobalHas { get; set; } = new List<Has>();
+        public Player Player1 { get { return player1; } }
+        public Player Player2 { get { return player2; } }
+
+        private readonly List<location> locations = new List<location>();
+        public List<location> Locations { get { return locations; } }
+
+        private List<Quest> possibleQuests = new List<Quest>();
+        public List<Quest> PossibleQuests {
+            get { return possibleQuests; }
+            set { possibleQuests = value; }
+        }
+
+        private List<choicesChoice> possibleChoices = new List<choicesChoice>();
+        public List<choicesChoice> PossibleChoices {
+            get { return possibleChoices; }
+            set { possibleChoices = value; }
+        }
+
+        private List<Has> globalHas = new List<Has>();
+        public List<Has> GlobalHas {
+            get { return globalHas; }
+            set { globalHas = value; }
+        }
 
         public GameStateManager() {
             Player1.Manager = this;

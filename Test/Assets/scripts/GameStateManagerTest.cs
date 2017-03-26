@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Management.Instrumentation;
+﻿using System.Linq;
 using Assets.scripts;
-using UnityEngine.Apple.ReplayKit;
 using Xunit;
 
 namespace Test.Assets.scripts {
@@ -15,12 +12,12 @@ namespace Test.Assets.scripts {
 
         [Fact]
         public void FirstEncounterHasIndex1() {
-            Assert.True("".Equals(manager.Player1.CurrentLocation.Name.value));
+            Assert.True("".Equals(manager.Player1.CurrentLocation.Name.Value));
         }
 
         [Fact]
         public void HasBrothelAsPossibleLocation() {
-            var contains = manager.Locations.Any(location => "Brothel".Equals(location.Name.value));
+            var contains = manager.Locations.Any(location => "Brothel".Equals(location.Name.Value));
             Assert.True(contains);
         }
 
@@ -111,7 +108,7 @@ namespace Test.Assets.scripts {
             var c111 = manager.PossibleChoices[0];
             manager.Player1.Choose(c111);
             manager.Player1.Goto(new location());
-            Assert.Equal("", manager.Player1.CurrentLocation.Name.value);
+            Assert.Equal("", manager.Player1.CurrentLocation.Name.Value);
         }
 
         [Fact]
@@ -188,19 +185,19 @@ namespace Test.Assets.scripts {
             Assert.Contains("Temple", manager.Player1.KnownLocation);
 
             var temple = manager.Locations[2];
-            Assert.Equal("Temple", temple.Name.value);
+            Assert.Equal("Temple", temple.Name.Value);
             manager.Player1.Goto(temple);
-            Assert.Equal("Temple", manager.Player1.CurrentLocation.Name.value);
+            Assert.Equal("Temple", manager.Player1.CurrentLocation.Name.Value);
         }
 
         [Fact]
         public void CannotTakeQ23WithoutRevealedWench() {
             var magicianQuaters = manager.Locations[0];
             var q23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.Equal("Q2.3", q23.Name.value);
+            Assert.Equal("Q2.3", q23.Name.Value);
 
             manager.Player1.Goto(magicianQuaters);
-            var quest = manager.PossibleQuests.FirstOrDefault(q => q.Name.value.Equals("Q2.3"));
+            var quest = manager.PossibleQuests.FirstOrDefault(q => q.Name.Value.Equals("Q2.3"));
             Assert.Null(quest);
         }
 
@@ -208,7 +205,7 @@ namespace Test.Assets.scripts {
         public void CanOnlyTakeQ23MoreThanOneTime() {
             var magicianQuaters = manager.Locations[0];
             var q23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.Equal("Q2.3", q23.Name.value);
+            Assert.Equal("Q2.3", q23.Name.Value);
 
             manager.Player1.Goto(magicianQuaters);
             manager.Player1.StartQuest(q23);
@@ -216,7 +213,7 @@ namespace Test.Assets.scripts {
             manager.Player1.Choose(c231);
 
             var nQ23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.NotEqual("Q2.3", nQ23.Name.value);
+            Assert.NotEqual("Q2.3", nQ23.Name.Value);
         }
     }
 }

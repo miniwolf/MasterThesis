@@ -3,17 +3,32 @@ using System.Linq;
 
 namespace Assets.scripts {
     public class Player {
-        public location CurrentLocation { get; set; } = new location();
+        private location currentLocation = new location();
+
+        public location CurrentLocation {
+            get { return currentLocation; }
+            set { currentLocation = value; }
+        }
+
+        private List<string> state = new List<string>();
+
+        public List<string> State { get { return state; } set { state = value; } }
+
+        private List<string> knownLocation = new List<string>();
+
+        public List<string> KnownLocation {
+            get { return knownLocation; }
+            set { knownLocation = value; }
+        }
+
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
-        public List<string> State { get; set; } = new List<string>();
-        public List<string> KnownLocation { get; set; } = new List<string>();
 
         public void Goto(location location) {
             if (CurrentQuest != null) {
                 return;
             }
-            if (!HasPre(location.Pre)) {
+            if (location.Pre != null && !HasPre(location.Pre)) {
                 return;
             }
             if (location.Quests != null) {
@@ -24,12 +39,18 @@ namespace Assets.scripts {
 
         private List<Quest> CollectQuests(locationQuests locationQuests) {
             var list = new List<Quest>();
-            if (locationQuests.OneshotQuest != null)
-                list.AddRange(locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres)).ToList());
-            if (locationQuests.RandomQuest != null)
-                list.AddRange(locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres)).ToList());
-            if (locationQuests.RepeatableQuest != null)
-                list.AddRange(locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres)).ToList());
+            if (locationQuests.OneshotQuest != null) {
+                var ie = (IEnumerable<Quest>) locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(new List<Quest>(ie));
+            }
+            if (locationQuests.RandomQuest != null) {
+                var ie = (IEnumerable<Quest>) locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(new List<Quest>(ie));
+            }
+            if (locationQuests.RepeatableQuest != null) {
+                var ie = (IEnumerable<Quest>) locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres));
+                list.AddRange(new List<Quest>(ie));
+            }
 
             return list;
         }
@@ -50,7 +71,7 @@ namespace Assets.scripts {
             if (realChoice.GetType() == typeof(choicesOnceChoice)) {
                 var location = Manager.Locations.First(loc => loc == CurrentLocation);
                 location.Choices.onceChoice = location.Choices.onceChoice
-                    .Where(c => c.name.value != choice.name)
+                    .Where(c => c.Name.Value != choice.name)
                     .ToArray();
                 CurrentLocation = location;
             }
@@ -60,14 +81,14 @@ namespace Assets.scripts {
             }
 
             if (results.locationResults != null) {
-                KnownLocation.AddRange(results.locationResults.Select(location => location.value));
+                KnownLocation.AddRange(results.locationResults.Select(location => location.Value));
             }
 
             if (results.choicesResults == null) {
                 if (CurrentQuest.GetType() == typeof(locationQuestsOneshotQuests)) {
                     var location = Manager.Locations.First(loc => loc == CurrentLocation);
                     location.Quests.OneshotQuest = location.Quests.OneshotQuest
-                        .Where(q => q.Name.value != CurrentQuest.Name.value)
+                        .Where(q => q.Name.Value != CurrentQuest.Name.Value)
                         .ToArray();
                 }
                 CurrentQuest = null;
@@ -85,15 +106,15 @@ namespace Assets.scripts {
 
         private bool HasPre(pre Pres) {
             //foreach (var at in choice.Pres.At)
-            if (Pres?.Has != null
+            if (Pres != null && Pres.Has != null
                 && !Pres.Has.All(has => State.Contains(has.value))) {
                 return false;
             }
-            if (Pres?.KnowsLocations != null
+            if (Pres != null && Pres.KnowsLocations != null
                 && !Pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
                 return false;
             }
-            if (Pres?.global != null
+            if (Pres != null && Pres.global != null
                 && !Pres.global.All(gHas => Manager.HasPre(gHas))) {
                 return false;
             }
@@ -102,12 +123,12 @@ namespace Assets.scripts {
 
         private Choice FindChoice(string choiceName) {
             foreach (var choice in CurrentLocation.Choices.repeatChoice) {
-                if (choice.name.value.Equals(choiceName)) {
+                if (choice.Name.Value.Equals(choiceName)) {
                     return choice;
                 }
             }
             return CurrentLocation.Choices.onceChoice.FirstOrDefault(choice =>
-                choice.name.value.Equals(choiceName));
+                choice.Name.Value.Equals(choiceName));
         }
     }
 }
