@@ -22,6 +22,22 @@ namespace Test.Assets.scripts {
         }
 
         [Fact]
+        public void NotRevealWenchIsDefault() {
+            var pre = new pre();
+            var has = new Has {value = "!Reveal Wench"};
+            pre.Has = new[] {has};
+            Assert.True(manager.Player1.HasPre(pre));
+        }
+
+        [Fact]
+        public void NotRevealWenchIsDefaultInGlobal() {
+            var global = new global();
+            var has = new Has {value = "!Reveal Wench"};
+            global.Has = new[]{has};
+            Assert.True(manager.HasPre(global));
+        }
+
+        [Fact]
         public void PlayerCanGoToBrothel() {
             var brothel = manager.Locations[1];
             manager.Player1.Goto(brothel);
@@ -139,6 +155,23 @@ namespace Test.Assets.scripts {
         }
 
         [Fact]
+        public void HavingWizardAngryMakesC1121PartOfChoices() {
+            var brothel = manager.Locations[1];
+            manager.Player1.State.Add("Wizard Angry");
+            manager.Player1.Goto(brothel);
+            var q11 = manager.PossibleQuests[0];
+            Assert.Equal("Q1.1", q11.Name.Value);
+            manager.Player1.StartQuest(q11);
+
+            var c112 = manager.PossibleChoices[1];
+            Assert.Equal("C1.1.2", c112.name);
+            manager.Player1.Choose(c112);
+
+            var c1121 = manager.PossibleChoices[0];
+            Assert.Equal("C1.1.2.1", c1121.name);
+        }
+
+        [Fact]
         public void ChoosingC1122MakesItNotPossibleToChooseItAgain() {
             var brothel = manager.Locations[1];
             manager.Player1.State.Add("Wizard Angry");
@@ -214,6 +247,58 @@ namespace Test.Assets.scripts {
 
             var nQ23 = magicianQuaters.Quests.OneshotQuest[0];
             Assert.NotEqual("Q2.3", nQ23.Name.Value);
+        }
+
+        [Fact]
+        public void C212WillGiveWizardAngryInPlayerState() {
+            var magicianQuaters = manager.Locations[0];
+            manager.Player1.Goto(magicianQuaters);
+            var q21 = manager.PossibleQuests[0];
+            Assert.Equal("Q2.1", q21.Name.Value);
+            manager.Player1.StartQuest(q21);
+
+            var c212 = manager.PossibleChoices[1];
+            Assert.Equal("C2.1.2", c212.name);
+            manager.Player1.Choose(c212);
+            Assert.Contains("Wizard Angry", manager.Player1.State);
+        }
+
+        [Fact]
+        public void GoingToTempleWillHaveNoQuestsAsWeAreSinglePlayer() {
+            manager.Player1.KnownLocation.Add("Temple");
+            var temple = manager.Locations[2];
+            Assert.Equal("Temple", temple.Name.Value);
+            manager.Player1.Goto(temple);
+
+            Assert.Empty(manager.PossibleQuests);
+        }
+
+        [Fact]
+        public void TakingC211WillAddQ22ToPossibleQuests() {
+            var magicianQuaters = manager.Locations[0];
+            Assert.Equal("Magic Quaters", magicianQuaters.Name.Value);
+            manager.Player1.Goto(magicianQuaters);
+
+            var Q21 = manager.PossibleQuests[0];
+            Assert.Equal("Q2.1", Q21.Name.Value);
+            manager.Player1.StartQuest(Q21);
+
+            var C212 = manager.PossibleChoices[0];
+            Assert.Equal("C2.1.1", C212.name);
+            manager.Player1.Choose(C212);
+
+            Assert.True(manager.PossibleQuests.Exists(quest => quest.Name.Value.Equals("Q2.2")));
+        }
+
+        [Fact]
+        public void NoQuestAtTempleAfterGoingToBrothel() {
+            manager.Player1.KnownLocation.Add("Temple");
+            var temple = manager.Locations[2];
+            var magicianQuaters = manager.Locations[0];
+            manager.Player1.Goto(magicianQuaters);
+            manager.Player1.Goto(temple);
+
+            Assert.Empty(manager.PossibleQuests);
         }
     }
 }

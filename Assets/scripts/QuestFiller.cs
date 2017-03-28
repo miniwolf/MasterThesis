@@ -15,7 +15,7 @@ public class QuestFiller : MonoBehaviour {
         grid = GameObject.FindGameObjectWithTag("LevelGrid");
         Assert.IsNotNull(ButtonTemplate);
         manager = GameObject.FindGameObjectWithTag("StateManager")
-            .GetComponent<StateManagerContainer>();;
+            .GetComponent<StateManagerContainer>();
         FillGrid(manager.manager.PossibleQuests);
     }
 

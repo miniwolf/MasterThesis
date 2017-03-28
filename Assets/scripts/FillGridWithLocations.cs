@@ -21,6 +21,9 @@ namespace Assets.scripts {
 
         private void FillGrid(IEnumerable<location> locations) {
             foreach (var location in locations) {
+                if (!manager.manager.Player1.HasPre(location.Pre)) {
+                    continue;
+                }
                 var buttonInstance = Instantiate(ButtonTemplate);
                 buttonInstance.GetComponentInChildren<Text>().text = location.Name.Value;
                 var button = buttonInstance.GetComponent<Button>();

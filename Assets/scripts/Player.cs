@@ -31,7 +31,8 @@ namespace Assets.scripts {
             if (location.Pre != null && !HasPre(location.Pre)) {
                 return false;
             }
-            if (location.Quests != null) {
+            Manager.PossibleQuests = new List<Quest>();
+            if (location.Quests != null) { // This might happen if misread from parser
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
@@ -93,6 +94,7 @@ namespace Assets.scripts {
                         .ToArray();
                 }
                 CurrentQuest = null;
+                Goto(CurrentLocation);
                 return;
             }
 
@@ -105,10 +107,12 @@ namespace Assets.scripts {
             }
         }
 
-        private bool HasPre(pre Pres) {
+        public bool HasPre(pre Pres) {
             //foreach (var at in choice.Pres.At)
             if (Pres != null && Pres.Has != null
-                && !Pres.Has.All(has => State.Contains(has.value))) {
+                && !Pres.Has.All(has => has.value.Contains("!")
+                    ? !State.Contains(has.value.Substring(1))
+                    : State.Contains(has.value))) {
                 return false;
             }
             if (Pres != null && Pres.KnowsLocations != null

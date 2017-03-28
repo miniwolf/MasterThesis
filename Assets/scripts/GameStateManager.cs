@@ -47,7 +47,9 @@ namespace Assets.scripts {
         }
 
         public bool HasPre(global gHas) {
-            return gHas.Has.All(has => GlobalHas.Contains(has));
+            return gHas.Has.All(has => has.value.Contains("!")
+                ? !GlobalHas.Contains(new Has() {value = has.value.Substring(1)})
+                : GlobalHas.Contains(has));
         }
     }
 }
