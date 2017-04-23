@@ -36,9 +36,9 @@ namespace Assets.scripts {
         public GameStateManager() {
             Player1.Manager = this;
             Player2.Manager = this;
-			Locations.Add(Load("/Users/Gwanplants/Documents/Skole/Digital Technology/MasterThesis/MasterThesis/Assets/story/MagicianQuaters.xml"));
-			Locations.Add(Load("/Users/Gwanplants/Documents/Skole/Digital Technology/MasterThesis/MasterThesis/Assets/story/Brothel.xml"));
-			Locations.Add(Load("/Users/Gwanplants/Documents/Skole/Digital Technology/MasterThesis/MasterThesis/Assets/story/Temple.xml"));
+            Locations.Add(Load("Assets/story/MagicianQuaters.xml"));
+            Locations.Add(Load("Assets/story/Brothel.xml"));
+            Locations.Add(Load("Assets/story/Temple.xml"));
         }
 
         public static location Load(string fileName) {

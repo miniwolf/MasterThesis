@@ -8,14 +8,14 @@ namespace Assets.scripts {
         private GameObject grid;
         private StateManagerContainer manager;
 
-        public GameObject ButtonTemplate;
+        public GameObject LevelTemplate;
 
         // Use this for initialization
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
-            Assert.IsNotNull(ButtonTemplate);
+            Assert.IsNotNull(LevelTemplate);
             manager = GameObject.FindGameObjectWithTag("StateManager")
-                .GetComponent<StateManagerContainer>();;
+                .GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Locations);
         }
 
@@ -24,9 +24,9 @@ namespace Assets.scripts {
                 if (!manager.manager.Player1.HasPre(location.Pre)) {
                     continue;
                 }
-                var buttonInstance = Instantiate(ButtonTemplate);
+                var buttonInstance = Instantiate(LevelTemplate);
                 buttonInstance.GetComponentInChildren<Text>().text = location.Name.Value;
-                var button = buttonInstance.GetComponent<Button>();
+                var button = buttonInstance.GetComponentInChildren<Button>();
                 var locationCopy = location;
                 button.onClick.AddListener(delegate { manager.Goto(locationCopy); });
 
