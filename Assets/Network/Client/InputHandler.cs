@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using Network.Client;
-using Network.Client.Container;
+using Network.Client.Handlers.Container;
 using Network.Shared;
 using Network.Shared.Messages;
 
@@ -16,11 +17,14 @@ namespace Assets.Network.Client {
             new Dictionary<Type, Container>();
         private bool running = true;
         private readonly InputDistributor distributor;
+        private readonly Thread distributorThread;
 
         public InputHandler(BinaryFormatter formatter, NetworkStream objIn) {
             this.formatter = formatter;
             this.objIn = objIn;
             distributor = new InputDistributor(containers);
+            distributorThread = new Thread(() => distributor.Start());
+            distributorThread.Start();
         }
 
         public void Start() {
@@ -39,7 +43,7 @@ namespace Assets.Network.Client {
                 inputs.Enqueue(item);
                 return;
             }
-            distributor.AddMessage((InGoingMessages<object>) input);
+            distributor.AddMessage((InGoingMessages) input);
         }
 
         public Response ContainsResponse() {
@@ -56,7 +60,7 @@ namespace Assets.Network.Client {
 
         public void Close() {
             running = false;
-            distributor.Stop();
+            distributorThread.Abort();
         }
     }
 }

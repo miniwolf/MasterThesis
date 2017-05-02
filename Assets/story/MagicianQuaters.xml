@@ -18,7 +18,7 @@
             <name value="Q2.2"/>
             <pre>
                 <At location="Magician Quaters"/>
-                <Has value="Wizard Happy"/>
+                <Has value="Magician Happy"/>
                 <global>
                     <Has value="!Reveal Wench"/>
                 </global>
@@ -74,7 +74,7 @@
             <name value="C2.1.1"/>
             <results>
                 <effectResults>
-                    <effect value="Wizard Happy"/>
+                    <effect value="Magician Happy"/>
                 </effectResults>
             </results>
         </repeatChoice>
@@ -82,7 +82,7 @@
             <name value="C2.1.2"/>
             <results>
                 <effectResults>
-                    <effect value="Wizard Angry"/>
+                    <effect value="Magician Angry"/>
                 </effectResults>
                 <locationResults>
                     <name value="Temple"/>
@@ -93,7 +93,7 @@
             <name value="Q2.2.1"/>
             <results>
                 <effectResults>
-                    <effect value="Wizard Angry"/>
+                    <effect value="Magician Angry"/>
                 </effectResults>
                 <locationResults>
                     <name value="Temple"/>

@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
 [System.SerializableAttribute()]
@@ -162,6 +164,7 @@ public partial class choicesChoice {
     public string name { get; set; }
 }
 
+[Serializable]
 public class Choice {
     private name name = new name();
     /// <remarks/>
@@ -263,6 +266,14 @@ public partial class location {
 
     [System.Xml.Serialization.XmlElementAttribute("quests", typeof(locationQuests), Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public locationQuests Quests { get; set; }
+
+    public override bool Equals(object obj) {
+        if (obj is location) {
+            var other = obj as location;
+            return other.name.Value.Equals(name.Value);
+        }
+        return false;
+    }
 }
 
 /// <remarks/>
@@ -298,6 +309,7 @@ public partial class locationQuests {
     public locationQuestsRandomQuests[] RandomQuest { get; set; }
 }
 
+[Serializable]
 public class Quest {
     private name name = new name();
     /// <remarks/>
@@ -340,4 +352,62 @@ public partial class locationQuestsRandomQuests : Quest {
     [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     [System.Xml.Serialization.XmlArrayItemAttribute("npc", typeof(npc), IsNullable=false)]
     public npc[] Npc { get; set; }
+}
+
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class Backgrounds {
+
+    private BackgroundsBackground[] itemsField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("Background", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public BackgroundsBackground[] Items {
+        get {
+            return this.itemsField;
+        }
+        set {
+            this.itemsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+public partial class BackgroundsBackground {
+
+    private string nameField;
+
+    private string descriptionField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string Name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string description {
+        get {
+            return this.descriptionField;
+        }
+        set {
+            this.descriptionField = value;
+        }
+    }
 }

@@ -19,13 +19,21 @@ namespace Assets.scripts {
             FillGrid(manager.manager.Locations);
         }
 
+        private bool IsOtherPlayerAtThisLocation(location location) {
+            return manager.manager.Player2.CurrentLocation.Equals(location);
+        }
+
         private void FillGrid(IEnumerable<location> locations) {
             foreach (var location in locations) {
                 if (!manager.manager.Player1.HasPre(location.Pre)) {
                     continue;
                 }
                 var buttonInstance = Instantiate(LevelTemplate);
-                buttonInstance.GetComponentInChildren<Text>().text = location.Name.Value;
+                var texts = buttonInstance.GetComponentsInChildren<Text>();
+                texts[0].text = location.Name.Value;
+                if (IsOtherPlayerAtThisLocation(location)) {
+                    texts[1].enabled = true;
+                }
                 var button = buttonInstance.GetComponentInChildren<Button>();
                 var locationCopy = location;
                 button.onClick.AddListener(delegate { manager.Goto(locationCopy); });

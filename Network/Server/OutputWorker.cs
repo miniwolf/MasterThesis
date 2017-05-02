@@ -10,10 +10,12 @@ namespace Network.Server {
         private bool running = true;
         private readonly NetworkStream networkStream;
         private readonly BinaryFormatter formatter = new BinaryFormatter();
+        private readonly int ID;
 
-        public OutputWorker(TcpClient tcpClient) {
+        public OutputWorker(TcpClient tcpClient, int ID) {
             networkStream = tcpClient.GetStream();
             Response = new Queue<object>();
+            this.ID = ID;
         }
 
         public Queue<object> Response { get; private set; }
@@ -46,6 +48,10 @@ namespace Network.Server {
             Console.WriteLine("so: " + obj);
             formatter.Serialize(networkStream, obj);
             networkStream.Flush();
+        }
+
+        public int GetID() {
+            return ID;
         }
     }
 }

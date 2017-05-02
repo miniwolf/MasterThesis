@@ -53,7 +53,7 @@
         <repeatChoice>
             <name value="C1.1.2.1"/>
             <pre>
-                <Has value="Wizard Angry"/>
+                <Has value="Magician Angry"/>
             </pre>
             <results>
                 <effectResults>
@@ -67,7 +67,7 @@
         <onceChoice>
             <name value="C1.1.2.2"/>
             <pre>
-                <Has value="Wizard Angry"/>
+                <Has value="Magician Angry"/>
                 <KnowsLocation value="Temple"/>
             </pre>
             <results>

@@ -1,4 +1,5 @@
 ﻿using Network.Client;
+using Network.Client.Handlers;
 using UnityEngine;
 
 namespace Assets.Network.Client {
@@ -10,6 +11,7 @@ namespace Assets.Network.Client {
 
         public void Start() {
             com = new Communication("localhost", 8001);
+            GeneralHandlerFactory.Construct();
         }
     }
 }

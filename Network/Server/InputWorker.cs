@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using Assets.Network.Server;
 using Network.Shared;
 
 namespace Network.Server {
@@ -20,9 +20,14 @@ namespace Network.Server {
         }
 
         public void Start() {
-            while (running) {
-                var input = formatter.Deserialize(objIn);
-                HandleInput(input);
+            try {
+                while (running) {
+                    var input = formatter.Deserialize(objIn);
+                    HandleInput(input);
+                }
+            } catch (IOException) {
+                Data.RemoveUser(ID);
+                running = false;
             }
         }
 

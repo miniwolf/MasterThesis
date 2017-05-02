@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Network.Server;
 using Network.Shared;
 
-namespace Assets.Network.Server {
+namespace Network.Server {
     public class Data {
         private static readonly Dictionary<int, OutputWorker> OUTPUT_WORKER_MAP =
             new Dictionary<int, OutputWorker>();
@@ -20,7 +19,13 @@ namespace Assets.Network.Server {
         }
 
         public static void UpdateState(int ID, PlayerState state) {
-            PlayerStates.Add(ID, state);
+            PlayerStates[ID] = state;
+            foreach (var outWorker in OUTPUT_WORKER_MAP.Values) {
+                if (outWorker.GetID() == ID) {
+                    continue;
+                }
+                outWorker.Response.Enqueue(state);
+            }
         }
 
         public static PlayerState GetUserState(int ID) {
@@ -28,7 +33,12 @@ namespace Assets.Network.Server {
         }
 
         public static IEnumerable<PlayerState> GetAllBut(int ID) {
-            return PlayerStates.Keys.Where(id => id != ID).Select(id => PlayerStates[id]);
+            return (from state in PlayerStates.Keys where state != ID select PlayerStates[state]).ToList();
+        }
+
+        public static void RemoveUser(int id) {
+            OUTPUT_WORKER_MAP.Remove(id);
+            INPUT_WORKER_MAP.Remove(id);
         }
     }
 }

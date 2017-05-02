@@ -297,7 +297,6 @@ namespace Test.Assets.scripts {
             var magicianQuaters = manager.Locations[0];
             manager.Player1.Goto(magicianQuaters);
             manager.Player1.Goto(temple);
-
             Assert.Empty(manager.PossibleQuests);
         }
     }
