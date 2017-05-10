@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using Network.Client;
 using Network.Client.Handlers.Container;
 using Network.Shared;
 using Network.Shared.Messages;
 
-namespace Assets.Network.Client {
+namespace Network.Client {
     public class InputHandler {
         private readonly BinaryFormatter formatter;
         private readonly NetworkStream objIn;
@@ -34,6 +33,7 @@ namespace Assets.Network.Client {
                     input = formatter.Deserialize(objIn);
                     HandleInput(input);
                 }
+                input = null;
             }
         }
 

@@ -31,6 +31,7 @@ namespace Network.Server {
             var inputWorker = new InputWorker(ID, tcpClient, worker);
             var outputThread = new Thread(() => CreateOutputWorker(worker));
             var inputThread = new Thread(() => CreateInputWorker(inputWorker));
+            Console.Out.WriteLine("Logging in ID: " + ID);
             outputThread.Start();
             inputThread.Start();
             var state = new PlayerState {ID = ID};

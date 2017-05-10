@@ -9,7 +9,9 @@ namespace Network.Client.Handlers.Container {
 
         public void AddObject(InGoingMessages obj) {
             queue.Enqueue(obj);
-            Monitor.Pulse(runnable);
+            lock (runnable) {
+                Monitor.Pulse(runnable);
+            }
         }
 
         public Queue<InGoingMessages> GetQueue() {

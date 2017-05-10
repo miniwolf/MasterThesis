@@ -61,6 +61,9 @@ namespace Assets.scripts {
             if (CurrentQuest != null) {
                 return;
             }
+            if (Manager.IsGrouped) {
+
+            }
             CurrentQuest = quest;
             Manager.PossibleChoices.Clear();
             Manager.PossibleChoices.AddRange(quest.Choices.choice);

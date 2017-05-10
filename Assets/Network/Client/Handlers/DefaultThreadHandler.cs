@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 
 namespace Network.Client.Handlers {
     public class DefaultThreadHandler {
@@ -15,13 +13,11 @@ namespace Network.Client.Handlers {
 
         public void Start() {
             while (running) {
-                while (container.GetQueue().Count != 0) {
-                    handler.Handle(container.GetQueue().Dequeue());
-                }
                 try {
-                    lock(this) {
-                        Monitor.Wait(this);
+                    while (container.GetQueue().Count == 0) {
+                        Thread.Sleep(100);
                     }
+                    handler.Handle(container.GetQueue().Dequeue());
                 } catch (ThreadInterruptedException e) {
                     running = false;
                 }

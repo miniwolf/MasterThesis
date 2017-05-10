@@ -14,13 +14,8 @@ namespace Assets.scripts {
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
             Assert.IsNotNull(LevelTemplate);
-            manager = GameObject.FindGameObjectWithTag("StateManager")
-                .GetComponent<StateManagerContainer>();
+            manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Locations);
-        }
-
-        private bool IsOtherPlayerAtThisLocation(location location) {
-            return manager.manager.Player2.CurrentLocation.Equals(location);
         }
 
         private void FillGrid(IEnumerable<location> locations) {
@@ -29,10 +24,11 @@ namespace Assets.scripts {
                     continue;
                 }
                 var buttonInstance = Instantiate(LevelTemplate);
-                var texts = buttonInstance.GetComponentsInChildren<Text>();
+                var texts = buttonInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = location.Name.Value;
-                if (IsOtherPlayerAtThisLocation(location)) {
-                    texts[1].enabled = true;
+                if (manager.IsOtherPlayerAtThisLocation(location)) {
+                    texts[2].text = "Player is Here";
+                    texts[2].enabled = true;
                 }
                 var button = buttonInstance.GetComponentInChildren<Button>();
                 var locationCopy = location;

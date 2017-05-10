@@ -27,6 +27,7 @@ namespace Network.Server {
                 }
             } catch (IOException) {
                 Data.RemoveUser(ID);
+                Console.Out.WriteLine("Logging out ID: " + ID);
                 running = false;
             }
         }

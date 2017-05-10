@@ -22,11 +22,16 @@ namespace Network.Client {
                 while (messages.Count == 0) {
                     Thread.Sleep(100);
                 }
-                var input = messages.Dequeue();
+                InGoingMessages input;
+                lock (messages) {
+                    input = messages.Dequeue();
+                }
                 Container container;
                 containers.TryGetValue(input.GetType(), out container);
                 if (container == null) {
-                    messages.Enqueue(input);
+                    lock (messages) {
+                        messages.Enqueue(input);
+                    }
                     continue;
                 }
                 container.AddObject(input);
@@ -34,7 +39,9 @@ namespace Network.Client {
         }
 
         public void AddMessage(InGoingMessages msg) {
-            messages.Enqueue(msg);
+            lock (messages) {
+                messages.Enqueue(msg);
+            }
         }
 
         public void Stop() {

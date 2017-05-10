@@ -10,15 +10,19 @@ namespace Network.Client.Handlers {
     public class GeneralHandler : Handler {
         private static readonly Dictionary<Type, Handler> handlers = new Dictionary<Type, Handler>();
         private static readonly Container.Container container = new DefaultContainer();
+        private readonly DefaultThreadHandler threadHandler;
         private readonly List<object> unhandledObjects = new List<object>();
         private readonly List<Thread> threads = new List<Thread>();
         private readonly Thread runnable;
 
         public GeneralHandler() {
-            runnable = new Thread(() => new DefaultThreadHandler(container, this).Start());
+            threadHandler = new DefaultThreadHandler(container, this);
+            runnable = new Thread(() => threadHandler.Start());
+            runnable.Start();
+            container.SetThread(runnable);
         }
 
-        public static void RegisterHandler(Type type, Handler playerStateHandler) {
+        public void RegisterHandler(Type type, Handler playerStateHandler) {
             handlers.Add(type, playerStateHandler);
             InputHandler.Register(type, container);
         }

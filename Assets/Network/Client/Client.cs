@@ -11,7 +11,9 @@ namespace Assets.Network.Client {
 
         public void Start() {
             com = new Communication("localhost", 8001);
-            GeneralHandlerFactory.Construct();
+            var stateManagerContainer = FindObjectOfType<StateManagerContainer>();
+            GeneralHandlerFactory.Construct(stateManagerContainer.manager.Player2);
+            DontDestroyOnLoad(gameObject.transform);
         }
     }
 }
