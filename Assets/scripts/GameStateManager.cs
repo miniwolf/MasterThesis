@@ -33,8 +33,17 @@ public class GameStateManager {
         set { globalHas = value; }
     }
 
-    private bool isGrouped = false;
-    public bool IsGrouped { get {return isGrouped} set; }
+    private bool isGrouped;
+    public bool IsGrouped {
+        get { return isGrouped; }
+        set { isGrouped = value; }
+    }
+
+    private List<npc> npcs;
+    public List<npc> Npcs {
+        get { return npcs; }
+        set { npcs = value; }
+    }
 
     public GameStateManager() {
         Player1.Manager = this;

@@ -16,21 +16,22 @@ public class StateManagerContainer : MonoBehaviour {
     }
 
     public void Goto(location location) {
-        if (IsOtherPlayerAtThisLocation(location)) {
-            // Maybe address group sign up
-        }
-
         if (!manager.Player1.Goto(location)) {
             return;
         }
-
+        manager.IsGrouped = false;
         client.Communication.SendObject(location);
-        SceneManager.LoadScene("scenes/Quest");
+        SceneManager.LoadScene(location == null ? "scenes/Locations" : "scenes/Npcs");
     }
 
     public void StartQuest(Quest quest) {
         manager.Player1.StartQuest(quest);
         client.Communication.SendObject(quest);
+        if (manager.IsGrouped) {
+            // Wait until other person has chosen before move on, could be a notification system or it could
+            // be a while. A while could lock the system, which
+            return;
+        }
         SceneManager.LoadScene("scenes/Choice");
     }
 
@@ -44,5 +45,10 @@ public class StateManagerContainer : MonoBehaviour {
 
     public void BackToLocations() {
         SceneManager.LoadScene("scenes/Locations");
+    }
+
+    public void TalkTo(npc npc) {
+
+        manager.Player1.TalkTo(npc);
     }
 }

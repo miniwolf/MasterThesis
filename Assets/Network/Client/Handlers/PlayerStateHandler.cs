@@ -5,10 +5,14 @@ using Network.Shared.Messages;
 
 namespace Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {
+        private readonly Player me;
         private readonly Player player;
+        private readonly GameStateManager manager;
 
-        public PlayerStateHandler(Player player) {
+        public PlayerStateHandler(Player me, Player player, GameStateManager manager) {
+            this.me = me;
             this.player = player;
+            this.manager = manager;
         }
 
         public Thread GetThread() {
@@ -17,6 +21,7 @@ namespace Network.Client.Handlers {
         public void Handle(InGoingMessages<PlayerState> obj) {
             var playerState = (PlayerState) obj;
             player.CurrentLocation = playerState.Location;
+            manager.IsGrouped = Equals(player.CurrentLocation, me.CurrentLocation);
             player.CurrentQuest = playerState.Quest;
         }
 
