@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Assets.Network.Client;
-using Network.Client.Handlers.Container;
-using Network.Shared.Messages;
+using Assets.Network.Client.Handlers.Container;
+using Assets.Network.Shared.Messages;
 using UnityEngine;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public class GeneralHandler : Handler {
         private static readonly Dictionary<Type, Handler> handlers = new Dictionary<Type, Handler>();
         private static readonly Container.Container container = new DefaultContainer();
@@ -28,7 +27,7 @@ namespace Network.Client.Handlers {
         }
 
         public void Handle(InGoingMessages obj) {
-            var handler = GeneralHandler.handlers[obj.GetType()];
+            var handler = handlers[obj.GetType()];
 
             if (handler == null) {
                 Debug.LogError("Missing handler " + obj.GetType());

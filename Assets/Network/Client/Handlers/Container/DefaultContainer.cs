@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Client.Handlers.Container {
+namespace Assets.Network.Client.Handlers.Container {
     public class DefaultContainer : Container {
         private readonly Queue<InGoingMessages> queue = new Queue<InGoingMessages>();
         private Thread runnable;
@@ -19,7 +19,7 @@ namespace Network.Client.Handlers.Container {
         }
 
         public void SetThread(Thread thread) {
-            this.runnable = thread;
+            runnable = thread;
         }
     }
 }

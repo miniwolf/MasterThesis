@@ -1,17 +1,13 @@
-﻿using Network.Client;
-using Network.Client.Handlers;
+﻿using Assets.Network.Client.Handlers;
+using Assets.scripts;
 using UnityEngine;
 
 namespace Assets.Network.Client {
     public class Client : MonoBehaviour {
-        private Communication com;
-
-        public Communication Communication {
-            get { return com; }
-        }
+        public Communication Communication { get; private set; }
 
         public void Start() {
-            com = new Communication("localhost", 8001);
+            Communication = new Communication("localhost", 8001);
             var stateManagerContainer = FindObjectOfType<StateManagerContainer>();
             GeneralHandlerFactory.Construct(stateManagerContainer.manager.Player2,
                 stateManagerContainer.manager.Player1, stateManagerContainer.manager);

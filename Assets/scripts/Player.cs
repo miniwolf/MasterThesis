@@ -57,7 +57,6 @@ namespace Assets.scripts {
                 var ie = locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres));
                 list.AddRange(ie.Cast<Quest>());
             }
-
             return list;
         }
 
@@ -92,7 +91,7 @@ namespace Assets.scripts {
 
             if (results.choicesResults == null) {
                 if (CurrentQuest.GetType() == typeof(LocationQuestsOneshotQuests)) {
-                    var location = Manager.Locations.First(loc => loc == CurrentLocation);
+                    var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
                     location.Quests.OneshotQuest = location.Quests.OneshotQuest
                         .Where(q => q.Name.Value != CurrentQuest.Name.Value)
                         .ToArray();

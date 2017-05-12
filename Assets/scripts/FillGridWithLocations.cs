@@ -13,7 +13,6 @@ namespace Assets.scripts {
         // Use this for initialization
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
-            Assert.IsNotNull(LevelTemplate);
             manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Locations);
         }

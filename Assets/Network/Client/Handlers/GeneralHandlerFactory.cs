@@ -1,7 +1,7 @@
-﻿using Assets.scripts;
-using Network.Shared;
+﻿using Assets.Network.Shared;
+using Assets.scripts;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public class GeneralHandlerFactory {
         public static GeneralHandler handler = new GeneralHandler();
 

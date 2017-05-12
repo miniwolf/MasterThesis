@@ -1,10 +1,9 @@
 ﻿using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using Assets.Network.Client;
-using Network.Shared;
+using Assets.Network.Shared;
 
-namespace Network.Client {
+namespace Assets.Network.Client {
     public class Communication {
         private readonly NetworkStream output;
         private readonly BinaryFormatter formatter;

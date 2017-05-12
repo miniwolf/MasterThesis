@@ -1,7 +1,7 @@
 ﻿using System;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Shared {
+namespace Assets.Network.Shared {
     [Serializable]
     public class PlayerState : InGoingMessages<PlayerState>, Access<PlayerState> {
         public int ID { get; set; }

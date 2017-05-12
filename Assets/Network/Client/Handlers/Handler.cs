@@ -1,8 +1,7 @@
 ﻿using System.Threading;
-using Network.Shared;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public interface Handler {
         Thread GetThread();
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Network.Client.Handlers.Container;
-using Network.Shared.Messages;
+using Assets.Network.Client.Handlers.Container;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Client {
+namespace Assets.Network.Client {
     public class InputDistributor {
         private readonly Dictionary<Type, Container> containers;
 

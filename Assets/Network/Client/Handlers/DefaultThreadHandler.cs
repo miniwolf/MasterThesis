@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public class DefaultThreadHandler {
         private readonly Container.Container container;
         private readonly Handler handler;

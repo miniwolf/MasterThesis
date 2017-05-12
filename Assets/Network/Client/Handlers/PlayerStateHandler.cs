@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using Assets.Events;
+using Assets.Network.Shared;
+using Assets.Network.Shared.Messages;
 using Assets.scripts;
-using Network.Client.Handlers;
-using Network.Shared;
-using Network.Shared.Messages;
 
 namespace Assets.Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {

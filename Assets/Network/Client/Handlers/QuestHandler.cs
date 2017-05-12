@@ -1,7 +1,8 @@
 ﻿using System.Threading;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
+using Assets.scripts;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public class QuestHandler : Handler<Quest> {
         private readonly GameStateManager manager;
 
