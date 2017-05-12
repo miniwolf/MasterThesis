@@ -13,7 +13,7 @@ public class NpcFiller : MonoBehaviour {
         FillGrid(manager.manager.Npcs);
     }
 
-    private void FillGrid(List<npc> npcs) {
+    private void FillGrid(List<Npc> npcs) {
         foreach (var npc in npcs) {
             var npcInstance = Instantiate(NpcsTemplate);
             var texts = npcInstance.GetComponentsInChildren<Text>();

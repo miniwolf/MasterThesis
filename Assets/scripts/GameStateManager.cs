@@ -12,8 +12,8 @@ public class GameStateManager {
     public Player Player1 { get { return player1; } }
     public Player Player2 { get { return player2; } }
 
-    private readonly List<location> locations = new List<location>();
-    public List<location> Locations { get { return locations; } }
+    private readonly List<Location> locations = new List<Location>();
+    public List<Location> Locations { get { return locations; } }
 
     private List<Quest> possibleQuests = new List<Quest>();
     public List<Quest> PossibleQuests {
@@ -21,8 +21,8 @@ public class GameStateManager {
         set { possibleQuests = value; }
     }
 
-    private List<choicesChoice> possibleChoices = new List<choicesChoice>();
-    public List<choicesChoice> PossibleChoices {
+    private List<ChoicesChoice> possibleChoices = new List<ChoicesChoice>();
+    public List<ChoicesChoice> PossibleChoices {
         get { return possibleChoices; }
         set { possibleChoices = value; }
     }
@@ -39,8 +39,8 @@ public class GameStateManager {
         set { isGrouped = value; }
     }
 
-    private List<npc> npcs;
-    public List<npc> Npcs {
+    private List<Npc> npcs;
+    public List<Npc> Npcs {
         get { return npcs; }
         set { npcs = value; }
     }
@@ -53,14 +53,14 @@ public class GameStateManager {
         Locations.Add(Load("Assets/story/Temple.xml"));
     }
 
-    public static location Load(string fileName) {
-        var serializer = new XmlSerializer(typeof(location));
-        return (location) serializer.Deserialize(new XmlTextReader(fileName));
+    public static Location Load(string fileName) {
+        var serializer = new XmlSerializer(typeof(Location));
+        return (Location) serializer.Deserialize(new XmlTextReader(fileName));
     }
 
     public bool HasPre(global gHas) {
         return gHas.Has.All(has => has.value.Contains("!")
-            ? !GlobalHas.Contains(new Has() {value = has.value.Substring(1)})
+            ? !GlobalHas.Contains(new Has {value = has.value.Substring(1)})
             : GlobalHas.Contains(has));
     }
 }

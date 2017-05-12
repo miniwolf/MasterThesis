@@ -18,7 +18,7 @@ namespace Assets.scripts {
             FillGrid(manager.manager.Locations);
         }
 
-        private void FillGrid(IEnumerable<location> locations) {
+        private void FillGrid(IEnumerable<Location> locations) {
             foreach (var location in locations) {
                 if (!manager.manager.Player1.HasPre(location.Pre)) {
                     continue;

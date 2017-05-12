@@ -3,16 +3,19 @@ using System.Linq;
 
 namespace Assets.scripts {
     public class Player {
-        private location currentLocation = new location();
+        private Location currentLocation = new Location();
 
-        public location CurrentLocation {
+        public Location CurrentLocation {
             get { return currentLocation; }
             set { currentLocation = value; }
         }
 
         private List<string> state = new List<string>();
 
-        public List<string> State { get { return state; } set { state = value; } }
+        public List<string> State {
+            get { return state; }
+            set { state = value; }
+        }
 
         private List<string> knownLocation = new List<string>();
 
@@ -24,7 +27,7 @@ namespace Assets.scripts {
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
 
-        public bool Goto(location location) {
+        public bool Goto(Location location) {
             if (CurrentQuest != null) {
                 return false;
             }
@@ -32,7 +35,8 @@ namespace Assets.scripts {
                 return false;
             }
             Manager.PossibleQuests = new List<Quest>();
-            if (location.Quests != null) { // This might happen if misread from parser
+            if (location.Quests != null) {
+                // This might happen if misread from parser
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
@@ -66,11 +70,11 @@ namespace Assets.scripts {
             Manager.PossibleChoices.AddRange(quest.Choices.choice);
         }
 
-        public void Choose(choicesChoice choice) {
+        public void Choose(ChoicesChoice choice) {
             var realChoice = FindChoice(choice.name);
             var results = realChoice.results;
 
-            if (realChoice.GetType() == typeof(choicesOnceChoice)) {
+            if (realChoice.GetType() == typeof(ChoicesOnceChoice)) {
                 var location = Manager.Locations.First(loc => loc == CurrentLocation);
                 location.Choices.onceChoice = location.Choices.onceChoice
                     .Where(c => c.Name.Value != choice.name)
@@ -87,7 +91,7 @@ namespace Assets.scripts {
             }
 
             if (results.choicesResults == null) {
-                if (CurrentQuest.GetType() == typeof(locationQuestsOneshotQuests)) {
+                if (CurrentQuest.GetType() == typeof(LocationQuestsOneshotQuests)) {
                     var location = Manager.Locations.First(loc => loc == CurrentLocation);
                     location.Quests.OneshotQuest = location.Quests.OneshotQuest
                         .Where(q => q.Name.Value != CurrentQuest.Name.Value)
@@ -107,23 +111,20 @@ namespace Assets.scripts {
             }
         }
 
-        public bool HasPre(pre Pres) {
+        public bool HasPre(Pre pres) {
             //foreach (var at in choice.Pres.At)
-            if (Pres != null && Pres.Has != null
-                && !Pres.Has.All(has => has.value.Contains("!")
+            if (pres != null && pres.Has != null
+                && !pres.Has.All(has => has.value.Contains("!")
                     ? !State.Contains(has.value.Substring(1))
                     : State.Contains(has.value))) {
                 return false;
             }
-            if (Pres != null && Pres.KnowsLocations != null
-                && !Pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
+            if (pres != null && pres.KnowsLocations != null
+                && !pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
                 return false;
             }
-            if (Pres != null && Pres.global != null
-                && !Pres.global.All(gHas => Manager.HasPre(gHas))) {
-                return false;
-            }
-            return true;
+            return pres == null || pres.global == null ||
+                   pres.global.All(gHas => Manager.HasPre(gHas));
         }
 
         private Choice FindChoice(string choiceName) {
@@ -134,6 +135,9 @@ namespace Assets.scripts {
             }
             return CurrentLocation.Choices.onceChoice.FirstOrDefault(choice =>
                 choice.Name.Value.Equals(choiceName));
+        }
+
+        public void TalkTo(Npc npc) {
         }
     }
 }

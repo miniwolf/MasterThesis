@@ -19,7 +19,7 @@ public class ChoiceFiller : MonoBehaviour {
         FillGrid(manager.manager.PossibleChoices);
     }
 
-    private void FillGrid(IEnumerable<choicesChoice> choices) {
+    private void FillGrid(IEnumerable<ChoicesChoice> choices) {
         foreach (var choice in choices) {
             if (choice == null) {
                 continue; // TODO: Fucking fix this

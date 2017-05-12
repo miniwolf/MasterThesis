@@ -17,7 +17,7 @@ using System;
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class name {
+public partial class Name {
     private string val = "";
 
     /// <remarks/>
@@ -32,7 +32,7 @@ public partial class name {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class npc {
+public partial class Npc {
     private string name = "";
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -46,7 +46,7 @@ public partial class npc {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class pre {
+public partial class Pre {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("At", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public preAT[] At { get; set; }
@@ -115,7 +115,7 @@ public partial class global {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("effect")]
-    public effect[] effect { get; set; }
+    public Effect[] effect { get; set; }
 }
 
 /// <remarks/>
@@ -125,7 +125,7 @@ public partial class global {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class effect {
+public partial class Effect {
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public string value { get; set; }
@@ -138,18 +138,18 @@ public partial class effect {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class choices {
+public partial class Choices {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("choice", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public choicesChoice[] choice { get; set; }
+    public ChoicesChoice[] choice { get; set; }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("repeatChoice", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public choicesRepeatChoice[] repeatChoice { get; set; }
+    public ChoicesRepeatChoice[] repeatChoice { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("onceChoice", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public choicesOnceChoice[] onceChoice { get; set; }
+    public ChoicesOnceChoice[] onceChoice { get; set; }
 }
 
 /// <remarks/>
@@ -158,7 +158,7 @@ public partial class choices {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class choicesChoice {
+public partial class ChoicesChoice {
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public string name { get; set; }
@@ -166,18 +166,18 @@ public partial class choicesChoice {
 
 [Serializable]
 public class Choice {
-    private name name = new name();
+    private Name name = new Name();
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("name")]
-    public name Name { get { return name; } set { name = value; } }
+    public Name Name { get { return name; } set { name = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("pre")]
-    public pre Pres { get; set; }
+    public Pre Pres { get; set; }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("results")]
-    public results results { get; set; }
+    public Results results { get; set; }
 }
 
 /// <remarks/>
@@ -186,7 +186,7 @@ public class Choice {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class choicesRepeatChoice : Choice {
+public partial class ChoicesRepeatChoice : Choice {
 }
 
 /// <remarks/>
@@ -195,7 +195,7 @@ public partial class choicesRepeatChoice : Choice {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class choicesOnceChoice : Choice {
+public partial class ChoicesOnceChoice : Choice {
 }
 
 /// <remarks/>
@@ -205,23 +205,23 @@ public partial class choicesOnceChoice : Choice {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class results {
+public partial class Results {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string wingame { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("effectResults", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public resultsEffectResults effectResults { get; set; }
+    public ResultsEffectResults effectResults { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("name", typeof(name), IsNullable=false)]
-    public name[] locationResults { get; set; }
+    [System.Xml.Serialization.XmlArrayItemAttribute("name", typeof(Name), IsNullable=false)]
+    public Name[] locationResults { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("choices")]
-    public choices choicesResults { get; set; }
+    public Choices choicesResults { get; set; }
 }
 
 /// <remarks/>
@@ -230,14 +230,14 @@ public partial class results {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class resultsEffectResults {
+public partial class ResultsEffectResults {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("global")]
     public global[] global { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("effect")]
-    public effect[] Effect { get; set; }
+    public Effect[] Effect { get; set; }
 }
 
 /// <remarks/>
@@ -247,29 +247,29 @@ public partial class resultsEffectResults {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class location {
+public partial class Location {
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("choices", typeof(choices))]
-    public choices Choices { get; set; }
+    [System.Xml.Serialization.XmlElementAttribute("choices", typeof(Choices))]
+    public Choices Choices { get; set; }
 
-    [System.Xml.Serialization.XmlElementAttribute("pre", typeof(pre))]
-    public pre Pre { get; set; }
+    [System.Xml.Serialization.XmlElementAttribute("pre", typeof(Pre))]
+    public Pre Pre { get; set; }
 
-    private name name = new name();
+    private Name name = new Name();
 
-    [System.Xml.Serialization.XmlElementAttribute("name", typeof(name))]
-    public name Name { get { return name; } set { name = value; } }
+    [System.Xml.Serialization.XmlElementAttribute("name", typeof(Name))]
+    public Name Name { get { return name; } set { name = value; } }
 
-    [System.Xml.Serialization.XmlElementAttribute("npcs", typeof(locationNpcs),
+    [System.Xml.Serialization.XmlElementAttribute("npcs", typeof(LocationNpcs),
         Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public locationNpcs[] Npcs { get; set; }
+    public LocationNpcs[] Npcs { get; set; }
 
     [System.Xml.Serialization.XmlElementAttribute("quests", typeof(locationQuests), Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public locationQuests Quests { get; set; }
 
     public override bool Equals(object obj) {
-        if (obj is location) {
-            var other = obj as location;
+        if (obj is Location) {
+            var other = obj as Location;
             return other.name.Value.Equals(name.Value);
         }
         return false;
@@ -282,11 +282,11 @@ public partial class location {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class locationNpcs {
-    private npc npc = new npc();
+public partial class LocationNpcs {
+    private Npc npc = new Npc();
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("npc")]
-    public npc Npc { get { return npc; } set { npc = value; } }
+    public Npc Npc { get { return npc; } set { npc = value; } }
 }
 
 /// <remarks/>
@@ -298,29 +298,29 @@ public partial class locationNpcs {
 public partial class locationQuests {
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("repeatableQuest", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public locationQuestsRepeatableQuest[] RepeatableQuest { get; set; }
+    public LocationQuestsRepeatableQuest[] RepeatableQuest { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("oneshotQuest", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public locationQuestsOneshotQuests[] OneshotQuest { get; set; }
+    public LocationQuestsOneshotQuests[] OneshotQuest { get; set; }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("randomQuest", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public locationQuestsRandomQuests[] RandomQuest { get; set; }
+    public LocationQuestsRandomQuests[] RandomQuest { get; set; }
 }
 
 [Serializable]
 public class Quest {
-    private name name = new name();
+    private Name name = new Name();
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("name")]
-    public name Name { get { return name; } set { name = value; } }
+    public Name Name { get { return name; } set { name = value; } }
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("pre")]
-    public pre Pres { get; set; }
+    public Pre Pres { get; set; }
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("choices")]
-    public choices Choices { get; set; }
+    public Choices Choices { get; set; }
 }
 
 /// <remarks/>
@@ -329,7 +329,7 @@ public class Quest {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class locationQuestsRepeatableQuest : Quest {
+public partial class LocationQuestsRepeatableQuest : Quest {
 }
 
 /// <remarks/>
@@ -338,7 +338,7 @@ public partial class locationQuestsRepeatableQuest : Quest {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class locationQuestsOneshotQuests : Quest {
+public partial class LocationQuestsOneshotQuests : Quest {
 }
 
 /// <remarks/>
@@ -347,11 +347,11 @@ public partial class locationQuestsOneshotQuests : Quest {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class locationQuestsRandomQuests : Quest {
+public partial class LocationQuestsRandomQuests : Quest {
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("npc", typeof(npc), IsNullable=false)]
-    public npc[] Npc { get; set; }
+    [System.Xml.Serialization.XmlArrayItemAttribute("npc", typeof(Npc), IsNullable=false)]
+    public Npc[] Npc { get; set; }
 }
 
 

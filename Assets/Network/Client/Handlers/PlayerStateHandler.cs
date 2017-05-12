@@ -1,9 +1,11 @@
 ﻿using System.Threading;
+using Assets.Events;
 using Assets.scripts;
+using Network.Client.Handlers;
 using Network.Shared;
 using Network.Shared.Messages;
 
-namespace Network.Client.Handlers {
+namespace Assets.Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {
         private readonly Player me;
         private readonly Player player;
@@ -18,10 +20,17 @@ namespace Network.Client.Handlers {
         public Thread GetThread() {
             return new Thread(() => { });
         }
+
         public void Handle(InGoingMessages<PlayerState> obj) {
             var playerState = (PlayerState) obj;
             player.CurrentLocation = playerState.Location;
+            if (manager.IsGrouped) {
+                EventManager.CallEvent(Events.Events.Travelled);
+            }
             manager.IsGrouped = Equals(player.CurrentLocation, me.CurrentLocation);
+            if (manager.IsGrouped) {
+                EventManager.CallEvent(Events.Events.QuestStarted);
+            }
             player.CurrentQuest = playerState.Quest;
         }
 
