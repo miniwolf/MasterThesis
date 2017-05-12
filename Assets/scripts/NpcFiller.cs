@@ -10,11 +10,11 @@ namespace Assets.scripts {
 
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("PreGrid");
-            manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
+            manager = GameObject.FindGameObjectWithTag("StateManager")
+                .GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Npcs);
         }
 
-        //TODO: Fill this out
         private void FillGrid(IEnumerable<Npc> npcs) {
             foreach (var npc in npcs) {
                 var npcInstance = Instantiate(NpcsTemplate);
@@ -22,7 +22,10 @@ namespace Assets.scripts {
                 texts[0].text = npc.Name;
 
                 var button = npcInstance.GetComponentInChildren<Button>();
-                button.onClick.AddListener(delegate { manager.TalkTo(npc); });
+                var npcCopy = npc;
+                button.onClick.AddListener(delegate { manager.TalkTo(npcCopy); });
+
+                npcInstance.transform.parent = grid.transform;
             }
         }
     }
