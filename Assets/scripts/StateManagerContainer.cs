@@ -1,10 +1,11 @@
 ﻿using Assets.Network.Client;
+using Assets.Network.Shared;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.scripts {
     public class StateManagerContainer : MonoBehaviour {
-        public GameStateManager manager = new GameStateManager();
+        public readonly GameStateManager manager = new GameStateManager();
         public Client client;
 
         private void Start() {
@@ -13,7 +14,13 @@ namespace Assets.scripts {
         }
 
         public bool IsOtherPlayerAtThisLocation(Location location) {
-            return manager.Player2.CurrentLocation.Name.Value.Equals(location.Name.Value);
+            return manager.Player2.CurrentLocation != null &&
+                   manager.Player2.CurrentLocation.Name.Value.Equals(location.Name.Value);
+        }
+
+
+        public bool IsOtherPlayerTalkingTo(Npc npc) {
+            return manager.Player2.TalkingTo != null && npc.Name.Equals(manager.Player2.TalkingTo.Name);
         }
 
         public void Goto(Location location) {
@@ -22,12 +29,17 @@ namespace Assets.scripts {
             }
             manager.IsGrouped = false;
             client.Communication.SendObject(location);
-            SceneManager.LoadScene(location == null ? "scenes/Locations" : "scenes/Npcs");
+            if (client.Communication.GetNextResponse() is AllIsWell) {
+                SceneManager.LoadScene(location == null ? "scenes/Locations" : "scenes/Npcs");
+            }
         }
 
         public void StartQuest(Quest quest) {
             manager.Player1.StartQuest(quest);
             client.Communication.SendObject(quest);
+            if (!(client.Communication.GetNextResponse() is AllIsWell)) {
+                return;
+            }
             if (manager.IsGrouped) {
                 // Wait until other person has chosen before move on, could be a notification system or it could
                 // be a while. A while could lock the system, which
@@ -39,9 +51,11 @@ namespace Assets.scripts {
         public void Choose(ChoicesChoice choiceCopy) {
             manager.Player1.Choose(choiceCopy);
             client.Communication.SendObject(choiceCopy);
-            SceneManager.LoadScene(manager.Player1.CurrentQuest == null
-                ? "scenes/Quest"
-                : "scenes/Choice");
+            if (client.Communication.GetNextResponse() is AllIsWell) {
+                SceneManager.LoadScene(manager.Player1.CurrentQuest == null
+                    ? "scenes/Quest"
+                    : "scenes/Choice");
+            }
         }
 
         public void BackToLocations() {
@@ -50,6 +64,11 @@ namespace Assets.scripts {
 
         public void TalkTo(Npc npc) {
             manager.Player1.TalkTo(npc);
+            client.Communication.SendObject(new TalkingTo(npc));
+            var response = client.Communication.GetNextResponse();
+            if (response is AllIsWell) {
+                SceneManager.LoadScene("scenes/Quest");
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Network.Shared;
+using Assets.Network.Shared;
 
 namespace Network.Server {
     public class Server {

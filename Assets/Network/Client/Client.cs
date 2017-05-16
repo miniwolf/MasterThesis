@@ -9,8 +9,7 @@ namespace Assets.Network.Client {
         public void Start() {
             Communication = new Communication("localhost", 8001);
             var stateManagerContainer = FindObjectOfType<StateManagerContainer>();
-            GeneralHandlerFactory.Construct(stateManagerContainer.manager.Player2,
-                stateManagerContainer.manager.Player1, stateManagerContainer.manager);
+            GeneralHandlerFactory.Construct(stateManagerContainer.manager);
             DontDestroyOnLoad(gameObject.transform);
         }
     }

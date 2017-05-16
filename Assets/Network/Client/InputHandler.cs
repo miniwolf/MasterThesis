@@ -6,6 +6,7 @@ using System.Threading;
 using Assets.Network.Client.Handlers.Container;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Messages;
+using UnityEngine;
 
 namespace Assets.Network.Client {
     public class InputHandler {
@@ -47,7 +48,10 @@ namespace Assets.Network.Client {
         }
 
         public Response ContainsResponse() {
-            return inputs.Dequeue();
+            while (inputs.Count == 0) {}
+            var response = inputs.Dequeue();
+            Debug.Log(response);
+            return response;
         }
 
         public static void Register(Type type, Container handler) {

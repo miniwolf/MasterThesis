@@ -35,7 +35,7 @@ public partial class Name {
 public partial class Npc {
     private string name = "";
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.Xml.Serialization.XmlAttributeAttribute("name")]
     public string Name { get { return name; } set { name = value; } }
 }
 

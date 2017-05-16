@@ -28,7 +28,7 @@ namespace Assets.scripts {
                 var questCopy = quest;
                 button.onClick.AddListener(delegate { manager.StartQuest(questCopy); });
 
-                buttonInstance.transform.parent = grid.transform;
+                buttonInstance.transform.SetParent(grid.transform);
             }
         }
     }

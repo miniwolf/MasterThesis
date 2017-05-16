@@ -9,7 +9,7 @@ namespace Assets.scripts {
         public GameObject NpcsTemplate;
 
         public void Start() {
-            grid = GameObject.FindGameObjectWithTag("PreGrid");
+            grid = GameObject.FindGameObjectWithTag("LevelGrid");
             manager = GameObject.FindGameObjectWithTag("StateManager")
                 .GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Npcs);
@@ -18,14 +18,18 @@ namespace Assets.scripts {
         private void FillGrid(IEnumerable<Npc> npcs) {
             foreach (var npc in npcs) {
                 var npcInstance = Instantiate(NpcsTemplate);
-                var texts = npcInstance.GetComponentsInChildren<Text>();
+                var texts = npcInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = npc.Name;
 
                 var button = npcInstance.GetComponentInChildren<Button>();
                 var npcCopy = npc;
                 button.onClick.AddListener(delegate { manager.TalkTo(npcCopy); });
+                if (manager.IsOtherPlayerTalkingTo(npc)) {
+                    texts[2].text = "Player is Here";
+                    texts[2].enabled = true;
+                }
 
-                npcInstance.transform.parent = grid.transform;
+                npcInstance.transform.SetParent(grid.transform);
             }
         }
     }

@@ -32,9 +32,7 @@ namespace Assets.Network.Client {
         }
 
         public Response GetNextResponse() {
-            Response response;
-            while ((response = inputHandler.ContainsResponse()) == null) {}
-            return response;
+            return inputHandler.ContainsResponse();
         }
     }
 }

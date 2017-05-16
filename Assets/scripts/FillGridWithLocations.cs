@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Assets.scripts {
@@ -33,7 +32,7 @@ namespace Assets.scripts {
                 var locationCopy = location;
                 button.onClick.AddListener(delegate { manager.Goto(locationCopy); });
 
-                buttonInstance.transform.parent = grid.transform;
+                buttonInstance.transform.SetParent(grid.transform);
             }
         }
     }

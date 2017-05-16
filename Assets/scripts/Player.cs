@@ -26,6 +26,7 @@ namespace Assets.scripts {
 
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
+        public Npc TalkingTo { get; set; }
 
         public bool Goto(Location location) {
             if (CurrentQuest != null) {
@@ -40,7 +41,12 @@ namespace Assets.scripts {
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
+            Manager.Npcs = CollectNpcs(location.Npcs);
             return true;
+        }
+
+        private static List<Npc> CollectNpcs(IEnumerable<LocationNpcs> locationNpcs) {
+            return locationNpcs.Select(npc => npc.Npc).ToList();
         }
 
         private List<Quest> CollectQuests(locationQuests locationQuests) {

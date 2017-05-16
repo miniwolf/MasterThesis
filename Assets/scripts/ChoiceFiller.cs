@@ -28,7 +28,7 @@ namespace Assets.scripts {
                 var choiceCopy = choice;
                 button.onClick.AddListener(delegate { manager.Choose(choiceCopy); });
 
-                buttonInstance.transform.parent = grid.transform;
+                buttonInstance.transform.SetParent(grid.transform);
             }
         }
     }

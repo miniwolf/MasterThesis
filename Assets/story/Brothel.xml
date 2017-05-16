@@ -1,4 +1,4 @@
-<location>
+<Location>
     <name value="Brothel"/>
     <npcs>
         <npc name="Wench"/>
@@ -102,4 +102,4 @@
             </results>
         </repeatChoice>
     </choices>
-</location>
+</Location>

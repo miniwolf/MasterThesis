@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Assets.Events {
     public enum Events {
         QuestStarted,
-        Travelled
+        Travelled,
+        StartedTalking
     }
 
     public class EventManager : MonoBehaviour {
@@ -14,6 +15,7 @@ namespace Assets.Events {
         private void Awake() {
             handlers.Add(Events.QuestStarted, new List<EventHandler>());
             handlers.Add(Events.Travelled, new List<EventHandler>());
+            handlers.Add(Events.StartedTalking, new List<EventHandler>());
         }
 
         /// <summary>

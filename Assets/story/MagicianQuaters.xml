@@ -1,4 +1,4 @@
-<location>
+<Location>
     <name value="Magic Quaters"/>
     <npcs>
         <npc name="Magician"/>
@@ -159,4 +159,4 @@
             </results>
         </repeatChoice>
     </choices>
-</location>
+</Location>

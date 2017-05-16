@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Network.Shared;
+using Assets.Network.Shared;
 
 namespace Network.Server {
     public class Data {

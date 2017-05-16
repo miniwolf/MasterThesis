@@ -13,7 +13,7 @@ namespace Assets.scripts {
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("PreGrid");
             manager = GameObject.FindGameObjectWithTag("StateManager")
-                .GetComponent<StateManagerContainer>();;
+                .GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Player1.State);
         }
 
@@ -26,7 +26,7 @@ namespace Assets.scripts {
                 buttonInstance.GetComponent<RectTransform>().sizeDelta = new Vector2(220, 88);
                 buttonInstance.GetComponentInChildren<Text>().text = state;
 
-                buttonInstance.transform.parent = grid.transform;
+                buttonInstance.transform.SetParent(grid.transform);
             }
         }
     }

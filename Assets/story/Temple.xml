@@ -1,4 +1,4 @@
-<location>
+<Location>
     <name value="Temple"/>
     <pre>
         <KnowsLocation value="Temple"/>
@@ -68,4 +68,4 @@
             </results>
         </repeatChoice>
     </choices>
-</location>
+</Location>

@@ -6,13 +6,9 @@ using Assets.scripts;
 
 namespace Assets.Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {
-        private readonly Player me;
-        private readonly Player player;
         private readonly GameStateManager manager;
 
-        public PlayerStateHandler(Player me, Player player, GameStateManager manager) {
-            this.me = me;
-            this.player = player;
+        public PlayerStateHandler(GameStateManager manager) {
             this.manager = manager;
         }
 
@@ -22,15 +18,19 @@ namespace Assets.Network.Client.Handlers {
 
         public void Handle(InGoingMessages<PlayerState> obj) {
             var playerState = (PlayerState) obj;
-            player.CurrentLocation = playerState.Location;
+            manager.Player2.CurrentLocation = playerState.Location;
             if (manager.IsGrouped) {
                 EventManager.CallEvent(Events.Events.Travelled);
             }
-            manager.IsGrouped = Equals(player.CurrentLocation, me.CurrentLocation);
+            manager.IsGrouped = Equals(manager.Player2.CurrentLocation, manager.Player1.CurrentLocation);
+            manager.Player2.CurrentQuest = playerState.Quest;
             if (manager.IsGrouped) {
                 EventManager.CallEvent(Events.Events.QuestStarted);
             }
-            player.CurrentQuest = playerState.Quest;
+            manager.Player2.TalkingTo = playerState.Npc;
+            if (manager.IsGrouped) {
+                EventManager.CallEvent(Events.Events.StartedTalking);
+            }
         }
 
         public void Handle(InGoingMessages obj) {

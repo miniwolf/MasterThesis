@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
-using Network.Shared;
+using Assets.Network.Shared;
 
 namespace Network.Server {
     public class InputWorker : Worker {
         private readonly int ID;
         private readonly OutputWorker output;
         private readonly NetworkStream objIn;
-        private XmlSerializer xmlDeserializer = new XmlSerializer(typeof(string));
         private readonly BinaryFormatter formatter = new BinaryFormatter();
 
         public InputWorker(int ID, TcpClient tcpClient, OutputWorker output) {
@@ -41,23 +40,55 @@ namespace Network.Server {
                 Console.Out.WriteLine(s);
             } else if (input is UpdateCount) {
                 Console.Out.WriteLine((UpdateCount) input);
-            } else if (input is location) {
-                var playerState = Data.GetUserState(ID);
-                playerState.Location = (location) input;
-                Data.UpdateState(ID, playerState);
+            } else if (input is Location) {
+                HandleLocation(input);
                 output.Response.Enqueue(new AllIsWell());
             } else if (input is Quest) {
-                var playerState = Data.GetUserState(ID);
-                playerState.Quest = (Quest) input;
-                Data.UpdateState(ID, playerState);
+                HandleQuest(input);
                 output.Response.Enqueue(new AllIsWell());
             } else if (input is GetState) {
-                var playerState = Data.GetUserState(ID);
+                var playerState = HandleGetState();
                 output.Response.Enqueue(playerState);
             } else if (input is GetOtherStates) {
-                var playerStates = Data.GetAllBut(ID);
+                var playerStates = HandleGetOtherStates();
                 output.Response.Enqueue(playerStates);
+            } else if (input is TalkingTo) {
+                HandleTalking(input);
+                output.Response.Enqueue(new AllIsWell());
             }
+        }
+
+        private void HandleLocation(object input) {
+            var playerState = Data.GetUserState(ID);
+            Console.Out.WriteLine("Location");
+            playerState.Location = (Location) input;
+            Data.UpdateState(ID, playerState);
+        }
+
+        private void HandleQuest(object input) {
+            var playerState = Data.GetUserState(ID);
+            Console.Out.WriteLine("Quest");
+            playerState.Quest = (Quest) input;
+            Data.UpdateState(ID, playerState);
+        }
+
+        private PlayerState HandleGetState() {
+            var playerState = Data.GetUserState(ID);
+            Console.Out.WriteLine("GetState");
+            return playerState;
+        }
+
+        private IEnumerable<PlayerState> HandleGetOtherStates() {
+            var playerStates = Data.GetAllBut(ID);
+            Console.Out.WriteLine("GetOtherState");
+            return playerStates;
+        }
+
+        private void HandleTalking(object input) {
+            var playerState = Data.GetUserState(ID);
+            Console.Out.WriteLine("Talking");
+            playerState.Npc = ((TalkingTo) input).npc;
+            Data.UpdateState(ID, playerState);
         }
     }
 
