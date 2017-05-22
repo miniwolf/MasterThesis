@@ -33,17 +33,9 @@ namespace Assets.scripts {
             set { globalHas = value; }
         }
 
-        private bool isGrouped;
-        public bool IsGrouped {
-            get { return isGrouped; }
-            set { isGrouped = value; }
-        }
+        public bool IsGrouped { get; set; }
 
-        private List<Npc> npcs;
-        public List<Npc> Npcs {
-            get { return npcs; }
-            set { npcs = value; }
-        }
+        public List<Npc> Npcs { get; set; }
 
         public GameStateManager() {
             Player1.Manager = this;
@@ -62,6 +54,18 @@ namespace Assets.scripts {
             return gHas.Has.All(has => has.value.Contains("!")
                 ? !GlobalHas.Contains(new Has {value = has.value.Substring(1)})
                 : GlobalHas.Contains(has));
+        }
+
+        public void Goto(Location location) {
+            if (IsGrouped) {
+                IsGrouped = false;
+                return;
+            }
+
+            if (location != null && Player2.CurrentLocation != null
+                && location.Name.Value.Equals(Player2.CurrentLocation.Name.Value)) {
+                IsGrouped = true;
+            }
         }
     }
 }

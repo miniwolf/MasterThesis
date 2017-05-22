@@ -33,7 +33,12 @@ namespace Assets.Events {
         /// </summary>
         /// <param name="events">Events to invoke handlers on</param>
         public static void CallEvent(Events events) {
-            foreach (var eventHandler in handlers[events]) {
+            List<EventHandler> eventHandlers;
+            if (!handlers.TryGetValue(events, out eventHandlers)) {
+                Debug.Log("Error: Remember to add the assigned handler to the scene: " + events);
+                return;
+            }
+            foreach (var eventHandler in eventHandlers) {
                 eventHandler.Action();
             }
         }

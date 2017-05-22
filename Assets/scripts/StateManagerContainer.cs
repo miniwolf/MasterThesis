@@ -18,16 +18,17 @@ namespace Assets.scripts {
                    manager.Player2.CurrentLocation.Name.Value.Equals(location.Name.Value);
         }
 
-
         public bool IsOtherPlayerTalkingTo(Npc npc) {
-            return manager.Player2.TalkingTo != null && npc.Name.Equals(manager.Player2.TalkingTo.Name);
+            return manager.Player2.TalkingTo != null &&
+                   npc.Name.Equals(manager.Player2.TalkingTo.Name);
         }
 
         public void Goto(Location location) {
             if (!manager.Player1.Goto(location)) {
                 return;
             }
-            manager.IsGrouped = false;
+            manager.Goto(location);
+
             client.Communication.SendObject(location);
             if (client.Communication.GetNextResponse() is AllIsWell) {
                 SceneManager.LoadScene(location == null ? "scenes/Locations" : "scenes/Npcs");
@@ -66,9 +67,9 @@ namespace Assets.scripts {
             manager.Player1.TalkTo(npc);
             client.Communication.SendObject(new TalkingTo(npc));
             var response = client.Communication.GetNextResponse();
-            if (response is AllIsWell) {
-                SceneManager.LoadScene("scenes/Quest");
-            }
+            if (!(response is AllIsWell) || manager.IsGrouped)
+                return;
+            SceneManager.LoadScene("scenes/Quest");
         }
     }
 }
