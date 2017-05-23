@@ -12,10 +12,11 @@ namespace Assets.Events {
         private static readonly Dictionary<Events, List<EventHandler>> handlers
             = new Dictionary<Events, List<EventHandler>>();
 
-        private void Awake() {
+        static EventManager() {
             handlers.Add(Events.QuestStarted, new List<EventHandler>());
             handlers.Add(Events.Travelled, new List<EventHandler>());
             handlers.Add(Events.StartedTalking, new List<EventHandler>());
+            Debug.Log("Initialized eventmanager");
         }
 
         /// <summary>

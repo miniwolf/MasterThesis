@@ -33,9 +33,10 @@ namespace Assets.scripts {
             set { globalHas = value; }
         }
 
-        public bool IsGrouped { get; set; }
-
         public List<Npc> Npcs { get; set; }
+
+        public bool IsGrouped { get; set; }
+        public bool WaitingForResponse { get; set; }
 
         public GameStateManager() {
             Player1.Manager = this;

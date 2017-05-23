@@ -66,9 +66,17 @@ namespace Assets.scripts {
         public void TalkTo(Npc npc) {
             manager.Player1.TalkTo(npc);
             client.Communication.SendObject(new TalkingTo(npc));
-            var response = client.Communication.GetNextResponse();
-            if (!(response is AllIsWell) || manager.IsGrouped)
+            if (!(client.Communication.GetNextResponse() is AllIsWell)) {
                 return;
+            }
+
+            if (manager.IsGrouped && !manager.WaitingForResponse) {
+                manager.WaitingForResponse = true;
+                return;
+            }
+
+            Debug.Log("Changing");
+            manager.WaitingForResponse = false;
             SceneManager.LoadScene("scenes/Quest");
         }
     }
