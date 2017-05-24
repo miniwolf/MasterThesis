@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
@@ -31,8 +32,13 @@ namespace Assets.Network.Client {
             object input = null;
             while (running) {
                 while (input == null && running) {
-                    input = formatter.Deserialize(objIn);
-                    HandleInput(input);
+                    try {
+                        input = formatter.Deserialize(objIn);
+                        HandleInput(input);
+                    } catch (IOException) {
+                        Debug.Log("Closing inputhandler");
+                        running = false;
+                    }
                 }
                 input = null;
             }

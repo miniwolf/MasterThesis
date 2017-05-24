@@ -7,10 +7,19 @@ namespace Assets.scripts {
     public class StateManagerContainer : MonoBehaviour {
         public readonly GameStateManager manager = new GameStateManager();
         public Client client;
+        private string GotoPosition;
 
         private void Start() {
             DontDestroyOnLoad(gameObject.transform);
             client = FindObjectOfType<Client>();
+        }
+
+        private void Update() {
+            if (GotoPosition.Length == 0) {
+                return;
+            }
+            SceneManager.LoadScene(GotoPosition);
+            GotoPosition = "";
         }
 
         public bool IsOtherPlayerAtThisLocation(Location location) {
@@ -77,7 +86,7 @@ namespace Assets.scripts {
 
             Debug.Log("Changing");
             manager.WaitingForResponse = false;
-            SceneManager.LoadScene("scenes/Quest");
+            GotoPosition = "scenes/Quest";
         }
     }
 }

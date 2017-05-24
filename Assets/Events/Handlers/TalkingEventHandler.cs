@@ -11,7 +11,8 @@ namespace Assets.Events.Handlers {
         private void Start() {
             manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
             EventManager.SubscribeToEvent(Events.StartedTalking, this);
-            foreach (Transform button in GameObject.FindGameObjectWithTag("JoiningButtons").transform) {
+            foreach (Transform button in
+                GameObject.FindGameObjectWithTag("JoiningButtons").transform) {
                 if (button.tag.Equals("Join")) {
                     joinButton = button.gameObject;
                 } else {
