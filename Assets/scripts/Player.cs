@@ -3,12 +3,7 @@ using System.Linq;
 
 namespace Assets.scripts {
     public class Player {
-        private Location currentLocation = new Location();
-
-        public Location CurrentLocation {
-            get { return currentLocation; }
-            set { currentLocation = value; }
-        }
+        public Location CurrentLocation { get; set; }
 
         private List<string> state = new List<string>();
 
@@ -80,7 +75,7 @@ namespace Assets.scripts {
             var results = realChoice.results;
 
             if (realChoice.GetType() == typeof(ChoicesOnceChoice)) {
-                var location = Manager.Locations.First(loc => loc == CurrentLocation);
+                var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
                 location.Choices.onceChoice = location.Choices.onceChoice
                     .Where(c => c.Name.Value != choice.name)
                     .ToArray();

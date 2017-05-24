@@ -55,6 +55,8 @@ namespace Network.Server {
             } else if (input is TalkingTo) {
                 HandleTalking(input);
                 output.Response.Enqueue(new AllIsWell());
+            } else {
+                Console.Out.WriteLine("Does not understand: " + input);
             }
         }
 

@@ -21,6 +21,10 @@ namespace Assets.Events.Handlers {
             }
         }
 
+        private void OnDestroy() {
+            EventManager.UnsubscribeToEvent(Events.StartedTalking, this);
+        }
+
         private void Update() {
             if (!setup) {
                 return;

@@ -17,6 +17,10 @@ namespace Assets.Events.Handlers {
             }
         }
 
+        private void OnDestroy() {
+            EventManager.UnsubscribeToEvent(Events.QuestStarted, this);
+        }
+
         private void Update() {
             if (!setup) {
                 return;

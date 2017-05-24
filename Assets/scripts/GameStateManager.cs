@@ -59,7 +59,6 @@ namespace Assets.scripts {
 
         public void Goto(Location location) {
             if (IsGrouped) {
-                IsGrouped = false;
                 return;
             }
 

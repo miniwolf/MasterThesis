@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Events.Handlers;
 using UnityEngine;
 
 namespace Assets.Events {
@@ -41,6 +42,12 @@ namespace Assets.Events {
             }
             foreach (var eventHandler in eventHandlers) {
                 eventHandler.Action();
+            }
+        }
+
+        public static void UnsubscribeToEvent(Events events, EventHandler handler) {
+            if (!handlers[events].Remove(handler)) {
+                Debug.Log("Error in unsubscribing event: " + events + " Handler: " + handler);
             }
         }
     }

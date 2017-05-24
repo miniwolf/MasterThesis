@@ -1,137 +1,141 @@
 <Location>
-    <name value="Magic Quaters"/>
+    <name>Magic Quaters</name>
     <npcs>
-        <npc name="Magician"/>
+        <npc>Magician</npc>
     </npcs>
+    <pre>
+        <present>Mage</present>
+    </pre>
     <quests>
         <repeatableQuest>
-            <name value="Q2.1"/>
-            <pre>
-                <At location="Magician Quaters"/>
-            </pre>
+            <name>Q2.1</name>
+            <description>Talk to the magician</description>
+            <dialogue>
+                Well met. Welcome to the magic quaters. This is where we do.. well.. magic!z
+            </dialogue>
             <choices>
-                <choice name="C2.1.1"/>
-                <choice name="C2.1.2"/>
+                <choice>C2.1.1</choice>
+                <choice>C2.1.2</choice>
             </choices>
         </repeatableQuest>
         <repeatableQuest>
-            <name value="Q2.2"/>
+            <name>Q2.2</name>
             <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Magician Happy"/>
+                <At>Magician Quaters</At>
+                <Has>Magician Happy</Has>
                 <global>
-                    <Has value="!Reveal Wench"/>
+                    <Has>!Reveal Wench</Has>
                 </global>
             </pre>
             <choices>
-                <choice name="C2.2.1"/>
-                <choice name="C2.2.2"/>
+                <choice>C2.2.1</choice>
+                <choice>C2.2.2</choice>
             </choices>
         </repeatableQuest>
         <oneshotQuest>
-            <name value="Q2.3"/>
+            <name>Q2.3</name>
             <pre>
-                <At location="Magician Quaters"/>
+                <At>Magician Quaters</At>
                 <global>
-                    <Has value="Reveal Wench"/>
+                    <Has>Reveal Wench</Has>
                 </global>
             </pre>
             <choices>
-                <choice name="C2.3.1"/>
+                <choice>C2.3.1</choice>
             </choices>
         </oneshotQuest>
         <oneshotQuest>
-            <name value="Q2.4"/>
+            <name>Q2.4</name>
             <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Amulet"/>
+                <At>Magician Quaters</At>
+                <Has>Amulet</Has>
             </pre>
             <choices>
-                <choice name="C2.4.1"/>
-                <choice name="C2.4.2"/>
+                <choice>C2.4.1</choice>
+                <choice>C2.4.2</choice>
             </choices>
         </oneshotQuest>
         <randomQuest>
-            <name value="R2a"/>
-            <npc>
-                <npc name="Wench"/>
-            </npc>
+            <name>R2a</name>
+            <extranpc>
+                <npc>Wench</npc>
+            </extranpc>
             <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Wench Happy"/>
+                <At>Magician Quaters</At>
+                <Has>Wench Happy</Has>
                 <global>
-                    <Has value="Reveal Wench"/>
+                    <Has>Reveal Wench</Has>
                 </global>
             </pre>
             <choices>
-                <choice name="C2a.1"/>
-                <choice name="C2a.2"/>
+                <choice>C2a.1</choice>
+                <choice>C2a.2</choice>
             </choices>
         </randomQuest>
     </quests>
     <choices>
         <repeatChoice>
-            <name value="C2.1.1"/>
+            <name>C2.1.1</name>
             <results>
                 <effectResults>
-                    <effect value="Magician Happy"/>
+                    <effect>Magician Happy</effect>
                 </effectResults>
             </results>
         </repeatChoice>
         <repeatChoice>
-            <name value="C2.1.2"/>
+            <name>C2.1.2</name>
             <results>
                 <effectResults>
-                    <effect value="Magician Angry"/>
+                    <effect>Magician Angry</effect>
                 </effectResults>
                 <locationResults>
-                    <name value="Temple"/>
+                    <location>Temple</location>
                 </locationResults>
             </results>
         </repeatChoice>
         <repeatChoice>
-            <name value="Q2.2.1"/>
+            <name>Q2.2.1</name>
             <results>
                 <effectResults>
-                    <effect value="Magician Angry"/>
+                    <effect>Magician Angry</effect>
                 </effectResults>
                 <locationResults>
-                    <name value="Temple"/>
+                    <location>Temple</location>
                 </locationResults>
             </results>
         </repeatChoice>
         <onceChoice>
-            <name value="C2.2.2"/>
+            <name>C2.2.2</name>
             <results>
                 <choicesResults>
-                    <name value="C2.2.1.1"/>
+                    <choice>C2.2.1.1</choice>
                 </choicesResults>
             </results>
         </onceChoice>
         <repeatChoice>
-            <name value="C2.3.1"/>
+            <name>C2.3.1</name>
             <results>
                 <effectResults>
-                    <effect value="Key"/>
+                    <effect>Key</effect>
                 </effectResults>
                 <locationResults>
-                    <name value="Temple"/>
+                    <location>Temple</location>
                 </locationResults>
             </results>
         </repeatChoice>
         <repeatChoice>
-            <name value="C2.4.1"/>
+            <name>C2.4.1</name>
             <results>
                 <effectResults>
                     <global>
-                        <effect value="Magician Elminated"/>
+                        <effect>Magician Elminated</effect>
                     </global>
                 </effectResults>
                 <wingame/>
             </results>
         </repeatChoice>
         <repeatChoice>
-            <name value="C2.4.2"/>
+            <name>C2.4.2</name>
             <results>
                 <effectResults>
                     <effect value="Magician Companion"/>
