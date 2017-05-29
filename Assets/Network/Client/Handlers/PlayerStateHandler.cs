@@ -3,6 +3,7 @@ using Assets.Events;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Messages;
 using Assets.scripts;
+using Xml2CSharp;
 
 namespace Assets.Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {
@@ -22,7 +23,7 @@ namespace Assets.Network.Client.Handlers {
                 manager.Player2.CurrentLocation, Events.Events.Travelled);
             manager.Player2.CurrentQuest = (Quest) CheckReference(playerState.Quest, manager.Player2.CurrentQuest,
                 Events.Events.QuestStarted);
-            manager.Player2.TalkingTo = (Npc) CheckReference(playerState.Npc, manager.Player2.TalkingTo,
+            manager.Player2.TalkingTo = (string) CheckReference(playerState.Npc, manager.Player2.TalkingTo,
                 Events.Events.StartedTalking);
             manager.IsGrouped = Equals(manager.Player2.CurrentLocation, manager.Player1.CurrentLocation);
         }

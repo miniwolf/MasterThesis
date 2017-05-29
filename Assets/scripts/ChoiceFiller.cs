@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Xml2CSharp;
 
 namespace Assets.scripts {
     public class ChoiceFiller : MonoBehaviour {
@@ -17,13 +18,13 @@ namespace Assets.scripts {
             FillGrid(manager.manager.PossibleChoices);
         }
 
-        private void FillGrid(IEnumerable<ChoicesChoice> choices) {
+        private void FillGrid(IEnumerable<Choice> choices) {
             foreach (var choice in choices) {
                 if (choice == null) {
                     continue; // TODO: Fucking fix this
                 }
                 var buttonInstance = Instantiate(ButtonTemplate);
-                buttonInstance.GetComponentInChildren<Text>().text = choice.name;
+                buttonInstance.GetComponentInChildren<Text>().text = choice.Name;
                 var button = buttonInstance.GetComponent<Button>();
                 var choiceCopy = choice;
                 button.onClick.AddListener(delegate { manager.Choose(choiceCopy); });

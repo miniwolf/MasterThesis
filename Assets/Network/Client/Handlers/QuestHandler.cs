@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Assets.Network.Shared.Messages;
 using Assets.scripts;
+using Xml2CSharp;
 
 namespace Assets.Network.Client.Handlers {
     public class QuestHandler : Handler<Quest> {

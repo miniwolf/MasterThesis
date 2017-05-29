@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using Assets.Network.Shared;
+using Xml2CSharp;
 
 namespace Network.Server {
     public class InputWorker : Worker {
@@ -40,7 +41,7 @@ namespace Network.Server {
                 Console.Out.WriteLine(s);
             } else if (input is UpdateCount) {
                 Console.Out.WriteLine((UpdateCount) input);
-            } else if (input is Location) {
+            } else if (input is GoingTo) {
                 HandleLocation(input);
                 output.Response.Enqueue(new AllIsWell());
             } else if (input is Quest) {
@@ -63,7 +64,7 @@ namespace Network.Server {
         private void HandleLocation(object input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Location");
-            playerState.Location = (Location) input;
+            playerState.Location = ((GoingTo) input).Location;
             Data.UpdateState(ID, playerState);
         }
 

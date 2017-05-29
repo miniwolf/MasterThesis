@@ -3,9 +3,9 @@
 namespace Assets.Network.Shared {
     [Serializable]
     public class TalkingTo {
-        public readonly Npc npc;
+        public readonly string npc;
 
-        public TalkingTo(Npc npc) {
+        public TalkingTo(string npc) {
             this.npc = npc;
         }
     }

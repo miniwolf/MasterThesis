@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Network.Shared.Messages;
+using Xml2CSharp;
 
 namespace Assets.Network.Shared {
     [Serializable]
@@ -7,7 +8,7 @@ namespace Assets.Network.Shared {
         public int ID { get; set; }
         public Location Location { get; set; }
         public Quest Quest { get; set; }
-        public Npc Npc { get; set; }
+        public string Npc { get; set; }
 
         public Access<PlayerState> GetAcces() {
             return this;

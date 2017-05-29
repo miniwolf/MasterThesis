@@ -1,71 +1,247 @@
-<Location>
-    <name value="Temple"/>
+<location>
+    <name>Temple</name>
     <pre>
-        <KnowsLocation value="Temple"/>
+        <KnowsLocation>Temple</KnowsLocation>
+        <Coop/>
     </pre>
     <quest>
         <randomQuest>
-            <name value="R3a"/>
+            <name>R3a</name>
             <npcs>
                 <npc>
-                    <name value="Wench"/>
+                    <name>Wench</name>
                 </npc>
             </npcs>
-            <pre>
-                <At location="Temple"/>
-                <Has value="!Key"/>
-                <Has value="Wench Happy"/>
+            <pres>
+                <Has>!Key</Has>
+                <Has>Wench Happy</Has>
+                <Has>!Wench Companion</Has>
                 <global>
-                    <Has value="!RevealWench"/>
+                    <Has>!RevealWench</Has>
                 </global>
-            </pre>
+            </pres>
+            <dialogue>
+                Hello there travelers. I think it is time you learned my true form! 
+                I am indeed a Soccubus! Born from the ashes of the underworld!
+            </dialogue>
             <choices>
-                <choice name="Q3.1.1"/>
-                <choice name="C3.1.2"/>
+                <choice>C3a.1</choice>
+                <choice>C3a.2</choice>
             </choices>
         </randomQuest>
         <oneshotQuest>
-            <name value="Q3.2"/>
+            <name>Q3.1</name>
+            <description>Secrets of the Temple</description>
+            <pres>
+                <Has>!Amulet</Has>
+                <Has>!Wench Companion</Has>
+            </pres>
+            <dialogue>In front of you is a massive door.</dialogue>
+            <choices>
+                <choice>C3.1.1</choice>
+                <choice>C3.1.2</choice>
+                <choice>C3.1.3</choice>
+                <choice>C3.1.4</choice>
+                <choice>C3.1.5</choice>
+            </choices>
+        </oneshotQuest>
+        <oneshotQuest>
+            <name>Q3.2</name>
             <pre>
-                <At location="Temple"/>
-                <OR>
-                    <Has value="Key"/>
-                    <Has value="Wench Companion"/>
-                </OR>
+                <Has>!Amulet</Has>
+                <Has>Wench Companion</Has>
             </pre>
+            <dialogue>
+                Ah finally! we are here… let me do my dark summoning and get this door open.
+            </dialogue>
             <results>
-                <effectResults>
-                    <effect value="Amulet"/>
-                    <effect value="!Key"/>
-                </effectResults>
+                <choiceResults>
+                    <choice>C3.2.1</choice>
+                    <choice>C3.2.2</choice>
+                    <choice>C3.2.3</choice>
+                </choiceResults>
             </results>
         </oneshotQuest>
     </quest>
     <choices>
-        <repeatChoice>
-            <name value="C3a.1"/>
-            <pre>
-                <Has value="Wench Angry"/>
-            </pre>
+        <choice>
+            <name>C3.1.1</name>
+            <description>Try to open the door</description>
+            <results>
+                <description>Nothing happens</description>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.1.2</name>
+            <description>There's nothing for me here. I'll best go back.</description>
+        </choice>
+        <choice>
+            <name>C3.1.3</name>
+            <description>Try to lockpick the door</description>
+            <pres>
+                <class>Theif</class>
+            </pres>
+            <results>
+                <description>Nothing happens</description>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.1.4</name>
+            <description>Hurl a powerful spell at the door</description>
+            <pres>
+                <class>Mage</class>
+            </pres>
+            <results>
+                <description>Nothing happens</description>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.1.5</name>
+            <description>Use key on door</description>
+            <pres>
+                <Has>Key</Has>
+            </pres>
+            <results>
+                <Has>Amulet</Has>
+                <description>
+                    There is a loud click and the door opens. 
+                    You enter a small room and there in front of you is a glowing object on the ground.
+                </description>
+                <dialogueResult>
+                    <dialogue>D3.1.5.1</dialogue>
+                </dialogueResult>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.2.1</name>
+            <description>There will be no need for dark rituals i have a key.</description>
+            <pres>
+                <Has>Key</Has>
+            </pres>
+            <results>
+                <description priority="1">
+                    That key is of no use to us. We do not seek to simply open the door.. 
+                    There is power here.. old power! 
+                    The door is a portal to another dimension.. My dimension..
+                </description>
+                <choiceResults>C3.2.1.1</choiceResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.2.2</name>
+            <description>I really don’t like this.. We should find another way.</description>
+            <pres>
+                <Has>!Key</Has>
+            </pres>
+            <results>
+                <effectResults>Wench Angry</effectResults>
+                <description priority="2">
+                    Fool! There is no other way! 
+                    There is only my way! The way of the dark forces!
+                </description>
+                <choiceResults>C3.2.1.1</choiceResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.2.3</name>
+            <description>I do not trust her Brilliac. This all seems too dark.</description>
+            <pres>
+                <class>Thief</class>
+            </pres>
+            <results>
+                <choiceResults>C3.2.2.1</choiceResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.2.2.1</name>
+            <pres>
+                <class>Mage</class>
+            </pres>
+            <results>
+                <choiceResults>C3.2.1.1</choiceResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C3.2.1.1</name>
+            <description>This has gone too far!</description>
+            <results>
+                <effectResults>
+                    <effect>Wench Elminated</effect>
+                    <effect>!Wench Companion</effect>
+                    <effect>Amulet</effect>
+                </effectResults>
+                <description priority="1">
+                    The door collapses as the succubus falls to the ground dead. 
+                    Inside the rubble you see a glowing object on the ground.
+                </description>
+                <dialogueResult>
+                    <dialogue>D3.2.1.1</dialogue>
+                </dialogueResult>
+            </results>
+        </choice>
+        <choice>
+            <name>C3a.1</name>
+            <description>Die Filth!</description>
             <results>
                 <effectResults>
                     <global>
-                        <effect value="Wench Elminated"/>
-                        <effect value="Wench Reveal"/>
+                        <effect>Wench Eliminated</effect>
+                        <effect>Wench Reveal</effect>
                     </global>
                 </effectResults>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C3a.2"/>
+        </choice>
+        <choice>
+            <name>C3a.2</name>
             <pre>
-                <Has value="Wench Happy"/>
+                <Has>Wench Happy</Has>
             </pre>
             <results>
                 <effectResults>
-                    <effect value="Wench Companion"/>
+                    <effect>Wench Companion</effect>
+                    <global>
+                        <effect>Wench Reveal</effect>
+                    </global>
                 </effectResults>
             </results>
-        </repeatChoice>
+        </choice>
     </choices>
-</Location>
+    <dialogues>
+        <dialogue>
+            <name>D3.1.5.1</name>
+            <pres>
+                <present>Mage</present>
+                <present>Thief</present>
+            </pres>
+            <results>
+                <dialogue class="Mage">
+                    The amulet... I don't believe it..
+                </dialogue>
+                <dialogue class="Thief">
+                    It is finally ours my friend.
+                </dialogue>
+                <dialogue class="Mage">
+                    Finally.. now let's head back.
+                </dialogue>
+            </results>
+        </dialogue>
+        <dialogue>
+            <name>D3.2.1.1</name>
+            <pres>
+                <present>Mage</present>
+                <present>Thief</present>
+            </pres>
+            <results>
+                <dialogue class="Mage">
+                    What is this? is that really the amulet?
+                </dialogue>
+                <dialogue class="Thief">
+                    I do believe so, finally we have accomplished our goal!
+                </dialogue>
+                <dialogue class="Mage">
+                    Yes, my friend, let’s head back to the city.
+                </dialogue>
+            </results>
+        </dialogue>
+    </dialogues>
+</location>

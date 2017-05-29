@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using Xml2CSharp;
 
 namespace Assets.scripts {
     public class GameStateManager {
@@ -21,19 +21,19 @@ namespace Assets.scripts {
             set { possibleQuests = value; }
         }
 
-        private List<ChoicesChoice> possibleChoices = new List<ChoicesChoice>();
-        public List<ChoicesChoice> PossibleChoices {
+        private List<Choice> possibleChoices = new List<Choice>();
+        public List<Choice> PossibleChoices {
             get { return possibleChoices; }
             set { possibleChoices = value; }
         }
 
-        private List<Has> globalHas = new List<Has>();
-        public List<Has> GlobalHas {
+        private List<string> globalHas = new List<string>();
+        public List<string> GlobalHas {
             get { return globalHas; }
             set { globalHas = value; }
         }
 
-        public List<Npc> Npcs { get; set; }
+        public List<string> Npcs { get; set; }
 
         public bool IsGrouped { get; set; }
         public bool WaitingForResponse { get; set; }
@@ -51,10 +51,10 @@ namespace Assets.scripts {
             return (Location) serializer.Deserialize(new XmlTextReader(fileName));
         }
 
-        public bool HasPre(global gHas) {
-            return gHas.Has.All(has => has.value.Contains("!")
-                ? !GlobalHas.Contains(new Has {value = has.value.Substring(1)})
-                : GlobalHas.Contains(has));
+        public bool HasPre(Global gHas) {
+            return gHas.Has.Contains("!")
+                ? !GlobalHas.Contains(gHas.Has.Substring(1))
+                : GlobalHas.Contains(gHas.Has);
         }
 
         public void Goto(Location location) {
@@ -63,7 +63,7 @@ namespace Assets.scripts {
             }
 
             if (location != null && Player2.CurrentLocation != null
-                && location.Name.Value.Equals(Player2.CurrentLocation.Name.Value)) {
+                && location.Name.Equals(Player2.CurrentLocation.Name)) {
                 IsGrouped = true;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Xml2CSharp;
 
 namespace Assets.scripts {
     public class Player {
@@ -21,13 +22,13 @@ namespace Assets.scripts {
 
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
-        public Npc TalkingTo { get; set; }
+        public string TalkingTo { get; set; }
 
         public bool Goto(Location location) {
             if (CurrentQuest != null) {
                 return false;
             }
-            if (location.Pre != null && !HasPre(location.Pre)) {
+            if (location.Pres != null && !HasPre(location.Pres)) {
                 return false;
             }
             Manager.PossibleQuests = new List<Quest>();
@@ -36,15 +37,11 @@ namespace Assets.scripts {
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
-            Manager.Npcs = CollectNpcs(location.Npcs);
+            Manager.Npcs = location.Npcs.Npc;
             return true;
         }
 
-        private static List<Npc> CollectNpcs(IEnumerable<LocationNpcs> locationNpcs) {
-            return locationNpcs.Select(npc => npc.Npc).ToList();
-        }
-
-        private List<Quest> CollectQuests(locationQuests locationQuests) {
+        private List<Quest> CollectQuests(Quests locationQuests) {
             var list = new List<Quest>();
             if (locationQuests.OneshotQuest != null) {
                 var ie = locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres));
@@ -67,35 +64,32 @@ namespace Assets.scripts {
             }
             CurrentQuest = quest;
             Manager.PossibleChoices.Clear();
-            Manager.PossibleChoices.AddRange(quest.Choices.choice);
+            Manager.PossibleChoices.AddRange(quest.Choices.Choice);
         }
 
-        public void Choose(ChoicesChoice choice) {
-            var realChoice = FindChoice(choice.name);
-            var results = realChoice.results;
+        public void Choose(Choice choice) {
+            var realChoice = FindChoice(choice.Name);
+            var results = realChoice.Results;
 
-            if (realChoice.GetType() == typeof(ChoicesOnceChoice)) {
-                var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
-                location.Choices.onceChoice = location.Choices.onceChoice
-                    .Where(c => c.Name.Value != choice.name)
-                    .ToArray();
-                CurrentLocation = location;
+            var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
+            location.Choices.Choice = location.Choices.Choice
+                .Where(c => c.Name != choice.Name)
+                .ToList();
+            CurrentLocation = location;
+
+            if (results.EffectResults != null) {
+                State.AddRange(results.EffectResults.Effect);
             }
 
-            if (results.effectResults != null) {
-                State.AddRange(results.effectResults.Effect.Select(effect => effect.value));
+            if (results.LocationResults != null) {
+                KnownLocation.Add(results.LocationResults.Location);
             }
 
-            if (results.locationResults != null) {
-                KnownLocation.AddRange(results.locationResults.Select(location => location.Value));
-            }
-
-            if (results.choicesResults == null) {
-                if (CurrentQuest.GetType() == typeof(LocationQuestsOneshotQuests)) {
-                    var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
+            if (results.ChoicesResults == null) {
+                if (CurrentQuest.GetType() == typeof(OneshotQuest)) {
                     location.Quests.OneshotQuest = location.Quests.OneshotQuest
-                        .Where(q => q.Name.Value != CurrentQuest.Name.Value)
-                        .ToArray();
+                        .Where(q => q.Name != CurrentQuest.Name)
+                        .ToList();
                 }
                 CurrentQuest = null;
                 Goto(CurrentLocation);
@@ -103,41 +97,41 @@ namespace Assets.scripts {
             }
 
             Manager.PossibleChoices.Clear();
-            foreach (var c in results.choicesResults.choice) {
-                var foundChoice = FindChoice(c.name);
+            foreach (var c in results.ChoicesResults.Choice) {
+                var foundChoice = FindChoice(c);
                 if (foundChoice != null && HasPre(foundChoice.Pres)) {
-                    Manager.PossibleChoices.Add(c);
+                    Manager.PossibleChoices.Add(foundChoice);
                 }
             }
         }
 
-        public bool HasPre(Pre pres) {
+        public bool HasPre(Pres pres) {
             //foreach (var at in choice.Pres.At)
-            if (pres != null && pres.Has != null
-                && !pres.Has.All(has => has.value.Contains("!")
-                    ? !State.Contains(has.value.Substring(1))
-                    : State.Contains(has.value))) {
+            if (pres != null && pres.Effect != null
+                && !pres.Effect.All(has => has.Contains("!")
+                    ? !State.Contains(has.Substring(1))
+                    : State.Contains(has))) {
                 return false;
             }
-            if (pres != null && pres.KnowsLocations != null
-                && !pres.KnowsLocations.All(knows => KnownLocation.Contains(knows.value))) {
+            if (pres != null && pres.KnowsLocation != null
+                && !KnownLocation.Contains(pres.KnowsLocation)) {
                 return false;
             }
-            return pres == null || pres.global == null ||
-                   pres.global.All(gHas => Manager.HasPre(gHas));
+            return pres == null || pres.Global == null ||
+                   Manager.HasPre(pres.Global);
         }
 
         private Choice FindChoice(string choiceName) {
-            foreach (var choice in CurrentLocation.Choices.repeatChoice) {
-                if (choice.Name.Value.Equals(choiceName)) {
+            foreach (var choice in CurrentLocation.Choices.Choice) {
+                if (choice.Name.Equals(choiceName)) {
                     return choice;
                 }
             }
-            return CurrentLocation.Choices.onceChoice.FirstOrDefault(choice =>
-                choice.Name.Value.Equals(choiceName));
+            return CurrentLocation.Choices.Choice.FirstOrDefault(choice =>
+                choice.Name.Equals(choiceName));
         }
 
-        public void TalkTo(Npc npc) {
+        public void TalkTo(string npc) {
         }
     }
 }

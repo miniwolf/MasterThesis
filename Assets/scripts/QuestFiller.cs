@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Xml2CSharp;
 
 namespace Assets.scripts {
     public class QuestFiller : MonoBehaviour {
@@ -23,7 +24,7 @@ namespace Assets.scripts {
                     continue; // TODO: Fucking fix this
                 }
                 var buttonInstance = Instantiate(ButtonTemplate);
-                buttonInstance.GetComponentInChildren<Text>().text = quest.Name.Value;
+                buttonInstance.GetComponentInChildren<Text>().text = quest.Name;
                 var button = buttonInstance.GetComponent<Button>();
                 var questCopy = quest;
                 button.onClick.AddListener(delegate { manager.StartQuest(questCopy); });

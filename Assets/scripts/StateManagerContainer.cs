@@ -2,6 +2,7 @@
 using Assets.Network.Shared;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Xml2CSharp;
 
 namespace Assets.scripts {
     public class StateManagerContainer : MonoBehaviour {
@@ -10,6 +11,7 @@ namespace Assets.scripts {
         private string gotoPosition = "";
 
         private void Start() {
+            gotoPosition = "";
             DontDestroyOnLoad(gameObject.transform);
             client = FindObjectOfType<Client>();
         }
@@ -24,12 +26,12 @@ namespace Assets.scripts {
 
         public bool IsOtherPlayerAtThisLocation(Location location) {
             return manager.Player2.CurrentLocation != null &&
-                   manager.Player2.CurrentLocation.Name.Value.Equals(location.Name.Value);
+                   manager.Player2.CurrentLocation.Name.Equals(location.Name);
         }
 
-        public bool IsOtherPlayerTalkingTo(Npc npc) {
+        public bool IsOtherPlayerTalkingTo(string npc) {
             return manager.Player2.TalkingTo != null &&
-                   npc.Name.Equals(manager.Player2.TalkingTo.Name);
+                   npc.Equals(manager.Player2.TalkingTo);
         }
 
         public void Goto(Location location) {
@@ -38,7 +40,7 @@ namespace Assets.scripts {
             }
             manager.Goto(location);
 
-            HandleAction(location, location == null ? "scenes/Locations" : "scenes/Npcs");
+            HandleAction(new GoingTo(location), location == null ? "scenes/Locations" : "scenes/Npcs");
         }
 
         private void HandleAction(object obj, string scene) {
@@ -63,7 +65,7 @@ namespace Assets.scripts {
         }
         
 
-        public void Choose(ChoicesChoice choiceCopy) {
+        public void Choose(Choice choiceCopy) {
             manager.Player1.Choose(choiceCopy);
             
             HandleAction(choiceCopy, manager.Player1.CurrentQuest == null 
@@ -71,7 +73,7 @@ namespace Assets.scripts {
                 : "scenes/Choice");
         }
 
-        public void TalkTo(Npc npc) {
+        public void TalkTo(string npc) {
             manager.Player1.TalkTo(npc);
             HandleAction(new TalkingTo(npc), "scenes/Quest");
         }

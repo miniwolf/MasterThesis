@@ -15,11 +15,11 @@ namespace Assets.scripts {
             FillGrid(manager.manager.Npcs);
         }
 
-        private void FillGrid(IEnumerable<Npc> npcs) {
+        private void FillGrid(IEnumerable<string> npcs) {
             foreach (var npc in npcs) {
                 var npcInstance = Instantiate(NpcsTemplate);
                 var texts = npcInstance.GetComponentsInChildren<Text>(true);
-                texts[0].text = npc.Name;
+                texts[0].text = npc;
 
                 var button = npcInstance.GetComponentInChildren<Button>();
                 var npcCopy = npc;
