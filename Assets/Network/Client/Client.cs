@@ -12,5 +12,9 @@ namespace Assets.Network.Client {
             GeneralHandlerFactory.Construct(stateManagerContainer.manager);
             DontDestroyOnLoad(gameObject.transform);
         }
+
+        public void Close() {
+            Communication.Close();
+        }
     }
 }

@@ -19,8 +19,13 @@ namespace Assets.Network.Client {
 
         public void Start() {
             while (running) {
-                while (messages.Count == 0) {
-                    Thread.Sleep(100);
+                while (messages.Count == 0 && running) {
+                    try {
+                        Thread.Sleep(100);
+                    } catch (ThreadInterruptedException) {
+                        Console.Out.WriteLine("Closing InputDistributor, check order of closing");
+                        return;
+                    }
                 }
                 InGoingMessages input;
                 lock (messages) {

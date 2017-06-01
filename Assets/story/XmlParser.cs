@@ -43,7 +43,7 @@ namespace Xml2CSharp
 
     public interface Quest {
         string Name { get; set; }
-        Choices Choices { get; set; }
+        Results Results { get; set; }
     }
 
     [XmlRoot(ElementName="repeatableQuest")]
@@ -57,8 +57,8 @@ namespace Xml2CSharp
         public Pres Pres { get; set; }
         [XmlElement(ElementName="dialogue")]
         public string Dialogue { get; set; }
-        [XmlElement(ElementName="choices")]
-        public Choices Choices { get; set; }
+        [XmlElement(ElementName="results")]
+        public Results Results { get; set; }
     }
 
     [XmlRoot(ElementName="global")]
@@ -79,8 +79,8 @@ namespace Xml2CSharp
         public Pres Pres { get; set; }
         [XmlElement(ElementName="dialogue")]
         public string Dialogue { get; set; }
-        [XmlElement(ElementName="choices")]
-        public Choices Choices { get; set; }
+        [XmlElement(ElementName="results")]
+        public Results Results { get; set; }
     }
 
     [XmlRoot(ElementName="extranpc")]
@@ -101,8 +101,8 @@ namespace Xml2CSharp
         public Pres Pres { get; set; }
         [XmlElement(ElementName="dialogue")]
         public string Dialogue { get; set; }
-        [XmlElement(ElementName="choices")]
-        public Choices Choices { get; set; }
+        [XmlElement(ElementName="results")]
+        public Results Results { get; set; }
     }
 
     [XmlRoot(ElementName="quests")]

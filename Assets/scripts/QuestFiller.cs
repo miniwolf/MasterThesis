@@ -23,6 +23,9 @@ namespace Assets.scripts {
                 if (quest == null) {
                     continue; // TODO: Fucking fix this
                 }
+                if (quest is RandomQuest) {
+                    continue; // TODO: This should be handled differently
+                }
                 var buttonInstance = Instantiate(ButtonTemplate);
                 buttonInstance.GetComponentInChildren<Text>().text = quest.Name;
                 var button = buttonInstance.GetComponent<Button>();

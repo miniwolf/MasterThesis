@@ -16,6 +16,10 @@ namespace Assets.scripts {
             client = FindObjectOfType<Client>();
         }
 
+        private void OnDestroy() {
+            client.Close();
+        }
+
         private void Update() {
             if (gotoPosition.Length == 0) {
                 return;

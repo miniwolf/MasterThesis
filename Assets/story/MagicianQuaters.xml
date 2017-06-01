@@ -13,12 +13,14 @@
             <dialogue>
                 Well met. Welcome to the magic quaters. This is where we do.. well.. magic!z
             </dialogue>
-            <choices>
-                <choice>C2.1.1</choice>
-                <choice>C2.1.2</choice>
-                <choice>C2.1.3</choice>
-                <choice>C2.1.4</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C2.1.1</choice>
+                    <choice>C2.1.2</choice>
+                    <choice>C2.1.3</choice>
+                    <choice>C2.1.4</choice>
+                </choicesResults>
+            </results>
         </repeatableQuest>
         <oneshotQuest>
             <name>Q2.2</name>
@@ -32,11 +34,13 @@
             <dialogue>
                 Hello, yes. Good to see you again my friend. There is something most urgent I need to discuss with you.
             </dialogue>
-            <choices>
-                <choice>C2.2.1</choice>
-                <choice>C2.2.2</choice>
-                <choice>C2.2.3</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C2.2.1</choice>
+                    <choice>C2.2.2</choice>
+                    <choice>C2.2.3</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <oneshotQuest>
             <name>Q2.3</name>
@@ -51,10 +55,12 @@
             <dialogue>
                 I do not believe it! A succubus! In the middle of the town - how could I not see this!
             </dialogue>
-            <choices>
-                <choice>C2.3.1</choice>
-                <choice>C2.3.2</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C2.3.1</choice>
+                    <choice>C2.3.2</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <oneshotQuest>
             <name>Q2.4</name>
@@ -66,10 +72,12 @@
             <dialogue>
                 You found the amulet! Amazing! Let me see it!
             </dialogue>
-            <choices>
-                <choice>C2.4.1</choice>
-                <choice>C2.4.2</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C2.4.1</choice>
+                    <choice>C2.4.2</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <randomQuest>
             <name>R2a</name>
@@ -87,10 +95,12 @@
                 My powers are beyond that of this realm! 
                 You should take me with you on your quest for the amulet.
             </dialogue>
-            <choices>
-                <choice>C2a.1</choice>
-                <choice>C2a.2</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C2a.1</choice>
+                    <choice>C2a.2</choice>
+                </choicesResults>
+            </results>
         </randomQuest>
     </quests>
     <choices>
@@ -219,12 +229,31 @@
         </choice>
         <choice>
             <name>C2.2.1.2</name>
+            <description>I promise to check out the brothel. Is there anything else you need me to do?</description>
             <pres>
-                
+                <KnowsLocation>!Temple</KnowsLocation>
             </pres>
+            <results>
+                <description priority="2">
+                    Thank you so very much. Yes! in fact you can look to the temple outsite the village. In fact.. i wasnt going to give this to anyone, but since you’ve been so willing to help me. Here is an old key i suspect might help you.
+                </description>
+                <effectResults>
+                    <effect>Key</effect>
+                    <effect>Magician Happy</effect>
+                </effectResults>
+                <locationResults>Temple</locationResults>
+            </results>
         </choice>
         <choice>
             <name>C2.2.1.3</name>
+            <pres>
+                <KnowsLocation>Temple</KnowsLocation>
+            </pres>
+            <results>
+                <description priority="3">
+                    I suspect it has everything to do with the temple...
+                </description>
+            </results>
         </choice>
         <choice>
             <name>C2.3.1</name>

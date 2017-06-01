@@ -70,7 +70,8 @@ namespace Assets.Network.Client {
 
         public void Close() {
             running = false;
-            distributorThread.Abort();
+            distributor.Stop();
+            distributorThread.Interrupt();
         }
     }
 }

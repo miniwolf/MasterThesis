@@ -25,11 +25,11 @@ namespace Assets.scripts {
         public string TalkingTo { get; set; }
 
         public bool Goto(Location location) {
-            if (CurrentQuest != null) {
-                return false;
-            }
             if (location.Pres != null && !HasPre(location.Pres)) {
                 return false;
+            }
+            if (CurrentQuest != null) {
+                CurrentQuest = null;
             }
             Manager.PossibleQuests = new List<Quest>();
             if (location.Quests != null) {
@@ -64,7 +64,13 @@ namespace Assets.scripts {
             }
             CurrentQuest = quest;
             Manager.PossibleChoices.Clear();
-            Manager.PossibleChoices.AddRange(quest.Choices.Choice);
+            Manager.PossibleChoices.AddRange(CollectChoices(quest.Results.ChoicesResults.Choice));
+        }
+
+        private IEnumerable<Choice> CollectChoices(IEnumerable<string> choiceStrings) {
+            return choiceStrings.Select(choiceString => 
+                CurrentLocation.Choices.Choice.First(choice => 
+                    choice.Name == choiceString)).ToList();
         }
 
         public void Choose(Choice choice) {
