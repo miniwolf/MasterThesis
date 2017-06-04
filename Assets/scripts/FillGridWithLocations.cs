@@ -31,7 +31,7 @@ namespace Assets.scripts {
                 }
                 var button = buttonInstance.GetComponentInChildren<Button>();
                 var locationCopy = location;
-                button.onClick.AddListener(delegate { manager.Goto(locationCopy); });
+                button.onClick.AddListener(delegate { manager.Goto(locationCopy, false); });
 
                 buttonInstance.transform.SetParent(grid.transform);
             }

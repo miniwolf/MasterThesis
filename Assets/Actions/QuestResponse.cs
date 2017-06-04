@@ -13,5 +13,11 @@ namespace Assets.Actions {
             manager.manager.WaitingForResponse = true;
             manager.StartQuest(manager.manager.Player2.CurrentQuest);
         }
+
+        public void Dont() {
+            var savedLocation = manager.manager.Player1.CurrentLocation;
+            manager.Stay();
+            manager.Goto(savedLocation, true);
+        }
     }
 }

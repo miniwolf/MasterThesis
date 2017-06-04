@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Assets.scripts;
 using UnityEngine;
 
@@ -11,7 +12,11 @@ namespace Assets.Actions {
 
         public void Travel() {
             manager.manager.WaitingForResponse = true;
-            manager.Goto(manager.manager.Player2.CurrentLocation);
+            manager.Goto(manager.manager.Player2.CurrentLocation, true);
+        }
+
+        public void Dont() {
+            manager.Stay();
         }
     }
 }

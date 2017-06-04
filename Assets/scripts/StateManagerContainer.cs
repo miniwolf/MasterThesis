@@ -1,7 +1,9 @@
 ﻿using Assets.Network.Client;
 using Assets.Network.Shared;
+using Assets.Network.Shared.Actions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Xml2CSharp;
 
 namespace Assets.scripts {
@@ -38,8 +40,8 @@ namespace Assets.scripts {
                    npc.Equals(manager.Player2.TalkingTo);
         }
 
-        public void Goto(Location location) {
-            if (!manager.Player1.Goto(location)) {
+        public void Goto(Location location, bool overridePres) {
+            if (!manager.Player1.Goto(location, overridePres)) {
                 return;
             }
             manager.Goto(location);
@@ -63,18 +65,37 @@ namespace Assets.scripts {
             gotoPosition = scene;
         }
 
+        private bool HandleActionBoolean(object obj) {
+            client.Communication.SendObject(obj);
+            
+            if (!(client.Communication.GetNextResponse() is AllIsWell)) {
+                return false;
+            }
+
+            if (manager.IsGrouped && !manager.WaitingForResponse) {
+                manager.WaitingForResponse = true;
+                return false;
+            }
+            
+            Debug.Log("Choose");
+            manager.WaitingForResponse = false;
+            return true;
+        }
+
         public void StartQuest(Quest quest) {
             manager.Player1.StartQuest(quest);
             HandleAction(quest, "scenes/Choice");
         }
-        
 
         public void Choose(Choice choiceCopy) {
             manager.Player1.Choose(choiceCopy);
-            
-            HandleAction(choiceCopy, manager.Player1.CurrentQuest == null 
-                ? "scenes/Quest"
-                : "scenes/Choice");
+            var message = new HasChosen(choiceCopy);
+
+            if (manager.Player1.CurrentQuest == null) {
+                HandleAction(message, "scenes/Quest");
+            } else if (HandleActionBoolean(message)) {
+                GameStateManager.AddChoiceDescriptionToUI(choiceCopy);
+            }
         }
 
         public void TalkTo(string npc) {
@@ -83,7 +104,12 @@ namespace Assets.scripts {
         }
 
         public void BackToLocations() {
+            manager.ResetPlayer();
             SceneManager.LoadScene("scenes/Locations");
+        }
+
+        public void Stay() {
+            client.Communication.SendObject(new StayResponse());
         }
     }
 }

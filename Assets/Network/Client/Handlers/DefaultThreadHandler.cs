@@ -13,14 +13,14 @@ namespace Assets.Network.Client.Handlers {
 
         public void Start() {
             while (running) {
-                try {
-                    while (container.GetQueue().Count == 0) {
+                while (container.GetQueue().Count == 0 && running) {
+                    try {
                         Thread.Sleep(100);
+                    } catch (ThreadInterruptedException e) {
+                        running = false;
                     }
-                    handler.Handle(container.GetQueue().Dequeue());
-                } catch (ThreadInterruptedException e) {
-                    running = false;
                 }
+                handler.Handle(container.GetQueue().Dequeue());
             }
         }
     }

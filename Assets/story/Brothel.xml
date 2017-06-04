@@ -7,7 +7,7 @@
         <present>Thief</present>
     </pres>
     <quests>
-        <repeatableQuest>
+        <oneshotQuest>
             <name>Q1.1</name>
             <description>Talk to bar wench</description>
             <dialogue>
@@ -20,7 +20,7 @@
                     <choice>C1.1.3</choice>
                 </choicesResults>
             </results>
-        </repeatableQuest>
+        </oneshotQuest>
         <randomQuest>
             <name>R1a</name>
             <extranpc>
@@ -83,6 +83,9 @@
             <description>
                 Neither, maybe I’ll come back.
             </description>
+            <results>
+                <endQuest/>
+            </results>
         </choice>
         <choice>
             <name>C1.1.2.1</name>
@@ -98,6 +101,7 @@
         </choice>
         <choice>
             <name>C1.1.2.2</name>
+            <description>Yes, we are venturing to the hidden temple.</description>
             <pres>
                 <KnowsLocation>Temple</KnowsLocation>
             </pres>
@@ -110,6 +114,7 @@
         </choice>
         <choice>
             <name>C1.1.2.3</name>
+            <description>You are not what you seem!</description>
             <pres>
                 <class>Mage</class>
             </pres>
@@ -128,6 +133,7 @@
                 <effectResults>
                     <effect>Magician Companion</effect>
                 </effectResults>
+                <endQuest/>
             </results>
         </choice>
         <choice>
@@ -139,6 +145,7 @@
                 <effectResults>
                     <effect>Wench Companion</effect>
                 </effectResults>
+                <endQuest/>
             </results>
         </choice>
     </choices>

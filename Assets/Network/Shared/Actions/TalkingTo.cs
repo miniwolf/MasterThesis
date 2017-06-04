@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Network.Shared {
+namespace Assets.Network.Shared.Actions {
     [Serializable]
     public class TalkingTo {
         public readonly string npc;

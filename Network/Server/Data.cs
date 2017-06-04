@@ -20,11 +20,15 @@ namespace Network.Server {
 
         public static void UpdateState(int ID, PlayerState state) {
             PlayerStates[ID] = state;
+            SendToAllOther(ID, state);
+        }
+
+        public static void SendToAllOther(int ID, object response) {
             foreach (var outWorker in OUTPUT_WORKER_MAP.Values) {
                 if (outWorker.GetID() == ID) {
                     continue;
                 }
-                outWorker.Response.Enqueue(state);
+                outWorker.Response.Enqueue(response);
             }
         }
 

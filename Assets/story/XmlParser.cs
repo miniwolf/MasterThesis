@@ -44,21 +44,8 @@ namespace Xml2CSharp
     public interface Quest {
         string Name { get; set; }
         Results Results { get; set; }
-    }
-
-    [XmlRoot(ElementName="repeatableQuest")]
-    [Serializable]
-    public class RepeatableQuest : Quest {
-        [XmlElement(ElementName="name")]
-        public string Name { get; set; }
-        [XmlElement(ElementName="description")]
-        public string Description { get; set; }
-        [XmlElement(ElementName="pres")]
-        public Pres Pres { get; set; }
-        [XmlElement(ElementName="dialogue")]
-        public string Dialogue { get; set; }
-        [XmlElement(ElementName="results")]
-        public Results Results { get; set; }
+        string Description { get; set; }
+        string Dialogue { get; set; }
     }
 
     [XmlRoot(ElementName="global")]
@@ -95,6 +82,8 @@ namespace Xml2CSharp
     public class RandomQuest : Quest {
         [XmlElement(ElementName="name")]
         public string Name { get; set; }
+        [XmlElement(ElementName="description")]
+        public string Description { get; set; }
         [XmlElement(ElementName="extranpc")]
         public Extranpc Extranpc { get; set; }
         [XmlElement(ElementName="pres")]
@@ -108,8 +97,6 @@ namespace Xml2CSharp
     [XmlRoot(ElementName="quests")]
     [Serializable]
     public class Quests {
-        [XmlElement(ElementName="repeatableQuest")]
-        public List<RepeatableQuest> RepeatableQuest { get; set; }
         [XmlElement(ElementName="oneshotQuest")]
         public List<OneshotQuest> OneshotQuest { get; set; }
         [XmlElement(ElementName="randomQuest")]
@@ -158,6 +145,8 @@ namespace Xml2CSharp
         public string Wingame { get; set; }
         [XmlElement(ElementName="dialogue")]
         public List<Dialogue> Dialogue { get; set; }
+        [XmlElement(ElementName="endQuest")]
+        public string EndQuest { get; set; }
     }
 
     [XmlRoot(ElementName="choice")]

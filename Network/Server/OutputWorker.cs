@@ -18,13 +18,18 @@ namespace Network.Server {
             this.ID = ID;
         }
 
-        public Queue<object> Response { get; private set; }
+        public Queue<object> Response { get; }
 
         public void Start() {
             while (running) {
                 SendResponses();
                 while (Response.Count == 0 && running) {
-                    Thread.Sleep(100);
+                    try {
+                        Thread.Sleep(100);
+                    } catch (ThreadInterruptedException) {
+                        Console.Out.WriteLine("Closing output worker");
+                        running = false;
+                    }
                 }
             }
             //"Logging out user " + myUserName;

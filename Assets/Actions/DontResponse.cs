@@ -1,17 +1,19 @@
-﻿using Assets.scripts;
+using Assets.scripts;
 using UnityEngine;
+using Xml2CSharp;
 
-namespace Assets.Events.Handlers {
-    public class TravelEventHandler : MonoBehaviour, EventHandler {
+namespace Assets.Actions {
+    public class DontResponse : MonoBehaviour {
         private GameObject joinButton;
         private GameObject dontJoinButton;
         private bool setup;
+        private bool extra;
         private StateManagerContainer manager;
 
         private void Start() {
             manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
-            EventManager.SubscribeToEvent(Events.Travelled, this);
-            foreach (Transform button in GameObject.FindGameObjectWithTag("JoiningButtons").transform) {
+            foreach (Transform button in
+                GameObject.FindGameObjectWithTag("JoiningButtons").transform) {
                 if (button.tag.Equals("Join")) {
                     joinButton = button.gameObject;
                 } else {
@@ -20,23 +22,26 @@ namespace Assets.Events.Handlers {
             }
         }
 
-        private void OnDestroy() {
-            EventManager.UnsubscribeToEvent(Events.Travelled, this);
-        }
-
         private void Update() {
             if (!setup) {
                 return;
             }
-            joinButton.SetActive(true);
-            dontJoinButton.SetActive(true);
+            joinButton.SetActive(false);
+            dontJoinButton.SetActive(false);
+            if (extra) {
+                var savedLocation = manager.manager.Player1.CurrentLocation;
+                manager.Stay();
+                manager.Goto(savedLocation, true);
+            } else {
+                manager.Stay();
+            }
             setup = false;
+            extra = true;
         }
 
-        public void Action() {
-            if (manager.manager.WaitingForResponse) {
-                manager.Goto(manager.manager.Player2.CurrentLocation, false);
-                return;
+        public void Action(string which) {
+            if (which != "") {
+                extra = true;
             }
             setup = true;
         }

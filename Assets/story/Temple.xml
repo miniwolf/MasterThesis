@@ -110,6 +110,7 @@
                 <dialogueResult>
                     <dialogue>D3.1.5.1</dialogue>
                 </dialogueResult>
+                <endQuests/>
             </results>
         </choice>
         <choice>
@@ -185,6 +186,7 @@
                 <dialogueResult>
                     <dialogue>D3.2.1.1</dialogue>
                 </dialogueResult>
+                <endQuests/>
             </results>
         </choice>
         <choice>
@@ -197,6 +199,7 @@
                         <effect>Wench Reveal</effect>
                     </global>
                 </effectResults>
+                <endQuests/>
             </results>
         </choice>
         <choice>
@@ -211,6 +214,7 @@
                         <effect>Wench Reveal</effect>
                     </global>
                 </effectResults>
+                <endQuests/>
             </results>
         </choice>
     </choices>

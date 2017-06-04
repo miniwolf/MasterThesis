@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Assets.Events.Handlers;
 using UnityEngine;
 
 namespace Assets.Events {
     public enum Events {
         QuestStarted,
         Travelled,
-        StartedTalking
+        StartedTalking,
+        OtherHasChosen
     }
 
     public class EventManager : MonoBehaviour {
@@ -17,6 +17,7 @@ namespace Assets.Events {
             handlers.Add(Events.QuestStarted, new List<EventHandler>());
             handlers.Add(Events.Travelled, new List<EventHandler>());
             handlers.Add(Events.StartedTalking, new List<EventHandler>());
+            handlers.Add(Events.OtherHasChosen, new List<EventHandler>());
             Debug.Log("Initialized eventmanager");
         }
 

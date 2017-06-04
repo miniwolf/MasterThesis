@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Xml2CSharp;
 
 namespace Assets.scripts {
@@ -7,14 +9,12 @@ namespace Assets.scripts {
         public Location CurrentLocation { get; set; }
 
         private List<string> state = new List<string>();
-
         public List<string> State {
             get { return state; }
             set { state = value; }
         }
 
         private List<string> knownLocation = new List<string>();
-
         public List<string> KnownLocation {
             get { return knownLocation; }
             set { knownLocation = value; }
@@ -22,16 +22,26 @@ namespace Assets.scripts {
 
         public Quest CurrentQuest { get; set; }
         public GameStateManager Manager { get; set; }
+        public Choice HasChosen { get; set; }
         public string TalkingTo { get; set; }
+        public string ClassString { get; set; }
 
-        public bool Goto(Location location) {
-            if (location.Pres != null && !HasPre(location.Pres)) {
+        public Player() {
+            ClassString = "";
+        }
+
+        public bool Goto(Location location, bool overridePres) {
+            if (!overridePres && location.Pres != null && !HasPre(location.Pres)) {
                 return false;
             }
             if (CurrentQuest != null) {
                 CurrentQuest = null;
             }
+
+            // Reset
+            Manager.PossibleChoices.Clear();
             Manager.PossibleQuests = new List<Quest>();
+
             if (location.Quests != null) {
                 // This might happen if misread from parser
                 Manager.PossibleQuests = CollectQuests(location.Quests);
@@ -51,10 +61,6 @@ namespace Assets.scripts {
                 var ie = locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres));
                 list.AddRange(ie.Cast<Quest>());
             }
-            if (locationQuests.RepeatableQuest != null) {
-                var ie = locationQuests.RepeatableQuest.Where(quest => HasPre(quest.Pres));
-                list.AddRange(ie.Cast<Quest>());
-            }
             return list;
         }
 
@@ -68,62 +74,106 @@ namespace Assets.scripts {
         }
 
         private IEnumerable<Choice> CollectChoices(IEnumerable<string> choiceStrings) {
-            return choiceStrings.Select(choiceString => 
-                CurrentLocation.Choices.Choice.First(choice => 
-                    choice.Name == choiceString)).ToList();
+            var list = new List<Choice>();
+            foreach (var choiceString in choiceStrings) {
+                foreach (var choice in CurrentLocation.Choices.Choice) {
+                    Debug.Log(choice);
+                }
+                var chosen = CurrentLocation.Choices.Choice.FirstOrDefault(choice => choice.Name == choiceString);
+                if (chosen == null) {
+                    continue;
+                }
+                if (HasPre(chosen.Pres)) {
+                    list.Add(chosen);
+                }
+            }
+            return list;
         }
 
         public void Choose(Choice choice) {
-            var realChoice = FindChoice(choice.Name);
-            var results = realChoice.Results;
+            var results = choice.Results;
 
-            var location = Manager.Locations.First(loc => Equals(loc, CurrentLocation));
-            location.Choices.Choice = location.Choices.Choice
+            if (results.EndQuest != null) { // Will not do anything basically back button.
+                if (CurrentQuest.GetType() == typeof(OneshotQuest) &&
+                    CollectChoices(CurrentQuest.Results.ChoicesResults.Choice).Count() == 1) {
+                    CurrentLocation.Quests.OneshotQuest = CurrentLocation.Quests.OneshotQuest
+                        .Where(q => q.Name != CurrentQuest.Name)
+                        .ToList();
+                }
+                CurrentQuest = null;
+                Goto(CurrentLocation, false);
+                return;
+            }
+
+            CurrentLocation.Choices.Choice = CurrentLocation.Choices.Choice
                 .Where(c => c.Name != choice.Name)
                 .ToList();
-            CurrentLocation = location;
 
             if (results.EffectResults != null) {
-                State.AddRange(results.EffectResults.Effect);
+                AddEffects(results.EffectResults.Effect);
             }
 
             if (results.LocationResults != null) {
                 KnownLocation.Add(results.LocationResults.Location);
             }
 
+            Manager.PossibleChoices.Remove(choice);
             if (results.ChoicesResults == null) {
-                if (CurrentQuest.GetType() == typeof(OneshotQuest)) {
-                    location.Quests.OneshotQuest = location.Quests.OneshotQuest
-                        .Where(q => q.Name != CurrentQuest.Name)
-                        .ToList();
-                }
-                CurrentQuest = null;
-                Goto(CurrentLocation);
+                GameStateManager.UpdateChoiceUI();
                 return;
             }
 
-            Manager.PossibleChoices.Clear();
             foreach (var c in results.ChoicesResults.Choice) {
                 var foundChoice = FindChoice(c);
-                if (foundChoice != null && HasPre(foundChoice.Pres)) {
-                    Manager.PossibleChoices.Add(foundChoice);
+                if (foundChoice == null || !HasPre(foundChoice.Pres)) {
+                    continue;
                 }
+                Manager.PossibleChoices.Add(foundChoice);
+            }
+            GameStateManager.UpdateChoiceUI();
+        }
+
+        private void AddEffects(IEnumerable<string> effects) {
+            foreach (var effect in effects) {
+                if (State.Contains(effect)) {
+                    continue;
+                }
+                if (effect.Contains("Angry") && State.Contains(effect.Replace("Angry", "Happy"))) {
+                    State.Remove(effect.Replace("Angry", "Happy"));
+                } else if (effect.Contains("Happy") && State.Contains(effect.Replace("Happy", "Angry"))) {
+                    State.Remove(effect.Replace("Happy", "Angry"));
+                } else if (effect.Contains("!") && State.Contains(effect.Replace("!", ""))) {
+                    State.Remove(effect.Replace("!", ""));
+                    continue;
+                }
+                State.Add(effect);
             }
         }
 
         public bool HasPre(Pres pres) {
-            //foreach (var at in choice.Pres.At)
-            if (pres != null && pres.Effect != null
+            if (pres == null) {
+                return true;
+            }
+
+            if (pres.Effect != null
                 && !pres.Effect.All(has => has.Contains("!")
                     ? !State.Contains(has.Substring(1))
                     : State.Contains(has))) {
                 return false;
             }
-            if (pres != null && pres.KnowsLocation != null
-                && !KnownLocation.Contains(pres.KnowsLocation)) {
+
+            if (pres.KnowsLocation != null 
+                && (pres.KnowsLocation.Contains("!") 
+                    ? KnownLocation.Contains(pres.KnowsLocation.Substring(1))
+                    : !KnownLocation.Contains(pres.KnowsLocation))) {
                 return false;
             }
-            return pres == null || pres.Global == null ||
+
+            if (pres.Present != null && !pres.Present.All(has => ClassString.Equals(has))
+                || pres.Class != null && !pres.Class.Equals(ClassString)) {
+                return false;
+            }
+            return pres.Global == null ||
                    Manager.HasPre(pres.Global);
         }
 
@@ -138,6 +188,11 @@ namespace Assets.scripts {
         }
 
         public void TalkTo(string npc) {
+        }
+
+        public void Reset() {
+            CurrentLocation = null;
+            CurrentQuest = null;
         }
     }
 }

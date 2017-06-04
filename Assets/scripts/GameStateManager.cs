@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine;
+using UnityEngine.UI;
 using Xml2CSharp;
 
 namespace Assets.scripts {
@@ -66,6 +68,34 @@ namespace Assets.scripts {
                 && location.Name.Equals(Player2.CurrentLocation.Name)) {
                 IsGrouped = true;
             }
+        }
+
+        private static void AddTextBoxToListInChoiceScene(string text) {
+            var textBox = GameObject.FindGameObjectWithTag("Description");
+            var template = textBox.transform.parent.GetChild(1);
+            var templateCopy = Object.Instantiate(template.transform);
+            templateCopy.GetComponent<Text>().text = text;
+            templateCopy.parent = textBox.transform;
+            templateCopy.gameObject.SetActive(true);
+        }
+
+        public static void AddChoiceDescriptionToUI(Choice choice) {
+            AddTextBoxToListInChoiceScene(choice.Description.Replace("\r\n", "").Trim());
+            if (choice.Results.Description != null) {
+                AddTextBoxToListInChoiceScene(choice.Results.Description.Text.Replace("\r\n", "").Trim());
+            }
+        }
+
+        public void SetQuestDescription() {
+            AddTextBoxToListInChoiceScene(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim());
+        }
+
+        public static void UpdateChoiceUI() {
+            GameObject.FindGameObjectWithTag("ChoiceFiller").GetComponent<ChoiceFiller>().UpdateSelection();
+        }
+
+        public void ResetPlayer() {
+            Player1.Reset();
         }
     }
 }

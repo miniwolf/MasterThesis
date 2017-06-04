@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using Assets.Network.Shared;
+using Assets.Network.Shared.Actions;
 using Xml2CSharp;
 
 namespace Network.Server {
@@ -26,10 +29,11 @@ namespace Network.Server {
                     HandleInput(input);
                 }
             } catch (IOException) {
-                Data.RemoveUser(ID);
-                Console.Out.WriteLine("Logging out ID: " + ID);
-                running = false;
+            } catch (SerializationException) {
             }
+            Console.Out.WriteLine("Logging out ID: " + ID);
+            Data.RemoveUser(ID);
+            running = false;
         }
 
         private void HandleInput(object input) {
@@ -56,9 +60,20 @@ namespace Network.Server {
             } else if (input is TalkingTo) {
                 HandleTalking(input);
                 output.Response.Enqueue(new AllIsWell());
+            } else if (input is HasChosen) {
+                HandleChoices();
+                Data.SendToAllOther(ID, new OtherHasChosen(((HasChosen) input).Choice));
+                output.Response.Enqueue(new AllIsWell());
+            } else if (input is StayResponse) {
+                Data.SendToAllOther(ID, input);
+                output.Response.Enqueue(new AllIsWell());
             } else {
                 Console.Out.WriteLine("Does not understand: " + input);
             }
+        }
+
+        private void HandleChoices() {
+            Data.GetAllBut(ID);
         }
 
         private void HandleLocation(object input) {

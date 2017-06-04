@@ -1,7 +1,7 @@
 using System;
 using Xml2CSharp;
 
-namespace Assets.Network.Shared {
+namespace Assets.Network.Shared.Actions {
     [Serializable]
     public class GoingTo {
         public Location Location { get; private set; }
