@@ -3,6 +3,6 @@
     }
 
     public interface InGoingMessages<T> : InGoingMessages {
-        Access<T> GetAcces();
+        Access<T> GetAccess();
     }
 }

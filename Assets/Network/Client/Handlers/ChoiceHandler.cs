@@ -18,7 +18,7 @@ namespace Assets.Network.Client.Handlers {
         }
 
         public void Handle(InGoingMessages<OtherHasChosen> obj) {
-            manager.Player2.HasChosen = obj.GetAcces().GetData().Choice;
+            manager.Player2.HasChosen = obj.GetAccess().GetData().Choice;
             EventManager.CallEvent(Events.Events.OtherHasChosen);
         }
 

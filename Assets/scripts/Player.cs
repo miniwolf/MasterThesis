@@ -92,6 +92,7 @@ namespace Assets.scripts {
 
         public void Choose(Choice choice) {
             var results = choice.Results;
+            HasChosen = choice;
 
             if (results.EndQuest != null) { // Will not do anything basically back button.
                 if (CurrentQuest.GetType() == typeof(OneshotQuest) &&

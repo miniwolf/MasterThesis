@@ -30,6 +30,8 @@ namespace Assets.scripts {
         }
 
         private List<string> globalHas = new List<string>();
+        public static bool UpdateUI;
+
         public List<string> GlobalHas {
             get { return globalHas; }
             set { globalHas = value; }
@@ -70,28 +72,23 @@ namespace Assets.scripts {
             }
         }
 
-        private static void AddTextBoxToListInChoiceScene(string text) {
-            var textBox = GameObject.FindGameObjectWithTag("Description");
-            var template = textBox.transform.parent.GetChild(1);
-            var templateCopy = Object.Instantiate(template.transform);
-            templateCopy.GetComponent<Text>().text = text;
-            templateCopy.parent = textBox.transform;
-            templateCopy.gameObject.SetActive(true);
-        }
-
         public static void AddChoiceDescriptionToUI(Choice choice) {
-            AddTextBoxToListInChoiceScene(choice.Description.Replace("\r\n", "").Trim());
-            if (choice.Results.Description != null) {
-                AddTextBoxToListInChoiceScene(choice.Results.Description.Text.Replace("\r\n", "").Trim());
+            lock (StateManagerContainer.TextToBoxListInChoiceScene) {
+                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Description.Replace("\r\n", "").Trim());
+                if (choice.Results.Description != null) {
+                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Results.Description.Text.Replace("\r\n", "").Trim());
+                }                
             }
         }
 
         public void SetQuestDescription() {
-            AddTextBoxToListInChoiceScene(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim());
+            lock (StateManagerContainer.TextToBoxListInChoiceScene) {
+                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim());
+            }
         }
 
         public static void UpdateChoiceUI() {
-            GameObject.FindGameObjectWithTag("ChoiceFiller").GetComponent<ChoiceFiller>().UpdateSelection();
+            UpdateUI = true;
         }
 
         public void ResetPlayer() {

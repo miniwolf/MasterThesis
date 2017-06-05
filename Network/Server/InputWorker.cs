@@ -4,10 +4,8 @@ using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Actions;
-using Xml2CSharp;
 
 namespace Network.Server {
     public class InputWorker : Worker {
@@ -41,15 +39,9 @@ namespace Network.Server {
                 return;
             }
             var s = input as string;
-            if (s != null) {
-                Console.Out.WriteLine(s);
-            } else if (input is UpdateCount) {
-                Console.Out.WriteLine((UpdateCount) input);
-            } else if (input is GoingTo) {
-                HandleLocation(input);
-                output.Response.Enqueue(new AllIsWell());
-            } else if (input is Quest) {
-                HandleQuest(input);
+            var to = input as GoingTo;
+            if (to != null) {
+                HandleLocation(to);
                 output.Response.Enqueue(new AllIsWell());
             } else if (input is GetState) {
                 var playerState = HandleGetState();
@@ -67,6 +59,9 @@ namespace Network.Server {
             } else if (input is StayResponse) {
                 Data.SendToAllOther(ID, input);
                 output.Response.Enqueue(new AllIsWell());
+            } else if (input is StartedQuest) {
+                HandleQuest(input);
+                output.Response.Enqueue(new AllIsWell());
             } else {
                 Console.Out.WriteLine("Does not understand: " + input);
             }
@@ -76,17 +71,17 @@ namespace Network.Server {
             Data.GetAllBut(ID);
         }
 
-        private void HandleLocation(object input) {
+        private void HandleLocation(GoingTo input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Location");
-            playerState.Location = ((GoingTo) input).Location;
+            playerState.Location = (input).GetData();
             Data.UpdateState(ID, playerState);
         }
 
         private void HandleQuest(object input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Quest");
-            playerState.Quest = (Quest) input;
+            playerState.Quest = ((StartedQuest) input).GetData();
             Data.UpdateState(ID, playerState);
         }
 

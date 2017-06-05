@@ -6,7 +6,8 @@ namespace Assets.Events {
         QuestStarted,
         Travelled,
         StartedTalking,
-        OtherHasChosen
+        OtherHasChosen,
+        Staying
     }
 
     public class EventManager : MonoBehaviour {
@@ -18,6 +19,7 @@ namespace Assets.Events {
             handlers.Add(Events.Travelled, new List<EventHandler>());
             handlers.Add(Events.StartedTalking, new List<EventHandler>());
             handlers.Add(Events.OtherHasChosen, new List<EventHandler>());
+            handlers.Add(Events.Staying, new List<EventHandler>());
             Debug.Log("Initialized eventmanager");
         }
 

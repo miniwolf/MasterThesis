@@ -1,6 +1,8 @@
-﻿using Assets.Network.Client;
+﻿using System.Collections.Generic;
+using Assets.Network.Client;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Actions;
+using Assets.Network.Shared.Messages;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +13,7 @@ namespace Assets.scripts {
         public readonly GameStateManager manager = new GameStateManager();
         public Client client;
         private string gotoPosition = "";
+        public static Queue<string> TextToBoxListInChoiceScene = new Queue<string>();
 
         private void Start() {
             gotoPosition = "";
@@ -23,11 +26,28 @@ namespace Assets.scripts {
         }
 
         private void Update() {
-            if (gotoPosition.Length == 0) {
-                return;
+            if (GameStateManager.UpdateUI) {
+                GameObject.FindGameObjectWithTag("ChoiceFiller").GetComponent<ChoiceFiller>().UpdateSelection();
+                GameStateManager.UpdateUI = false;
             }
-            SceneManager.LoadScene(gotoPosition);
-            gotoPosition = "";
+            if (TextToBoxListInChoiceScene.Count != 0) {
+                lock (TextToBoxListInChoiceScene) {
+                    AddTextBoxToListInChoiceScene(TextToBoxListInChoiceScene.Dequeue());                    
+                }
+            }
+            if (gotoPosition.Length != 0) {
+                SceneManager.LoadScene(gotoPosition);
+                gotoPosition = "";
+            }
+        }
+        
+        private static void AddTextBoxToListInChoiceScene(string text) {
+            var textBox = GameObject.FindGameObjectWithTag("Description");
+            var template = textBox.transform.parent.GetChild(1);
+            var templateCopy = Object.Instantiate(template.transform);
+            templateCopy.GetComponent<Text>().text = text;
+            templateCopy.parent = textBox.transform;
+            templateCopy.gameObject.SetActive(true);
         }
 
         public bool IsOtherPlayerAtThisLocation(Location location) {
@@ -49,7 +69,7 @@ namespace Assets.scripts {
             HandleAction(new GoingTo(location), location == null ? "scenes/Locations" : "scenes/Npcs");
         }
 
-        private void HandleAction(object obj, string scene) {
+        private void HandleAction(InGoingMessages obj, string scene) {
             client.Communication.SendObject(obj);
             if (!(client.Communication.GetNextResponse() is AllIsWell)) {
                 return;
@@ -76,15 +96,14 @@ namespace Assets.scripts {
                 manager.WaitingForResponse = true;
                 return false;
             }
-            
-            Debug.Log("Choose");
+
             manager.WaitingForResponse = false;
             return true;
         }
 
         public void StartQuest(Quest quest) {
             manager.Player1.StartQuest(quest);
-            HandleAction(quest, "scenes/Choice");
+            HandleAction(new StartedQuest(quest), "scenes/Choice");
         }
 
         public void Choose(Choice choiceCopy) {
@@ -93,7 +112,7 @@ namespace Assets.scripts {
 
             if (manager.Player1.CurrentQuest == null) {
                 HandleAction(message, "scenes/Quest");
-            } else if (HandleActionBoolean(message)) {
+            } else if (HandleActionBoolean(message) && !manager.WaitingForResponse) {
                 GameStateManager.AddChoiceDescriptionToUI(choiceCopy);
             }
         }
@@ -104,12 +123,19 @@ namespace Assets.scripts {
         }
 
         public void BackToLocations() {
-            manager.ResetPlayer();
+            HandleActionBoolean(new GoingTo(null));
+            client.Communication.SendObject(new TalkingTo(null));
+            client.Communication.GetNextResponse();
+            client.Communication.SendObject(new StartedQuest(null));
+            client.Communication.GetNextResponse();
+            manager.Player1.Reset();
+            manager.Goto(null);
             SceneManager.LoadScene("scenes/Locations");
         }
 
         public void Stay() {
             client.Communication.SendObject(new StayResponse());
+            client.Communication.GetNextResponse();
         }
     }
 }

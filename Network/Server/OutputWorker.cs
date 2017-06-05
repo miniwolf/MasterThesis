@@ -22,10 +22,18 @@ namespace Network.Server {
 
         public void Start() {
             while (running) {
-                SendResponses();
+                try {
+                    SendResponses();
+                } catch (IOException) {
+                    Console.Out.WriteLine("Closing output worker");
+                    running = false;
+                }
                 while (Response.Count == 0 && running) {
                     try {
                         Thread.Sleep(100);
+                    } catch(IOException) {
+                        Console.Out.WriteLine("Closing output worker");
+                        running = false;
                     } catch (ThreadInterruptedException) {
                         Console.Out.WriteLine("Closing output worker");
                         running = false;

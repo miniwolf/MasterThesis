@@ -10,7 +10,7 @@ namespace Assets.Network.Shared {
         public Quest Quest { get; set; }
         public string Npc { get; set; }
 
-        public Access<PlayerState> GetAcces() {
+        public Access<PlayerState> GetAccess() {
             return this;
         }
 

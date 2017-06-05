@@ -19,23 +19,36 @@ namespace Assets.Network.Client.Handlers {
 
         public void Handle(InGoingMessages<PlayerState> obj) {
             var playerState = (PlayerState) obj;
-            manager.Player2.CurrentLocation = (Location) CheckReference(playerState.Location,
-                manager.Player2.CurrentLocation, Events.Events.Travelled);
-            manager.Player2.CurrentQuest = (Quest) CheckReference(playerState.Quest, manager.Player2.CurrentQuest,
-                Events.Events.QuestStarted);
-            manager.Player2.TalkingTo = (string) CheckReference(playerState.Npc, manager.Player2.TalkingTo,
-                Events.Events.StartedTalking);
-            manager.IsGrouped = Equals(manager.Player2.CurrentLocation, manager.Player1.CurrentLocation);
+            CheckGroup();
+            if (CheckReference(playerState.Location, manager.Player2.CurrentLocation)) {
+                manager.Player2.CurrentLocation = playerState.Location;
+                if (manager.IsGrouped || manager.WaitingForResponse) {
+                    EventManager.CallEvent(Events.Events.Travelled);
+                }
+            }
+            if (CheckReference(playerState.Quest, manager.Player2.CurrentQuest)) {
+                manager.Player2.CurrentQuest = playerState.Quest;
+                if (manager.IsGrouped || manager.WaitingForResponse) {
+                    EventManager.CallEvent(Events.Events.QuestStarted);
+                }
+            }
+            if (CheckReference(playerState.Npc, manager.Player2.TalkingTo)) {
+                manager.Player2.TalkingTo = playerState.Npc;
+                if (manager.IsGrouped || manager.WaitingForResponse) {
+                    EventManager.CallEvent(Events.Events.StartedTalking);
+                }
+            }
+            CheckGroup();
         }
 
-        private object CheckReference(object A, object B, Events.Events e) {
-            if ((A != null || B == null) && (A == null || B != null)) {
-                return B;
-            }
-            if (manager.IsGrouped) {
-                EventManager.CallEvent(e);
-            }
-            return A;
+        private void CheckGroup() {
+            manager.IsGrouped = manager.Player1.CurrentLocation == null && manager.Player2.CurrentLocation == null 
+                                || manager.Player1.CurrentLocation != null && manager.Player2.CurrentLocation != null 
+                                && manager.Player1.CurrentLocation.Name.Equals(manager.Player2.CurrentLocation.Name);
+        }
+
+        private static bool CheckReference(object A, object B) {
+            return (A == null && B != null) || (A != null && B == null);
         }
 
         public void Handle(InGoingMessages obj) {
