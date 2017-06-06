@@ -32,7 +32,7 @@ namespace Assets.scripts {
             }
             if (TextToBoxListInChoiceScene.Count != 0) {
                 lock (TextToBoxListInChoiceScene) {
-                    AddTextBoxToListInChoiceScene(TextToBoxListInChoiceScene.Dequeue());                    
+                    AddTextBoxToListInChoiceScene(TextToBoxListInChoiceScene.Dequeue());
                 }
             }
             if (gotoPosition.Length != 0) {
@@ -40,7 +40,7 @@ namespace Assets.scripts {
                 gotoPosition = "";
             }
         }
-        
+
         private static void AddTextBoxToListInChoiceScene(string text) {
             var textBox = GameObject.FindGameObjectWithTag("Description");
             var template = textBox.transform.parent.GetChild(1);
@@ -79,7 +79,7 @@ namespace Assets.scripts {
                 manager.WaitingForResponse = true;
                 return;
             }
-            
+
             Debug.Log("Choose");
             manager.WaitingForResponse = false;
             gotoPosition = scene;
@@ -87,7 +87,7 @@ namespace Assets.scripts {
 
         private bool HandleActionBoolean(object obj) {
             client.Communication.SendObject(obj);
-            
+
             if (!(client.Communication.GetNextResponse() is AllIsWell)) {
                 return false;
             }
