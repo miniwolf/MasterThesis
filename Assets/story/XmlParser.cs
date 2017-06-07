@@ -32,6 +32,15 @@ namespace Xml2CSharp
         public string KnowsLocation { get; set; }
         [XmlElement(ElementName="results")]
         public Results Results { get; set; }
+        [XmlElement(ElementName="pick")]
+        public Pick Pick { get; set; }
+    }
+
+    [XmlRoot(ElementName = "pick")]
+    [Serializable]
+    public class Pick {
+        [XmlElement(ElementName="class")]
+        public string Class { get; set; }
     }
 
     [XmlRoot(ElementName="choices")]

@@ -113,7 +113,9 @@ namespace Assets.scripts {
             if (manager.Player1.CurrentQuest == null) {
                 HandleAction(message, "scenes/Quest");
             } else if (HandleActionBoolean(message) && !manager.WaitingForResponse) {
-                GameStateManager.AddChoiceDescriptionToUI(choiceCopy);
+                manager.AddChoiceDescriptionToUI(manager.Player2.HasChosen, false);
+                manager.AddChoiceDescriptionToUI(choiceCopy, true);
+                manager.AddGlobalPres(manager.Player2.HasChosen);
             }
         }
 

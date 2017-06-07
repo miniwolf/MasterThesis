@@ -17,10 +17,12 @@ namespace Assets.Events.Handlers {
         
         public void Action() {
             if (manager.manager.WaitingForResponse) {
-                manager.Choose(manager.manager.Player1.HasChosen);
-                return;
+                manager.manager.Player1.Choose(manager.manager.Player1.HasChosen);
+                GameStateManager.AddChoiceDescriptionToUI(manager.manager.Player1.HasChosen);
+                GameStateManager.AddChoiceDescriptionToUI(manager.manager.Player2.HasChosen);
+                manager.manager.AddGlobalPres(manager.manager.Player2.HasChosen);
             }
-            manager.manager.WaitingForResponse = true;
+            manager.manager.WaitingForResponse = !manager.manager.WaitingForResponse;
         }
     }
 }

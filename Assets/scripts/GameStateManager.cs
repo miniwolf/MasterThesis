@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using UnityEngine;
-using UnityEngine.UI;
 using Xml2CSharp;
 
 namespace Assets.scripts {
@@ -72,12 +71,23 @@ namespace Assets.scripts {
             }
         }
 
-        public static void AddChoiceDescriptionToUI(Choice choice) {
+        public void AddChoiceDescriptionToUI(Choice choice, bool iDidIt) {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
                 StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Description.Replace("\r\n", "").Trim());
                 if (choice.Results.Description != null) {
                     StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Results.Description.Text.Replace("\r\n", "").Trim());
-                }                
+                }
+                if (choice.Results.DialogueResult == null) {
+                    return;
+                }
+                var chosenDialogue = Player1.CurrentLocation.Dialogues.Dialogue
+                    .Find(dialogue => dialogue.Name.Equals(choice.Results.DialogueResult.Dialogue));
+                if (!Player1.CheckDialoguePres(chosenDialogue.Pres)) {
+                    return;
+                }
+                foreach (var dialogue in chosenDialogue.Results.Dialogue) {
+                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(dialogue.Text);                        
+                }
             }
         }
 
@@ -93,6 +103,13 @@ namespace Assets.scripts {
 
         public void ResetPlayer() {
             Player1.Reset();
+        }
+
+        public void AddGlobalPres(Choice choice) {
+            if (choice.Results.EffectResults != null
+                && choice.Results.EffectResults.Global != null) {
+                GlobalHas.Add(choice.Results.EffectResults.Global.Has);
+            }
         }
     }
 }

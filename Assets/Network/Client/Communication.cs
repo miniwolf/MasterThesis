@@ -22,7 +22,9 @@ namespace Assets.Network.Client {
         }
 
         public void SendObject(object obj) {
-            formatter.Serialize(output, obj);
+            lock (formatter) {
+                formatter.Serialize(output, obj);
+            }
         }
 
         public void Close() {

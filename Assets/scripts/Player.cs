@@ -195,5 +195,18 @@ namespace Assets.scripts {
             CurrentLocation = null;
             CurrentQuest = null;
         }
+
+        public bool CheckDialoguePres(Pres dialoguePres, bool isMe) {
+            if (dialoguePres.Pick == null) {
+                return true;
+            }
+            if (dialoguePres.Present != null && !Manager.IsGrouped) {
+                return false;
+            }
+            if (isMe && !dialoguePres.Pick.Class.Equals(ClassString)) {
+                return false;
+            }
+            return isMe || Manager.Player2.ClassString.Equals(dialoguePres.Pick.Class);
+        }
     }
 }

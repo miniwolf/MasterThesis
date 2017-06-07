@@ -3,7 +3,6 @@ using Assets.Events;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Messages;
 using Assets.scripts;
-using Xml2CSharp;
 
 namespace Assets.Network.Client.Handlers {
     public class PlayerStateHandler : Handler<PlayerState> {

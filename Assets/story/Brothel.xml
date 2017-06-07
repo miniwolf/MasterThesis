@@ -154,7 +154,7 @@
             <name>D1.1.1.1</name>
             <pre>
                 <present>Theif</present>
-                <Pick class="Mage">C1.1.1</Pick>
+                <pick class="Mage">C1.1.1</pick>
                 <results>
                     <dialogue class="Theif">
                         You cheeky bastard. I didn't know you had it in ya.!
