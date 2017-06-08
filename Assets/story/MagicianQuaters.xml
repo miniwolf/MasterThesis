@@ -1,162 +1,396 @@
 <location>
-    <name value="Magic Quaters"/>
+    <name>Magic Quaters</name>
     <npcs>
-        <npc name="Magician"/>
+        <npc>Magician</npc>
     </npcs>
+    <pres>
+        <present>Mage</present>
+    </pres>
     <quests>
-        <repeatableQuest>
-            <name value="Q2.1"/>
-            <pre>
-                <At location="Magician Quaters"/>
-            </pre>
-            <choices>
-                <choice name="C2.1.1"/>
-                <choice name="C2.1.2"/>
-            </choices>
-        </repeatableQuest>
-        <repeatableQuest>
-            <name value="Q2.2"/>
-            <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Wizard Happy"/>
-                <global>
-                    <Has value="!Reveal Wench"/>
-                </global>
-            </pre>
-            <choices>
-                <choice name="C2.2.1"/>
-                <choice name="C2.2.2"/>
-            </choices>
-        </repeatableQuest>
         <oneshotQuest>
-            <name value="Q2.3"/>
-            <pre>
-                <At location="Magician Quaters"/>
-                <global>
-                    <Has value="Reveal Wench"/>
-                </global>
-            </pre>
-            <choices>
-                <choice name="C2.3.1"/>
-            </choices>
+            <name>Q2.1</name>
+            <description>Talk to the magician</description>
+            <dialogue>
+                Well met. Welcome to the magic quaters. This is where we do.. well.. magic!z
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C2.1.1</choice>
+                    <choice>C2.1.2</choice>
+                    <choice>C2.1.3</choice>
+                    <choice>C2.1.4</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <oneshotQuest>
-            <name value="Q2.4"/>
-            <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Amulet"/>
-            </pre>
-            <choices>
-                <choice name="C2.4.1"/>
-                <choice name="C2.4.2"/>
-            </choices>
+            <name>Q2.2</name>
+            <description>Something brewing at the brothel</description>
+            <pres>
+                <effect>Magician Happy</effect>
+                <global>
+                    <has>!Reveal Wench</has>
+                </global>
+            </pres>
+            <dialogue>
+                Hello, yes. Good to see you again my friend. There is something most urgent I need to discuss with you.
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C2.2.1</choice>
+                    <choice>C2.2.2</choice>
+                    <choice>C2.2.3</choice>
+                </choicesResults>
+            </results>
+        </oneshotQuest>
+        <oneshotQuest>
+            <name>Q2.3</name>
+            <description>
+                A hidden shadow
+            </description>
+            <pres>
+                <global>
+                    <has>Reveal Wench</has>
+                </global>
+            </pres>
+            <dialogue>
+                I do not believe it! A succubus! In the middle of the town - how could I not see this!
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C2.3.1</choice>
+                    <choice>C2.3.2</choice>
+                </choicesResults>
+            </results>
+        </oneshotQuest>
+        <oneshotQuest>
+            <name>Q2.4</name>
+            <description>The truth shall be ours!</description>
+            <pres>
+                <effect>Amulet</effect>
+                <Coop/>
+            </pres>
+            <dialogue>
+                You found the amulet! Amazing! Let me see it!
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C2.4.1</choice>
+                    <choice>C2.4.2</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <randomQuest>
-            <name value="R2a"/>
-            <npc>
-                <npc name="Wench"/>
-            </npc>
-            <pre>
-                <At location="Magician Quaters"/>
-                <Has value="Wench Happy"/>
+            <name>R2a</name>
+            <extranpc>
+                <npc>Wench</npc>
+            </extranpc>
+            <pres>
+                <effect>Wench Happy</effect>
+                <effect>!Wench Companion</effect>
                 <global>
-                    <Has value="Reveal Wench"/>
+                    <has>Reveal Wench</has>
                 </global>
-            </pre>
-            <choices>
-                <choice name="C2a.1"/>
-                <choice name="C2a.2"/>
-            </choices>
+            </pres>
+            <dialogue>
+                My powers are beyond that of this realm! 
+                You should take me with you on your quest for the amulet.
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C2a.1</choice>
+                    <choice>C2a.2</choice>
+                </choicesResults>
+            </results>
         </randomQuest>
     </quests>
     <choices>
-        <repeatChoice>
-            <name value="C2.1.1"/>
+        <choice>
+            <name>C2.1.1</name>
+            <description>Archmage Azorag, it’s an honor.</description>
+            <pres>
+                <class>Mage</class>
+            </pres>
             <results>
+                <description priority="1">
+                    Hello Brilliac, allways a pleasure to see one of the academies finest.
+                </description>
                 <effectResults>
-                    <effect value="Wizard Happy"/>
+                    <effect>Magician Happy</effect>
                 </effectResults>
+                <dialogueResult>
+                    <dialogue>D2.1.1.1</dialogue>
+                </dialogueResult>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C2.1.2"/>
+        </choice>
+        <choice>
+            <name>C2.1.2</name>
+            <description>What do you know about the Amulet of Samarkand?</description>
             <results>
-                <effectResults>
-                    <effect value="Wizard Angry"/>
-                </effectResults>
-                <locationResults>
-                    <name value="Temple"/>
-                </locationResults>
-            </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="Q2.2.1"/>
-            <results>
-                <effectResults>
-                    <effect value="Wizard Angry"/>
-                </effectResults>
-                <locationResults>
-                    <name value="Temple"/>
-                </locationResults>
-            </results>
-        </repeatChoice>
-        <onceChoice>
-            <name value="C2.2.2"/>
-            <results>
+                <description priority="3">
+                    Yes the Amulet has a great power and great wisdom.
+                </description>
                 <choicesResults>
-                    <name value="C2.2.1.1"/>
+                    <choice>C2.1.2.1</choice>
                 </choicesResults>
             </results>
-        </onceChoice>
-        <repeatChoice>
-            <name value="C2.3.1"/>
+        </choice>
+        <choice>
+            <name>C2.1.3</name>
+            <description>Magic is cheating. I prefer it up close and personal.</description>
+            <pres>
+                <class>Thief</class>
+            </pres>
+            <results>
+                <description priority="2">
+                    I'm surprised they didn’t stop you at the door Marcus. From what I’ve heard you are a bit too up close and personal.
+                </description>
+                <effectResults>
+                    <effect>Magician Angry</effect>
+                </effectResults>
+                <dialogueResult>
+                    <dialogue>D2.1.3.1</dialogue>
+                </dialogueResult>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.1.4</name>
+            <description>
+                Sorry to disturb you Archmage. I’ll will be leaving now.
+            </description>
+            <results>
+                <endQuest/>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.1.2.1</name>
+            <description>
+                Do you have any idea about where we could find this amulet?
+            </description>
+            <results>
+                <description priority="3">
+                    Sadly, no. It was lost to the world a thousands years ago, as you might know.
+                    There has however been strange reports from the temple outside of the village. 
+                    If i were you i would go there. But be careful it’s a dangerous place.
+                </description>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.1</name>
+            <description>Yes? Tell me more?</description>
+            <results>
+                <description>
+                    There are dark things looking for the amulet. 
+                    You must go to the brothel and try to discover what is hidden there. 
+                    I sense something very dark and disturbing. 
+                    You will need to use magical powers there.
+                </description>
+                <choicesResults>
+                    <choice>C2.2.1.1</choice>
+                    <choice>C2.2.1.2</choice>
+                    <choice>C2.2.1.3</choice>
+                </choicesResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.2</name>
+            <description>First, tell me more about the Amulet</description>
+            <results>
+                <description>
+                    The Amulet was created by the old gods.. 
+                    It is called the Amulet of Samarkand, and is told to protect the wearer from evil spirits.
+                </description>
+                <dialogueResult>
+                    <dialogue>D2.2.2.1</dialogue>
+                </dialogueResult>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.3</name>
+            <description>
+                Sorry to disturb you Archmage. I’ll will be leaving now.
+            </description>
+            <results>
+                <endQuest/>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.1.1</name>
+            <description>
+                Brothels are of little concern for me… Do you have anything more interesting?
+            </description>
+            <pres>
+                <KnowsLocation>!Temple</KnowsLocation>
+            </pres>
+            <results>
+                <description>
+                    If i tell you about something then it is important.. Nevermind.. 
+                    If you do not care then perhaps you are not worthy of the task. 
+                    You can look to the temple outside the village - maybe that will satistfy your need for adventure.
+                </description>
+                <locationResults>
+                    <location>Temple</location>
+                </locationResults>
+                <effectResults>
+                    <effect>Magician Angry</effect>
+                </effectResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.1.2</name>
+            <description>I promise to check out the brothel. Is there anything else you need me to do?</description>
+            <pres>
+                <KnowsLocation>!Temple</KnowsLocation>
+            </pres>
+            <results>
+                <description priority="2">
+                    Thank you so very much. Yes! in fact you can look to the temple outsite the village. In fact.. i wasnt going to give this to anyone, but since you’ve been so willing to help me. Here is an old key i suspect might help you.
+                </description>
+                <effectResults>
+                    <effect>Key</effect>
+                    <effect>Magician Happy</effect>
+                </effectResults>
+                <locationResults>Temple</locationResults>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.2.1.3</name>
+            <pres>
+                <KnowsLocation>Temple</KnowsLocation>
+            </pres>
+            <results>
+                <description priority="3">
+                    I suspect it has everything to do with the temple...
+                </description>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.3.1</name>
+            <description>What do we do about it?</description>
+            <pres>
+                <effect>!Key</effect>
+            </pres>
             <results>
                 <effectResults>
-                    <effect value="Key"/>
+                    <effect>Key</effect>
                 </effectResults>
                 <locationResults>
-                    <name value="Temple"/>
+                    <location>Temple</location>
                 </locationResults>
+                <description>
+                    Hurry to the temple, take this key it should help you get inside!
+                    Do not go back to the brothel - it is too dangerous!
+                </description>
+                <endQuest/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C2.4.1"/>
+        </choice>
+        <choice>
+            <name>C2.3.2</name>
+            <description>What do we do about it?</description>
+            <pres>
+                <effect>Key</effect>
+            </pres>
+            <results>
+                <description>You must use the key at the temple quick!</description>
+                <endQuest/>
+            </results>
+        </choice>
+        <choice>
+            <name>C2.4.1</name>
+            <description>The amulet is mine! You must die!</description>
             <results>
                 <effectResults>
                     <global>
-                        <effect value="Magician Elminated"/>
+                        <has>Magician Elminated</has>
                     </global>
                 </effectResults>
                 <wingame/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C2.4.2"/>
+        </choice>
+        <choice>
+            <name>C2.4.2</name>
+            <description>Here you go, let's uncover this together.</description>
             <results>
                 <effectResults>
-                    <effect value="Magician Companion"/>
-                    <effect value="!Amulet"/>
+                    <effect>Magician Companion</effect>
+                    <effect>!Amulet</effect>
                 </effectResults>
                 <wingame/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C2a.1"/>
+        </choice>
+        <choice>
+            <name>C2a.1</name>
+            <description>Die filth!</description>
             <results>
                 <effectResults>
                     <global>
-                        <effect value="Wench Elminated"/>
+                        <has>Wench Elminated</has>
                     </global>
                 </effectResults>
+                <endQuests/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C2a.2"/>
+        </choice>
+        <choice>
+            <name>C2a.2</name>
+            <description>You could prove usefull, want to join our party?</description>
             <results>
                 <effectResults>
-                    <effect value="Wench Companion"/>
+                    <effect>Wench Companion</effect>
                 </effectResults>
+                <endQuests/>
             </results>
-        </repeatChoice>
+        </choice>
     </choices>
+    <dialogues>
+        <dialogue>
+            <name>D2.1.1.1</name>
+            <pres>
+                <present>Mage</present>
+                <present>Thief</present>
+                <results>
+                    <dialogue class="Mage">
+                        The pleasure is all mine. Are you still working with pyrotechnics?
+                    </dialogue>
+                    <dialogue class="NPC">
+                        Yes it is very exciting stuff. Altough quite dangerous aswell, perhaps even more so than magic.
+                    </dialogue>
+                    <dialogue class="Thief">
+                        Pyrotechnics I'm not sure i like the sound of that...
+                    </dialogue>
+                </results>
+            </pres>
+        </dialogue>
+        <dialogue>
+            <name>D2.1.3.1</name>
+            <pres>
+                <present>Mage</present>
+            </pres>
+            <results>
+                <dialogue class="Mage">
+                    Magic is not something to fear Marcus. Not in the right hands.
+                </dialogue>
+                <dialogue class="Thief">
+                    I do not fear it. Just too many fools playing with fire...
+                </dialogue>
+            </results>
+        </dialogue>
+        <dialogue>
+            <name>D2.2.2.1</name>
+            <pres>
+                <present>Mage</present>
+            </pres>
+            <results>
+                <dialogue class="Mage">
+                    I hear that this amulet contains a very powerful magical entity that is absorbing the power. 
+                    This is why you are protected.
+                </dialogue>
+                <dialogue class="Thief">
+                    This amulet sounds very dangerous, what if this magical entity was let loose on the world?
+                </dialogue>
+                <dialogue class="Mage">
+                    Well it would probably wreak havoc on the world. But don't worry about it. 
+                    It is safely contained inside the amulets crystal.
+                </dialogue>
+            </results>
+        </dialogue>
+    </dialogues>
 </location>

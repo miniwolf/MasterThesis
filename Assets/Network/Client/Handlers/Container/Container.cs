@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Client.Container {
+namespace Assets.Network.Client.Handlers.Container {
     public interface Container {
-        void AddObject(InGoingMessages<object> obj);
+        void AddObject(InGoingMessages obj);
 
-        Queue<InGoingMessages<object>> GetQueue();
+        Queue<InGoingMessages> GetQueue();
 
         void SetThread(Thread thread);
     }

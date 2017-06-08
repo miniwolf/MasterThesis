@@ -1,36 +1,61 @@
 ﻿using System.Collections.Generic;
-using Assets.scripts;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
+using Xml2CSharp;
 
-public class ChoiceFiller : MonoBehaviour {
-    private GameObject grid;
-    private StateManagerContainer manager;
+namespace Assets.scripts {
+    public class ChoiceFiller : MonoBehaviour {
+        private GameObject grid;
+        private StateManagerContainer manager;
+        private bool updateSelection;
 
-    public GameObject ButtonTemplate;
+        public GameObject ButtonTemplate;
 
-    // Use this for initialization
-    public void Start() {
-        grid = GameObject.FindGameObjectWithTag("LevelGrid");
-        Assert.IsNotNull(ButtonTemplate);
-        manager = GameObject.FindGameObjectWithTag("StateManager")
-            .GetComponent<StateManagerContainer>();;
-        FillGrid(manager.manager.PossibleChoices);
-    }
+        // Use this for initialization
+        public void Start() {
+            grid = GameObject.FindGameObjectWithTag("LevelGrid");
+            manager = GameObject.FindGameObjectWithTag("StateManager")
+                .GetComponent<StateManagerContainer>();;
+            FillGrid(manager.manager.PossibleChoices);
+            manager.manager.SetQuestDescription();
+        }
 
-    private void FillGrid(IEnumerable<choicesChoice> choices) {
-        foreach (var choice in choices) {
-            if (choice == null) {
-                continue; // TODO: Fucking fix this
+        public void Update() {
+            if (!updateSelection) {
+                return;
             }
+            ClearSelection();
+            FillGrid(manager.manager.PossibleChoices);
+            updateSelection = false;
+        }
+
+        public void UpdateSelection() {
+            updateSelection = true;
+        }
+
+        public void ClearSelection() {
+            foreach (Transform element in grid.transform) {
+                Destroy(element.gameObject);
+            }
+        }
+
+        public void FillGridWithItem(Choice choice) {
             var buttonInstance = Instantiate(ButtonTemplate);
-            buttonInstance.GetComponentInChildren<Text>().text = choice.name;
+            buttonInstance.GetComponentInChildren<Text>().text = choice.Description.Replace("\r\n", "").Trim();
             var button = buttonInstance.GetComponent<Button>();
             var choiceCopy = choice;
             button.onClick.AddListener(delegate { manager.Choose(choiceCopy); });
 
-            buttonInstance.transform.parent = grid.transform;
+            buttonInstance.transform.SetParent(grid.transform);
+        }
+
+        private void FillGrid(IEnumerable<Choice> choices) {
+            foreach (var choice in choices) {
+                if (choice == null) {
+                    continue; // TODO: Fucking fix this
+                }
+                FillGridWithItem(choice);
+            }
         }
     }
 }

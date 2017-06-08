@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.scripts;
+using Xml2CSharp;
 using Xunit;
 
 namespace Test.Assets.scripts {
@@ -12,28 +14,24 @@ namespace Test.Assets.scripts {
 
         [Fact]
         public void FirstEncounterHasIndex1() {
-            Assert.True("".Equals(manager.Player1.CurrentLocation.Name.Value));
+            Assert.True("".Equals(manager.Player1.CurrentLocation.Name));
         }
 
         [Fact]
         public void HasBrothelAsPossibleLocation() {
-            var contains = manager.Locations.Any(location => "Brothel".Equals(location.Name.Value));
+            var contains = manager.Locations.Any(location => "Brothel".Equals(location.Name));
             Assert.True(contains);
         }
 
         [Fact]
         public void NotRevealWenchIsDefault() {
-            var pre = new pre();
-            var has = new Has {value = "!Reveal Wench"};
-            pre.Has = new[] {has};
+            var pre = new Pres {Effect = new List<string>(new[] {"!Reveal Wench"})};
             Assert.True(manager.Player1.HasPre(pre));
         }
 
         [Fact]
         public void NotRevealWenchIsDefaultInGlobal() {
-            var global = new global();
-            var has = new Has {value = "!Reveal Wench"};
-            global.Has = new[]{has};
+            var global = new Global {Has = "!Reveal Wench"};
             Assert.True(manager.HasPre(global));
         }
 
@@ -101,7 +99,7 @@ namespace Test.Assets.scripts {
             var q11 = brothel.Quests.RepeatableQuest[0];
             manager.Player1.Goto(brothel);
             manager.Player1.StartQuest(q11);
-            Assert.Equal("C1.1.1", manager.PossibleChoices[0].name);
+            Assert.Equal("C1.1.1", manager.PossibleChoices[0].Name);
         }
 
         [Fact]
@@ -123,8 +121,8 @@ namespace Test.Assets.scripts {
             manager.Player1.StartQuest(q11);
             var c111 = manager.PossibleChoices[0];
             manager.Player1.Choose(c111);
-            manager.Player1.Goto(new location());
-            Assert.Equal("", manager.Player1.CurrentLocation.Name.Value);
+            manager.Player1.Goto(new Location());
+            Assert.Equal("", manager.Player1.CurrentLocation.Name);
         }
 
         [Fact]
@@ -149,7 +147,7 @@ namespace Test.Assets.scripts {
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             var c1121 = manager.PossibleChoices[0];
-            Assert.Equal("C1.1.2.1", c1121.name);
+            Assert.Equal("C1.1.2.1", c1121.Name);
             manager.Player1.Choose(c1121);
             Assert.Contains("Temple", manager.Player1.KnownLocation);
         }
@@ -160,15 +158,15 @@ namespace Test.Assets.scripts {
             manager.Player1.State.Add("Wizard Angry");
             manager.Player1.Goto(brothel);
             var q11 = manager.PossibleQuests[0];
-            Assert.Equal("Q1.1", q11.Name.Value);
+            Assert.Equal("Q1.1", q11.Name);
             manager.Player1.StartQuest(q11);
 
             var c112 = manager.PossibleChoices[1];
-            Assert.Equal("C1.1.2", c112.name);
+            Assert.Equal("C1.1.2", c112.Name);
             manager.Player1.Choose(c112);
 
             var c1121 = manager.PossibleChoices[0];
-            Assert.Equal("C1.1.2.1", c1121.name);
+            Assert.Equal("C1.1.2.1", c1121.Name);
         }
 
         [Fact]
@@ -182,14 +180,14 @@ namespace Test.Assets.scripts {
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             var c1122 = manager.PossibleChoices[1];
-            Assert.Equal("C1.1.2.2", c1122.name);
+            Assert.Equal("C1.1.2.2", c1122.Name);
             manager.Player1.Choose(c1122);
 
             manager.Player1.StartQuest(q11);
             c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             c1122 = manager.PossibleChoices[1];
-            Assert.NotEqual("C1.1.2.2", c1122.name);
+            Assert.NotEqual("C1.1.2.2", c1122.Name);
         }
 
         [Fact]
@@ -200,7 +198,7 @@ namespace Test.Assets.scripts {
             manager.Player1.StartQuest(q11);
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
-            Assert.DoesNotContain("C1.1.2.2", manager.PossibleChoices.Select(choice => choice.name));
+            Assert.DoesNotContain("C1.1.2.2", manager.PossibleChoices.Select(choice => choice.Name));
         }
 
         [Fact]
@@ -213,24 +211,24 @@ namespace Test.Assets.scripts {
             var c112 = manager.PossibleChoices[1];
             manager.Player1.Choose(c112);
             var c1121 = manager.PossibleChoices[0];
-            Assert.Equal("C1.1.2.1", c1121.name);
+            Assert.Equal("C1.1.2.1", c1121.Name);
             manager.Player1.Choose(c1121);
             Assert.Contains("Temple", manager.Player1.KnownLocation);
 
             var temple = manager.Locations[2];
-            Assert.Equal("Temple", temple.Name.Value);
+            Assert.Equal("Temple", temple.Name);
             manager.Player1.Goto(temple);
-            Assert.Equal("Temple", manager.Player1.CurrentLocation.Name.Value);
+            Assert.Equal("Temple", manager.Player1.CurrentLocation.Name);
         }
 
         [Fact]
         public void CannotTakeQ23WithoutRevealedWench() {
             var magicianQuaters = manager.Locations[0];
             var q23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.Equal("Q2.3", q23.Name.Value);
+            Assert.Equal("Q2.3", q23.Name);
 
             manager.Player1.Goto(magicianQuaters);
-            var quest = manager.PossibleQuests.FirstOrDefault(q => q.Name.Value.Equals("Q2.3"));
+            var quest = manager.PossibleQuests.FirstOrDefault(q => "Q2.3".Equals(q.Name));
             Assert.Null(quest);
         }
 
@@ -238,7 +236,7 @@ namespace Test.Assets.scripts {
         public void CanOnlyTakeQ23MoreThanOneTime() {
             var magicianQuaters = manager.Locations[0];
             var q23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.Equal("Q2.3", q23.Name.Value);
+            Assert.Equal("Q2.3", q23.Name);
 
             manager.Player1.Goto(magicianQuaters);
             manager.Player1.StartQuest(q23);
@@ -246,7 +244,7 @@ namespace Test.Assets.scripts {
             manager.Player1.Choose(c231);
 
             var nQ23 = magicianQuaters.Quests.OneshotQuest[0];
-            Assert.NotEqual("Q2.3", nQ23.Name.Value);
+            Assert.NotEqual("Q2.3", nQ23.Name);
         }
 
         [Fact]
@@ -254,11 +252,11 @@ namespace Test.Assets.scripts {
             var magicianQuaters = manager.Locations[0];
             manager.Player1.Goto(magicianQuaters);
             var q21 = manager.PossibleQuests[0];
-            Assert.Equal("Q2.1", q21.Name.Value);
+            Assert.Equal("Q2.1", q21.Name);
             manager.Player1.StartQuest(q21);
 
             var c212 = manager.PossibleChoices[1];
-            Assert.Equal("C2.1.2", c212.name);
+            Assert.Equal("C2.1.2", c212.Name);
             manager.Player1.Choose(c212);
             Assert.Contains("Wizard Angry", manager.Player1.State);
         }
@@ -267,7 +265,7 @@ namespace Test.Assets.scripts {
         public void GoingToTempleWillHaveNoQuestsAsWeAreSinglePlayer() {
             manager.Player1.KnownLocation.Add("Temple");
             var temple = manager.Locations[2];
-            Assert.Equal("Temple", temple.Name.Value);
+            Assert.Equal("Temple", temple.Name);
             manager.Player1.Goto(temple);
 
             Assert.Empty(manager.PossibleQuests);
@@ -276,18 +274,18 @@ namespace Test.Assets.scripts {
         [Fact]
         public void TakingC211WillAddQ22ToPossibleQuests() {
             var magicianQuaters = manager.Locations[0];
-            Assert.Equal("Magic Quaters", magicianQuaters.Name.Value);
+            Assert.Equal("Magic Quaters", magicianQuaters.Name);
             manager.Player1.Goto(magicianQuaters);
 
             var Q21 = manager.PossibleQuests[0];
-            Assert.Equal("Q2.1", Q21.Name.Value);
+            Assert.Equal("Q2.1", Q21.Name);
             manager.Player1.StartQuest(Q21);
 
             var C212 = manager.PossibleChoices[0];
-            Assert.Equal("C2.1.1", C212.name);
+            Assert.Equal("C2.1.1", C212.Name);
             manager.Player1.Choose(C212);
 
-            Assert.True(manager.PossibleQuests.Exists(quest => quest.Name.Value.Equals("Q2.2")));
+            Assert.True(manager.PossibleQuests.Exists(quest => quest.Name.Equals("Q2.2")));
         }
 
         [Fact]
@@ -297,7 +295,6 @@ namespace Test.Assets.scripts {
             var magicianQuaters = manager.Locations[0];
             manager.Player1.Goto(magicianQuaters);
             manager.Player1.Goto(temple);
-
             Assert.Empty(manager.PossibleQuests);
         }
     }

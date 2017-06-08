@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Network.Shared {
+namespace Assets.Network.Shared {
     [Serializable]
     public class AllIsWell : Response {
     }

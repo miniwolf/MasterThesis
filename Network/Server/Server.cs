@@ -2,8 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Assets.Network.Server;
-using Network.Shared;
+using Assets.Network.Shared;
 
 namespace Network.Server {
     public class Server {
@@ -14,8 +13,6 @@ namespace Network.Server {
 
         public Server(int port) {
             this.port = port;
-            var name = "test";
-            var ip = IPAddress.Parse("127.0.0.1");
         }
 
         public static void Main() {
@@ -30,10 +27,11 @@ namespace Network.Server {
 
         private static void WorkerCreation(TcpListener listener) {
             var tcpClient = listener.AcceptTcpClient();
-            var worker = new OutputWorker(tcpClient);
+            var worker = new OutputWorker(tcpClient, ID);
             var inputWorker = new InputWorker(ID, tcpClient, worker);
             var outputThread = new Thread(() => CreateOutputWorker(worker));
             var inputThread = new Thread(() => CreateInputWorker(inputWorker));
+            Console.Out.WriteLine("Logging in ID: " + ID);
             outputThread.Start();
             inputThread.Start();
             var state = new PlayerState {ID = ID};

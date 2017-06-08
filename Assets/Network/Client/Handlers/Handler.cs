@@ -1,10 +1,14 @@
 ﻿using System.Threading;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
 
-namespace Network.Client.Handlers {
-    public interface Handler<T> {
-        void Handle(InGoingMessages<T> obj);
-
+namespace Assets.Network.Client.Handlers {
+    public interface Handler {
         Thread GetThread();
+
+        void Handle(InGoingMessages obj);
+    }
+
+    public interface Handler<T> : Handler {
+        void Handle(InGoingMessages<T> obj);
     }
 }

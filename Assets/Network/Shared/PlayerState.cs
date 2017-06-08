@@ -1,14 +1,17 @@
 ﻿using System;
-using Network.Shared.Messages;
+using Assets.Network.Shared.Messages;
+using Xml2CSharp;
 
-namespace Network.Shared {
+namespace Assets.Network.Shared {
     [Serializable]
     public class PlayerState : InGoingMessages<PlayerState>, Access<PlayerState> {
         public int ID { get; set; }
-        public location Location { get; set; }
+        public Location Location { get; set; }
         public Quest Quest { get; set; }
+        public string Npc { get; set; }
+        public string Class { get; set; }
 
-        public Access<PlayerState> GetAcces() {
+        public Access<PlayerState> GetAccess() {
             return this;
         }
 

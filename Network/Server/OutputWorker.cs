@@ -10,19 +10,34 @@ namespace Network.Server {
         private bool running = true;
         private readonly NetworkStream networkStream;
         private readonly BinaryFormatter formatter = new BinaryFormatter();
+        private readonly int ID;
 
-        public OutputWorker(TcpClient tcpClient) {
+        public OutputWorker(TcpClient tcpClient, int ID) {
             networkStream = tcpClient.GetStream();
             Response = new Queue<object>();
+            this.ID = ID;
         }
 
-        public Queue<object> Response { get; private set; }
+        public Queue<object> Response { get; }
 
         public void Start() {
             while (running) {
-                SendResponses();
+                try {
+                    SendResponses();
+                } catch (IOException) {
+                    Console.Out.WriteLine("Closing output worker");
+                    running = false;
+                }
                 while (Response.Count == 0 && running) {
-                    Thread.Sleep(100);
+                    try {
+                        Thread.Sleep(100);
+                    } catch(IOException) {
+                        Console.Out.WriteLine("Closing output worker");
+                        running = false;
+                    } catch (ThreadInterruptedException) {
+                        Console.Out.WriteLine("Closing output worker");
+                        running = false;
+                    }
                 }
             }
             //"Logging out user " + myUserName;
@@ -46,6 +61,10 @@ namespace Network.Server {
             Console.WriteLine("so: " + obj);
             formatter.Serialize(networkStream, obj);
             networkStream.Flush();
+        }
+
+        public int GetID() {
+            return ID;
         }
     }
 }

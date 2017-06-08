@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using Network.Client;
-using Network.Client.Container;
-using Network.Shared;
-using Network.Shared.Messages;
+using System.Threading;
+using Assets.Network.Client.Handlers.Container;
+using Assets.Network.Shared;
+using Assets.Network.Shared.Messages;
+using UnityEngine;
 
 namespace Assets.Network.Client {
     public class InputHandler {
@@ -16,20 +18,29 @@ namespace Assets.Network.Client {
             new Dictionary<Type, Container>();
         private bool running = true;
         private readonly InputDistributor distributor;
+        private readonly Thread distributorThread;
 
         public InputHandler(BinaryFormatter formatter, NetworkStream objIn) {
             this.formatter = formatter;
             this.objIn = objIn;
             distributor = new InputDistributor(containers);
+            distributorThread = new Thread(() => distributor.Start());
+            distributorThread.Start();
         }
 
         public void Start() {
             object input = null;
             while (running) {
                 while (input == null && running) {
-                    input = formatter.Deserialize(objIn);
-                    HandleInput(input);
+                    try {
+                        input = formatter.Deserialize(objIn);
+                        HandleInput(input);
+                    } catch (IOException) {
+                        Debug.Log("Closing inputhandler");
+                        running = false;
+                    }
                 }
+                input = null;
             }
         }
 
@@ -39,11 +50,14 @@ namespace Assets.Network.Client {
                 inputs.Enqueue(item);
                 return;
             }
-            distributor.AddMessage((InGoingMessages<object>) input);
+            distributor.AddMessage((InGoingMessages) input);
         }
 
         public Response ContainsResponse() {
-            return inputs.Dequeue();
+            while (inputs.Count == 0) {}
+            var response = inputs.Dequeue();
+            Debug.Log(response);
+            return response;
         }
 
         public static void Register(Type type, Container handler) {
@@ -57,6 +71,7 @@ namespace Assets.Network.Client {
         public void Close() {
             running = false;
             distributor.Stop();
+            distributorThread.Interrupt();
         }
     }
 }

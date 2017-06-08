@@ -1,105 +1,169 @@
 <location>
-    <name value="Brothel"/>
+    <name>Brothel</name>
     <npcs>
-        <npc name="Wench"/>
+        <npc>Wench</npc>
     </npcs>
+    <pres>
+        <present>Thief</present>
+    </pres>
     <quests>
-        <repeatableQuest>
-            <name value="Q1.1"/>
-            <pre>
-                <At location="Brothel"/>
-            </pre>
-            <choices>
-                <choice name="C1.1.1"/>
-                <choice name="C1.1.2"/>
-            </choices>
-        </repeatableQuest>
+        <oneshotQuest>
+            <name>Q1.1</name>
+            <description>Talk to bar wench</description>
+            <dialogue>
+                Hello stranger.. how did you get in here? Nevermind, i don’t mind unwanted guests. Are you here for pleasure or buisness?
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C1.1.1</choice>
+                    <choice>C1.1.2</choice>
+                    <choice>C1.1.3</choice>
+                </choicesResults>
+            </results>
+        </oneshotQuest>
         <randomQuest>
-            <name value="R1a"/>
-            <npc>
-                <npc name="Magician"/>
-            </npc>
+            <name>R1a</name>
+            <extranpc>
+                <npc>Magician</npc>
+            </extranpc>
             <pre>
-                <At location="Brothel"/>
-                <Has value="Key"/>
+                <Has>Key</Has>
             </pre>
-            <choices>
-                <choice name=""/>
-            </choices>
+            <dialogue>
+                The magician and the wench are both standing at the entrance to the brothel. They seem to be arguging.
+            </dialogue>
+            <results>
+                <choicesResults>
+                    <choice>C1a.1</choice>
+                    <choice>C1a.2</choice>
+                </choicesResults>
+            </results>
         </randomQuest>
     </quests>
     <choices>
-        <repeatChoice>
-            <name value="C1.1.1"/>
+        <choice>
+            <name>C1.1.1</name>
+            <description>
+                Pleasure ;) Let me go upstairs and checkout your selection.
+            </description>
             <results>
+                <description priority="1">
+                    Head on up, i hope they satisfy your needs. *Laugh Im sure they will.
+                </description>
                 <effectResults>
-                    <effect value="Wench Happy"/>
+                    <effect>Wench Happy</effect>
                 </effectResults>
+                <dialogueResult>
+                    <dialogue>D1.1.1.1</dialogue>
+                </dialogueResult>
+                <splitParty/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C1.1.2"/>
+        </choice>
+        <choice>
+            <name>C1.1.2</name>
+            <description>
+                Business. I’ll stay here and talk.
+            </description>
             <results>
+                <description priority="2">
+                    Hmm. oh well then.. You do look like the boring type. How about some treasure hunting?
+                </description>
                 <effectResults>
-                    <effect value="Wench Angry"/>
+                    <effect>Wench Angry</effect>
                 </effectResults>
-                <choices>
-                    <choice name="C1.1.2.1"/>
-                    <choice name="C1.1.2.2"/>
-                    <choice name="C1.1.2.3"/>
-                </choices>
+                <choicesResults>
+                    <choice>C1.1.2.1</choice>
+                    <choice>C1.1.2.2</choice>
+                    <choice>C1.1.2.3</choice>
+                </choicesResults>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C1.1.2.1"/>
-            <pre>
-                <Has value="Wizard Angry"/>
-            </pre>
+        </choice>
+        <choice>
+            <name>C1.1.3</name>
+            <description>
+                Neither, maybe I’ll come back.
+            </description>
+            <results>
+                <endQuest/>
+            </results>
+        </choice>
+        <choice>
+            <name>C1.1.2.1</name>
+            <description>Sure why not?</description>
             <results>
                 <effectResults>
-                    <effect value="Wench Happy"/>
+                    <effect>Wench Happy</effect>
                 </effectResults>
                 <locationResults>
-                    <name value="Temple"/>
+                    <location>Temple</location>
                 </locationResults>
             </results>
-        </repeatChoice>
-        <onceChoice>
-            <name value="C1.1.2.2"/>
-            <pre>
-                <Has value="Wizard Angry"/>
-                <KnowsLocation value="Temple"/>
-            </pre>
+        </choice>
+        <choice>
+            <name>C1.1.2.2</name>
+            <description>Yes, we are venturing to the hidden temple.</description>
+            <pres>
+                <KnowsLocation>Temple</KnowsLocation>
+            </pres>
             <results>
                 <effectResults>
-                    <effect value="Wench Happy"/>
-                    <effect value="Wench Companion"/>
+                    <effect>Wench Happy</effect>
+                    <effect>Wench Companion</effect>
                 </effectResults>
             </results>
-        </onceChoice>
-        <onceChoice>
-            <name value="C1.1.2.3"/>
+        </choice>
+        <choice>
+            <name>C1.1.2.3</name>
+            <description>You are not what you seem!</description>
+            <pres>
+                <class>Mage</class>
+            </pres>
             <results>
                 <effectResults>
-                    <effect value="Wench Revealed"/>
+                    <effect>Wench Revealed</effect>
                 </effectResults>
             </results>
-        </onceChoice>
-        <repeatChoice>
-            <name value="C1a.1"/>
+        </choice>
+        <choice>
+            <name>C1a.1</name>
+            <description>
+                I want the magician to join our party.
+            </description>
             <results>
                 <effectResults>
-                    <effect value="Magician Companion"/>
+                    <effect>Magician Companion</effect>
                 </effectResults>
+                <endQuest/>
             </results>
-        </repeatChoice>
-        <repeatChoice>
-            <name value="C1a.2"/>
+        </choice>
+        <choice>
+            <name>C1a.2</name>
+            <description>
+                I want the wench to join our party.
+            </description>
             <results>
                 <effectResults>
-                    <effect value="Wench Companion"/>
+                    <effect>Wench Companion</effect>
                 </effectResults>
+                <endQuest/>
             </results>
-        </repeatChoice>
+        </choice>
     </choices>
+    <dialogues>
+        <dialogue>
+            <name>D1.1.1.1</name>
+            <pre>
+                <present>Theif</present>
+                <pick class="Mage">C1.1.1</pick>
+                <results>
+                    <dialogue class="Theif">
+                        You cheeky bastard. I didn't know you had it in ya.!
+                    </dialogue>
+                    <dialogue class="Mage">
+                        Erhm.. we are all human Marcus.
+                    </dialogue>
+                </results>
+            </pre>
+        </dialogue>
+    </dialogues>
 </location>

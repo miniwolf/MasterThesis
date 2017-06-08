@@ -1,4 +1,4 @@
-﻿namespace Network.Shared {
+﻿namespace Assets.Network.Shared {
     public interface Response {
     }
 }

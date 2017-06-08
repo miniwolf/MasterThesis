@@ -1,5 +1,8 @@
-﻿namespace Network.Shared.Messages {
-    public interface InGoingMessages<T> {
-        Access<T> GetAcces();
+﻿namespace Assets.Network.Shared.Messages {
+    public interface InGoingMessages {
+    }
+
+    public interface InGoingMessages<T> : InGoingMessages {
+        Access<T> GetAccess();
     }
 }
