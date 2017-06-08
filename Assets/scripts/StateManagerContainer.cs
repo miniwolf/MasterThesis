@@ -44,7 +44,7 @@ namespace Assets.scripts {
         private static void AddTextBoxToListInChoiceScene(string text) {
             var textBox = GameObject.FindGameObjectWithTag("Description");
             var template = textBox.transform.parent.GetChild(1);
-            var templateCopy = Object.Instantiate(template.transform);
+            var templateCopy = Instantiate(template.transform);
             templateCopy.GetComponent<Text>().text = text;
             templateCopy.parent = textBox.transform;
             templateCopy.gameObject.SetActive(true);

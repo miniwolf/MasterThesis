@@ -9,6 +9,7 @@ namespace Assets.Network.Shared {
         public Location Location { get; set; }
         public Quest Quest { get; set; }
         public string Npc { get; set; }
+        public string Class { get; set; }
 
         public Access<PlayerState> GetAccess() {
             return this;

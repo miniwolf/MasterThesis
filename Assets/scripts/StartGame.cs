@@ -1,4 +1,3 @@
-﻿using System;
 using Assets.Network.Shared.Actions;
 using UnityEngine;
 using UnityEngine.SceneManagement;

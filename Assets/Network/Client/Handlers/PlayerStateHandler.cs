@@ -37,6 +37,9 @@ namespace Assets.Network.Client.Handlers {
                     EventManager.CallEvent(Events.Events.StartedTalking);
                 }
             }
+            if (CheckReference(playerState.Class, manager.Player2.ClassString)) {
+                manager.Player2.ClassString = playerState.Class;
+            }
             CheckGroup();
         }
 
@@ -47,7 +50,7 @@ namespace Assets.Network.Client.Handlers {
         }
 
         private static bool CheckReference(object A, object B) {
-            return (A == null && B != null) || (A != null && B == null);
+            return A == null && B != null || A != null && B == null;
         }
 
         public void Handle(InGoingMessages obj) {

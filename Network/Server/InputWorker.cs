@@ -64,6 +64,8 @@ namespace Network.Server {
             } else if (input is StartedQuest) {
                 HandleQuest(input);
                 output.Response.Enqueue(new AllIsWell());
+            } else if (input is ClassChosen) {
+                HandleClass(input);
             } else {
                 Console.Out.WriteLine("Does not understand: " + input);
             }
@@ -71,6 +73,13 @@ namespace Network.Server {
 
         private void HandleChoices() {
             Data.GetAllBut(ID);
+        }
+
+        private void HandleClass(object input) {
+            var playerState = Data.GetUserState(ID);
+            Console.Out.WriteLine("Class");
+            playerState.Class = ((InGoingMessages<string>) input).GetAccess().GetData();
+            Data.UpdateState(ID, playerState);
         }
 
         private void HandleLocation(object input) {

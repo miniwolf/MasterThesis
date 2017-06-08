@@ -82,11 +82,11 @@ namespace Assets.scripts {
                 }
                 var chosenDialogue = Player1.CurrentLocation.Dialogues.Dialogue
                     .Find(dialogue => dialogue.Name.Equals(choice.Results.DialogueResult.Dialogue));
-                if (!Player1.CheckDialoguePres(chosenDialogue.Pres)) {
+                if (!Player1.CheckDialoguePres(chosenDialogue.Pres, iDidIt)) {
                     return;
                 }
                 foreach (var dialogue in chosenDialogue.Results.Dialogue) {
-                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(dialogue.Text);                        
+                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(dialogue.Text.Replace("\r\n", "").Trim());
                 }
             }
         }

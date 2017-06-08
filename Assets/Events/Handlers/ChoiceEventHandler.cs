@@ -10,16 +10,16 @@ namespace Assets.Events.Handlers {
             EventManager.SubscribeToEvent(Events.OtherHasChosen, this);
             manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
         }
-        
+
         private void OnDestroy() {
             EventManager.UnsubscribeToEvent(Events.OtherHasChosen, this);
         }
-        
+
         public void Action() {
             if (manager.manager.WaitingForResponse) {
                 manager.manager.Player1.Choose(manager.manager.Player1.HasChosen);
-                GameStateManager.AddChoiceDescriptionToUI(manager.manager.Player1.HasChosen);
-                GameStateManager.AddChoiceDescriptionToUI(manager.manager.Player2.HasChosen);
+                manager.manager.AddChoiceDescriptionToUI(manager.manager.Player1.HasChosen, true);
+                manager.manager.AddChoiceDescriptionToUI(manager.manager.Player2.HasChosen, false);
                 manager.manager.AddGlobalPres(manager.manager.Player2.HasChosen);
             }
             manager.manager.WaitingForResponse = !manager.manager.WaitingForResponse;
