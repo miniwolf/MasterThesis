@@ -1,6 +1,7 @@
 ﻿using Assets.Network.Shared;
 using Assets.Network.Shared.Actions;
 using Assets.scripts;
+using Xml2CSharp;
 
 namespace Assets.Network.Client.Handlers {
     public class GeneralHandlerFactory {
@@ -9,7 +10,7 @@ namespace Assets.Network.Client.Handlers {
         public static void Construct(GameStateManager manager) {
             handler.RegisterHandler(typeof(PlayerState), new PlayerStateHandler(manager));
             handler.RegisterHandler(typeof(StayResponse), new StayResponseHandler());
-            handler.RegisterHandler(typeof(OtherHasChosen), new OtherChosenHandler());
+            handler.RegisterHandler(typeof(OtherHasChosen), new OtherChosenHandler(manager));
         }
     }
 }

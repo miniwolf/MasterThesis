@@ -6,6 +6,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Actions;
+using Assets.Network.Shared.Messages;
+using Xml2CSharp;
 
 namespace Network.Server {
     public class InputWorker : Worker {
@@ -71,17 +73,17 @@ namespace Network.Server {
             Data.GetAllBut(ID);
         }
 
-        private void HandleLocation(GoingTo input) {
+        private void HandleLocation(object input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Location");
-            playerState.Location = (input).GetData();
+            playerState.Location = ((InGoingMessages<Location>) input).GetAccess().GetData();
             Data.UpdateState(ID, playerState);
         }
 
         private void HandleQuest(object input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Quest");
-            playerState.Quest = ((StartedQuest) input).GetData();
+            playerState.Quest = ((InGoingMessages<Quest>) input).GetAccess().GetData();
             Data.UpdateState(ID, playerState);
         }
 
@@ -100,7 +102,7 @@ namespace Network.Server {
         private void HandleTalking(object input) {
             var playerState = Data.GetUserState(ID);
             Console.Out.WriteLine("Talking");
-            playerState.Npc = ((TalkingTo) input).npc;
+            playerState.Npc = ((InGoingMessages<string>) input).GetAccess().GetData();
             Data.UpdateState(ID, playerState);
         }
     }

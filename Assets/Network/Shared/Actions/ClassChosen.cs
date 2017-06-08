@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using Assets.Network.Shared.Messages;
 
 namespace Assets.Network.Shared.Actions {
     [Serializable]
-    public class TalkingTo : InGoingMessages<string>, Access<string> {
-        public readonly string npc;
+    public class ClassChosen : InGoingMessages<string>, Access<string> {
+        private readonly string clazz;
 
-        public TalkingTo(string npc) {
-            this.npc = npc;
+        public ClassChosen(string clazz) {
+            this.clazz = clazz;
         }
 
         public Access<string> GetAccess() {
@@ -15,7 +15,7 @@ namespace Assets.Network.Shared.Actions {
         }
 
         public string GetData() {
-            return npc;
+            return clazz;
         }
     }
 }
