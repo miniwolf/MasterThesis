@@ -8,7 +8,7 @@ namespace Assets.scripts {
             var manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
             manager.manager.Player1.ClassString = clazz;
             manager.client.Communication.SendObject(new ClassChosen(clazz));
-            SceneManager.LoadScene("Locations");
+            SceneManager.LoadScene("BackgroundMageAndThief");
         }
     }
 }

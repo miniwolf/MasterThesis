@@ -27,7 +27,7 @@
                 <npc>Magician</npc>
             </extranpc>
             <pre>
-                <Has>Key</Has>
+                <has>Key</has>
             </pre>
             <dialogue>
                 The magician and the wench are both standing at the entrance to the brothel. They seem to be arguging.
@@ -91,6 +91,9 @@
             <name>C1.1.2.1</name>
             <description>Sure why not?</description>
             <results>
+                <description>
+                    Alright, the temple is located just outsite the village. Head on out, im sure there something interesting to be found!
+                </description>
                 <effectResults>
                     <effect>Wench Happy</effect>
                 </effectResults>
@@ -101,11 +104,14 @@
         </choice>
         <choice>
             <name>C1.1.2.2</name>
-            <description>Yes, we are venturing to the hidden temple.</description>
+            <description>We are venturing to the hidden temple.</description>
             <pres>
                 <KnowsLocation>Temple</KnowsLocation>
             </pres>
             <results>
+                <description>
+                    That sounds great! I can show you the way and acompnay you! I will not accept a no for an answer.
+                </description>
                 <effectResults>
                     <effect>Wench Happy</effect>
                     <effect>Wench Companion</effect>
@@ -120,7 +126,9 @@
             </pres>
             <results>
                 <effectResults>
-                    <effect>Wench Revealed</effect>
+                    <global>
+                        <has>Reveal Wench</has>
+                    </global>
                 </effectResults>
             </results>
         </choice>

@@ -20,9 +20,9 @@ namespace Assets.scripts {
                 var npcInstance = Instantiate(NpcsTemplate);
                 var texts = npcInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = npc;
-				foreach (GameObject transform in npcInstance.transform) {
+				foreach (Transform transform in npcInstance.transform) {
 					if (transform.name.Equals(npc)) {
-						transform.SetActive(true);
+						transform.gameObject.SetActive(true);
 					}
 				}
                 var button = npcInstance.GetComponentInChildren<Button>();

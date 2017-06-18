@@ -1,5 +1,8 @@
 <location>
     <name>Temple</name>
+    <npcs>
+        <npc>Door</npc>
+    </npcs>
     <pres>
         <KnowsLocation>Temple</KnowsLocation>
         <Coop/>
@@ -13,16 +16,15 @@
                 </npc>
             </npcs>
             <pres>
-                <Has>!Key</Has>
-                <Has>Wench Happy</Has>
-                <Has>!Wench Companion</Has>
+                <has>!Key</has>
+                <has>Wench Happy</has>
+                <has>!Wench Companion</has>
                 <global>
-                    <Has>!RevealWench</Has>
+                    <has>!Reveal Wench</has>
                 </global>
             </pres>
             <dialogue>
-                Hello there travelers. I think it is time you learned my true form!
-                I am indeed a Soccubus! Born from the ashes of the underworld!
+                Hello there travelers. I think it is time you learned my true form! I am indeed a Soccubus! Born from the ashes of the underworld!
             </dialogue>
             <choices>
                 <choice>C3a.1</choice>
@@ -33,24 +35,27 @@
             <name>Q3.1</name>
             <description>Secrets of the Temple</description>
             <pres>
-                <Has>!Amulet</Has>
-                <Has>!Wench Companion</Has>
+                <has>!Amulet</has>
+                <has>!Wench Companion</has>
             </pres>
             <dialogue>In front of you is a massive door.</dialogue>
-            <choices>
-                <choice>C3.1.1</choice>
-                <choice>C3.1.2</choice>
-                <choice>C3.1.3</choice>
-                <choice>C3.1.4</choice>
-                <choice>C3.1.5</choice>
-            </choices>
+            <results>
+                <choicesResults>
+                    <choice>C3.1.1</choice>
+                    <choice>C3.1.2</choice>
+                    <choice>C3.1.3</choice>
+                    <choice>C3.1.4</choice>
+                    <choice>C3.1.5</choice>
+                </choicesResults>
+            </results>
         </oneshotQuest>
         <oneshotQuest>
             <name>Q3.2</name>
-            <pre>
-                <Has>!Amulet</Has>
-                <Has>Wench Companion</Has>
-            </pre>
+            <description>A dark summoning</description>
+            <pres>
+                <has>!Amulet</has>
+                <has>Wench Companion</has>
+            </pres>
             <dialogue>
                 Ah finally! we are here… let me do my dark summoning and get this door open.
             </dialogue>
@@ -99,13 +104,14 @@
             <name>C3.1.5</name>
             <description>Use key on door</description>
             <pres>
-                <Has>Key</Has>
+                <has>Key</has>
             </pres>
             <results>
-                <Has>Amulet</Has>
+                <effectResults>
+                    <effect>Amulet</effect>
+                </effectResults>
                 <description>
-                    There is a loud click and the door opens.
-                    You enter a small room and there in front of you is a glowing object on the ground.
+                    There is a loud click and the door opens. You enter a small room and there in front of you is a glowing object on the ground.
                 </description>
                 <dialogueResult>
                     <dialogue>D3.1.5.1</dialogue>
@@ -117,13 +123,11 @@
             <name>C3.2.1</name>
             <description>There will be no need for dark rituals i have a key.</description>
             <pres>
-                <Has>Key</Has>
+                <has>Key</has>
             </pres>
             <results>
                 <description priority="1">
-                    That key is of no use to us. We do not seek to simply open the door..
-                    There is power here.. old power!
-                    The door is a portal to another dimension.. My dimension..
+                    That key is of no use to us. We do not seek to simply open the door.. There is power here.. old power! The door is a portal to another dimension.. My dimension..
                 </description>
                 <choicesResults>
                     <choice>C3.2.1.1</choice>
@@ -134,13 +138,12 @@
             <name>C3.2.2</name>
             <description>I really don’t like this.. We should find another way.</description>
             <pres>
-                <Has>!Key</Has>
+                <has>!Key</has>
             </pres>
             <results>
                 <effectResults>Wench Angry</effectResults>
                 <description priority="2">
-                    Fool! There is no other way!
-                    There is only my way! The way of the dark forces!
+                    Fool! There is no other way! There is only my way! The way of the dark forces!
                 </description>
                 <choicesResults>
                     <choice>C3.2.1.1</choice>
@@ -161,9 +164,6 @@
         </choice>
         <choice>
             <name>C3.2.2.1</name>
-            <pres>
-                <class>Mage</class>
-            </pres>
             <results>
                 <choicesResults>
                     <choice>C3.2.1.1</choice>
@@ -172,7 +172,7 @@
         </choice>
         <choice>
             <name>C3.2.1.1</name>
-            <description>This has gone too far!</description>
+            <description>This has gone too far! (Kill soccubus)</description>
             <results>
                 <effectResults>
                     <effect>Wench Elminated</effect>
@@ -180,8 +180,7 @@
                     <effect>Amulet</effect>
                 </effectResults>
                 <description priority="1">
-                    The door collapses as the succubus falls to the ground dead.
-                    Inside the rubble you see a glowing object on the ground.
+                    The door collapses as the succubus falls to the ground dead. Inside the rubble you see a glowing object on the ground.
                 </description>
                 <dialogueResult>
                     <dialogue>D3.2.1.1</dialogue>
@@ -195,8 +194,8 @@
             <results>
                 <effectResults>
                     <global>
-                        <effect>Wench Eliminated</effect>
-                        <effect>Wench Reveal</effect>
+                        <has>Wench Eliminated</has>
+                        <has>Reveal Wench</has>
                     </global>
                 </effectResults>
                 <endQuests/>
@@ -205,13 +204,13 @@
         <choice>
             <name>C3a.2</name>
             <pre>
-                <Has>Wench Happy</Has>
+                <has>Wench Happy</has>
             </pre>
             <results>
                 <effectResults>
                     <effect>Wench Companion</effect>
                     <global>
-                        <effect>Wench Reveal</effect>
+                        <has>Reveal Wench</has>
                     </global>
                 </effectResults>
                 <endQuests/>

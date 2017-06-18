@@ -26,7 +26,7 @@
             <name>Q2.2</name>
             <description>Something brewing at the brothel</description>
             <pres>
-                <effect>Magician Happy</effect>
+                <has>Magician Happy</has>
                 <global>
                     <has>!Reveal Wench</has>
                 </global>
@@ -44,9 +44,7 @@
         </oneshotQuest>
         <oneshotQuest>
             <name>Q2.3</name>
-            <description>
-                A hidden shadow
-            </description>
+            <description>A hidden shadow</description>
             <pres>
                 <global>
                     <has>Reveal Wench</has>
@@ -66,7 +64,7 @@
             <name>Q2.4</name>
             <description>The truth shall be ours!</description>
             <pres>
-                <effect>Amulet</effect>
+                <has>Amulet</has>
                 <Coop/>
             </pres>
             <dialogue>
@@ -85,15 +83,14 @@
                 <npc>Wench</npc>
             </extranpc>
             <pres>
-                <effect>Wench Happy</effect>
-                <effect>!Wench Companion</effect>
+                <has>Wench Happy</has>
+                <has>!Wench Companion</has>
                 <global>
                     <has>Reveal Wench</has>
                 </global>
             </pres>
             <dialogue>
-                My powers are beyond that of this realm! 
-                You should take me with you on your quest for the amulet.
+                My powers are beyond that of this realm! You should take me with you on your quest for the amulet.
             </dialogue>
             <results>
                 <choicesResults>
@@ -168,10 +165,11 @@
             </description>
             <results>
                 <description priority="3">
-                    Sadly, no. It was lost to the world a thousands years ago, as you might know.
-                    There has however been strange reports from the temple outside of the village. 
-                    If i were you i would go there. But be careful it’s a dangerous place.
+                    Sadly, no. It was lost to the world a thousands years ago. There has however been strange reports from the temple outside of the village. If i were you i would go there.
                 </description>
+                <locationResults>
+                    <location>Temple</location>
+                </locationResults>
             </results>
         </choice>
         <choice>
@@ -179,10 +177,7 @@
             <description>Yes? Tell me more?</description>
             <results>
                 <description>
-                    There are dark things looking for the amulet. 
-                    You must go to the brothel and try to discover what is hidden there. 
-                    I sense something very dark and disturbing. 
-                    You will need to use magical powers there.
+                    There are dark things looking for the amulet. You must go to the brothel and try to discover what is hidden there. I sense something very dark and disturbing. You will need to use magical powers there.
                 </description>
                 <choicesResults>
                     <choice>C2.2.1.1</choice>
@@ -196,8 +191,7 @@
             <description>First, tell me more about the Amulet</description>
             <results>
                 <description>
-                    The Amulet was created by the old gods.. 
-                    It is called the Amulet of Samarkand, and is told to protect the wearer from evil spirits.
+                    The Amulet was created by the old gods. It is called the Amulet of Samarkand, and is told to protect the wearer from evil spirits.
                 </description>
                 <dialogueResult>
                     <dialogue>D2.2.2.1</dialogue>
@@ -223,9 +217,7 @@
             </pres>
             <results>
                 <description>
-                    If i tell you about something then it is important.. Nevermind.. 
-                    If you do not care then perhaps you are not worthy of the task. 
-                    You can look to the temple outside the village - maybe that will satistfy your need for adventure.
+                    If i tell you about something then it is important.. Nevermind. If you do not care then perhaps you are not worthy of the task. You can look to the temple outside the village - maybe that will satistfy your need for adventure.
                 </description>
                 <locationResults>
                     <location>Temple</location>
@@ -238,9 +230,6 @@
         <choice>
             <name>C2.2.1.2</name>
             <description>I promise to check out the brothel. Is there anything else you need me to do?</description>
-            <pres>
-                <KnowsLocation>!Temple</KnowsLocation>
-            </pres>
             <results>
                 <description priority="2">
                     Thank you so very much. Yes! in fact you can look to the temple outsite the village. In fact.. i wasnt going to give this to anyone, but since you’ve been so willing to help me. Here is an old key i suspect might help you.
@@ -267,7 +256,7 @@
             <name>C2.3.1</name>
             <description>What do we do about it?</description>
             <pres>
-                <effect>!Key</effect>
+                <has>!Key</has>
             </pres>
             <results>
                 <effectResults>
@@ -277,8 +266,7 @@
                     <location>Temple</location>
                 </locationResults>
                 <description>
-                    Hurry to the temple, take this key it should help you get inside!
-                    Do not go back to the brothel - it is too dangerous!
+                    Hurry to the temple, take this key it should help you get inside! Do not go back to the brothel - it is too dangerous!
                 </description>
                 <endQuest/>
             </results>
@@ -287,7 +275,7 @@
             <name>C2.3.2</name>
             <description>What do we do about it?</description>
             <pres>
-                <effect>Key</effect>
+                <has>Key</has>
             </pres>
             <results>
                 <description>You must use the key at the temple quick!</description>
@@ -346,18 +334,18 @@
             <pres>
                 <present>Mage</present>
                 <present>Thief</present>
-                <results>
-                    <dialogue class="Mage">
-                        The pleasure is all mine. Are you still working with pyrotechnics?
-                    </dialogue>
-                    <dialogue class="NPC">
-                        Yes it is very exciting stuff. Altough quite dangerous aswell, perhaps even more so than magic.
-                    </dialogue>
-                    <dialogue class="Thief">
-                        Pyrotechnics I'm not sure i like the sound of that...
-                    </dialogue>
-                </results>
             </pres>
+            <results>
+                <dialogue class="Mage">
+                    The pleasure is all mine. Are you still working with pyrotechnics?
+                </dialogue>
+                <dialogue class="NPC">
+                    Yes it is very exciting stuff. Altough quite dangerous aswell, perhaps even more so than magic.
+                </dialogue>
+                <dialogue class="Thief">
+                    Pyrotechnics I'm not sure i like the sound of that...
+                </dialogue>
+            </results>
         </dialogue>
         <dialogue>
             <name>D2.1.3.1</name>
@@ -380,15 +368,13 @@
             </pres>
             <results>
                 <dialogue class="Mage">
-                    I hear that this amulet contains a very powerful magical entity that is absorbing the power. 
-                    This is why you are protected.
+                    I hear that this amulet contains a very powerful magical entity that is absorbing the power. This is why you are protected.
                 </dialogue>
                 <dialogue class="Thief">
                     This amulet sounds very dangerous, what if this magical entity was let loose on the world?
                 </dialogue>
                 <dialogue class="Mage">
-                    Well it would probably wreak havoc on the world. But don't worry about it. 
-                    It is safely contained inside the amulets crystal.
+                    Well it would probably wreak havoc on the world. But don't worry about it. It is safely contained inside the amulets crystal.
                 </dialogue>
             </results>
         </dialogue>

@@ -56,9 +56,10 @@ namespace Assets.scripts {
         }
 
         public bool HasPre(Global gHas) {
-            return gHas.Has.Contains("!")
-                ? !GlobalHas.Contains(gHas.Has.Substring(1))
-                : GlobalHas.Contains(gHas.Has);
+            if (gHas == null || gHas.Has == null) {
+                return true;
+            }
+            return gHas.Has.Contains("!") ? !GlobalHas.Contains(gHas.Has.Substring(1)) : GlobalHas.Contains(gHas.Has);
         }
 
         public void Goto(Location location) {
@@ -74,27 +75,31 @@ namespace Assets.scripts {
 
         public void AddChoiceDescriptionToUI(Choice choice, bool iDidIt) {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(choice.Description.Replace("\r\n", "").Trim(), iDidIt ? ClassChoice.Me : ClassChoice.You));
+				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(choice.Description.Replace("\r\n", "").Trim(), iDidIt ? ClassChoice.Me : ClassChoice.You));
                 if (choice.Results.Description != null) {
-					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(choice.Results.Description.Text.Replace("\r\n", "").Trim(), ClassChoice.NPC));
+					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(choice.Results.Description.Text.Replace("\r\n", "").Trim(), ClassChoice.NPC));
                 }
                 if (choice.Results.DialogueResult == null) {
                     return;
                 }
                 var chosenDialogue = Player1.CurrentLocation.Dialogues.Dialogue
                     .Find(dialogue => dialogue.Name.Equals(choice.Results.DialogueResult.Dialogue));
-                if (!Player1.CheckDialoguePres(chosenDialogue.Pres, iDidIt)) {
+                if (!IsGrouped || !Player1.CheckDialoguePres(chosenDialogue.Pres, iDidIt)) {
+                    return;
+                }
+                if (chosenDialogue.Results.Dialogue == null) {
                     return;
                 }
                 foreach (var dialogue in chosenDialogue.Results.Dialogue) {
-					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(dialogue.Text.Replace("\r\n", "").Trim(), dialogue.Class.Equals(Player1.ClassString) ? ClassChoice.Me : ClassChoice.You));
+					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(dialogue.Text.Replace("\r\n", "").Trim(), 
+					    dialogue.Class.Equals(Player1.ClassString) ? ClassChoice.Me : dialogue.Class.Equals("NPC") ? ClassChoice.NPC : ClassChoice.You));
                 }
             }
         }
 
         public void SetQuestDescription() {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim(), ClassChoice.NPC));
+				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim(), ClassChoice.NPC));
             }
         }
 

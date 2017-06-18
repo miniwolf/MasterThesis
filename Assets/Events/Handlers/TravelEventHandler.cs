@@ -35,7 +35,7 @@ namespace Assets.Events.Handlers {
 
         public void Action() {
             if (manager.manager.WaitingForResponse) {
-                manager.Goto(manager.manager.Player2.CurrentLocation, false);
+                manager.Goto(manager.manager.Player2.CurrentLocation, false, true);
                 return;
             }
             setup = true;

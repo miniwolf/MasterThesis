@@ -12,11 +12,7 @@ namespace Assets.Actions {
 
         public void Travel() {
             manager.manager.WaitingForResponse = true;
-            manager.Goto(manager.manager.Player2.CurrentLocation, true);
-        }
-
-        public void Dont() {
-            manager.Stay();
+            manager.Goto(manager.manager.Player2.CurrentLocation, true, false);
         }
     }
 }

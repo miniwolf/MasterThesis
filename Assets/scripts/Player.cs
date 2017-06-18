@@ -26,12 +26,14 @@ namespace Assets.scripts {
         public string TalkingTo { get; set; }
         public string ClassString { get; set; }
 
+        private List<Choice> previouslyChosen = new List<Choice>();
+
         public Player() {
             ClassString = "";
         }
 
-        public bool Goto(Location location, bool overridePres) {
-            if (!overridePres && location.Pres != null && !HasPre(location.Pres)) {
+        public bool Goto(Location location, bool overridePres, bool overrideCoop) {
+            if (!overridePres && location.Pres != null && !HasPre(location.Pres, false, overrideCoop)) {
                 return false;
             }
             if (CurrentQuest != null) {
@@ -47,18 +49,20 @@ namespace Assets.scripts {
                 Manager.PossibleQuests = CollectQuests(location.Quests);
             }
             CurrentLocation = location;
-            Manager.Npcs = location.Npcs.Npc;
+            if (location.Npcs != null) {
+                Manager.Npcs = location.Npcs.Npc;
+            }
             return true;
         }
 
         private List<Quest> CollectQuests(Quests locationQuests) {
             var list = new List<Quest>();
             if (locationQuests.OneshotQuest != null) {
-                var ie = locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres));
+                var ie = locationQuests.OneshotQuest.Where(quest => HasPre(quest.Pres, false, false));
                 list.AddRange(ie.Cast<Quest>());
             }
             if (locationQuests.RandomQuest != null) {
-                var ie = locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres));
+                var ie = locationQuests.RandomQuest.Where(quest => HasPre(quest.Pres, false, false));
                 list.AddRange(ie.Cast<Quest>());
             }
             return list;
@@ -83,11 +87,33 @@ namespace Assets.scripts {
                 if (chosen == null) {
                     continue;
                 }
-                if (HasPre(chosen.Pres)) {
+                if (previouslyChosen.Contains(chosen)) {
+                    list.AddRange(CollectRecursiveChoicesOfAlreadyChosen(chosen));
+                } else if (HasPre(chosen.Pres, false, false)) {
                     list.Add(chosen);
                 }
             }
             return list;
+        }
+
+        private IEnumerable<Choice> CollectRecursiveChoicesOfAlreadyChosen(Choice choice) {
+            if (choice.Results == null || choice.Results.ChoicesResults == null) {
+                return new List<Choice>();
+            }
+            var res = new List<Choice>();
+            foreach (var choiceString in choice.Results.ChoicesResults.Choice) {
+                var chosen = previouslyChosen.FirstOrDefault(c => c.Name == choiceString);
+                if (chosen != null) {
+                    continue;
+                }
+
+                var choiceChild = CurrentLocation.Choices.Choice.First(c => c.Name.Equals(choiceString));
+                res.AddRange(CollectRecursiveChoicesOfAlreadyChosen(choiceChild));
+                if (HasPre(choiceChild.Pres, false, false)) {
+                    res.Add(choiceChild);    
+                }
+            }
+            return res;
         }
 
         public void Choose(Choice choice) {
@@ -102,16 +128,15 @@ namespace Assets.scripts {
                         .ToList();
                 }
                 CurrentQuest = null;
-                Goto(CurrentLocation, false);
+                Goto(CurrentLocation, false, false);
                 return;
             }
 
-            CurrentLocation.Choices.Choice = CurrentLocation.Choices.Choice
-                .Where(c => c.Name != choice.Name)
-                .ToList();
+            previouslyChosen.Add(choice);
 
             if (results.EffectResults != null) {
                 AddEffects(results.EffectResults.Effect);
+                Manager.AddGlobalPres(choice);
             }
 
             if (results.LocationResults != null) {
@@ -126,7 +151,7 @@ namespace Assets.scripts {
 
             foreach (var c in results.ChoicesResults.Choice) {
                 var foundChoice = FindChoice(c);
-                if (foundChoice == null || !HasPre(foundChoice.Pres)) {
+                if (foundChoice == null || !HasPre(foundChoice.Pres, false, false)) {
                     continue;
                 }
                 Manager.PossibleChoices.Add(foundChoice);
@@ -151,11 +176,15 @@ namespace Assets.scripts {
             }
         }
 
-        public bool HasPre(Pres pres) {
+        public bool HasPre(Pres pres, bool shouldOnlySee, bool overrideCoop) {
             if (pres == null) {
                 return true;
             }
-
+            
+            if (!overrideCoop && !shouldOnlySee && pres.Coop != null && !Manager.IsGrouped) {
+                return false;
+            }
+            
             if (pres.Effect != null
                 && !pres.Effect.All(has => has.Contains("!")
                     ? !State.Contains(has.Substring(1))

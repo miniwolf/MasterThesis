@@ -29,7 +29,7 @@ namespace Assets.scripts {
                     continue; // TODO: This should be handled differently
                 }
                 var buttonInstance = Instantiate(ButtonTemplate);
-                buttonInstance.GetComponentInChildren<Text>().text = quest.Name;
+                buttonInstance.GetComponentInChildren<Text>().text = quest.Description;
                 var button = buttonInstance.GetComponent<Button>();
                 var questCopy = quest;
                 button.onClick.AddListener(delegate { manager.StartQuest(questCopy); });

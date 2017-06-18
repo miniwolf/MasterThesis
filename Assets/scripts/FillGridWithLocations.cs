@@ -19,15 +19,15 @@ namespace Assets.scripts {
 
         private void FillGrid(IEnumerable<Location> locations) {
             foreach (var location in locations) {
-                if (!manager.manager.Player1.HasPre(location.Pres)) {
+                if (!manager.manager.Player1.HasPre(location.Pres, true, false)) {
                     continue;
                 }
                 var buttonInstance = Instantiate(LevelTemplate);
                 var texts = buttonInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = location.Name;
-				foreach (GameObject transform in buttonInstance.transform) {
+				foreach (Transform transform in buttonInstance.transform) {
 					if (transform.name.Equals(location.Name)) {
-						transform.SetActive(true);
+						transform.gameObject.SetActive(true);
 					}
 				}
                 if (manager.IsOtherPlayerAtThisLocation(location)) {
@@ -36,7 +36,7 @@ namespace Assets.scripts {
                 }
                 var button = buttonInstance.GetComponentInChildren<Button>();
                 var locationCopy = location;
-                button.onClick.AddListener(delegate { manager.Goto(locationCopy, false); });
+                button.onClick.AddListener(delegate { manager.Goto(locationCopy, false, false); });
 
                 buttonInstance.transform.SetParent(grid.transform);
             }

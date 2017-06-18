@@ -16,9 +16,9 @@ namespace Assets.scripts {
         private string gotoPosition = "";
 		public static Queue<DialogueWrapper> TextToBoxListInChoiceScene = new Queue<DialogueWrapper>();
 
-		private static Color coloOne = new Color(255f, 135f, 135f);
-		private static Color coloTwo = new Color(180f, 187f, 255f);
-		private static Color coloThree = new Color(156f, 255f, 173f);
+		private static Color coloOne = new Color(1f, 0.6f, 0.6f);
+		private static Color coloTwo = new Color(0.7f, 0.7f, 1f);
+		private static Color coloThree = new Color(0.65f, 1f, 0.65f);
 
         private void Start() {
             gotoPosition = "";
@@ -42,11 +42,6 @@ namespace Assets.scripts {
             }
             if (gotoPosition.Length != 0) {
                 SceneManager.LoadScene(gotoPosition);
-				foreach (GameObject transform in GameObject.FindGameObjectWithTag("Canvas").transform) {
-					if (transform.name.Equals(manager.Player1.CurrentLocation.Name)) {
-						transform.SetActive(true);
-					}
-				}
                 gotoPosition = "";
             }
         }
@@ -81,8 +76,8 @@ namespace Assets.scripts {
                    npc.Equals(manager.Player2.TalkingTo);
         }
 
-        public void Goto(Location location, bool overridePres) {
-            if (!manager.Player1.Goto(location, overridePres)) {
+        public void Goto(Location location, bool overridePres, bool overrideCoop) {
+            if (!manager.Player1.Goto(location, overridePres, overrideCoop)) {
                 return;
             }
             manager.Goto(location);
@@ -134,11 +129,26 @@ namespace Assets.scripts {
             if (manager.Player1.CurrentQuest == null) {
                 HandleAction(message, "scenes/Quest");
             } else if (HandleActionBoolean(message) && !manager.WaitingForResponse) {
-                manager.AddChoiceDescriptionToUI(manager.Player2.HasChosen, false);
-                manager.AddChoiceDescriptionToUI(choiceCopy, true);
-                manager.AddGlobalPres(manager.Player2.HasChosen);
+                if (manager.IsGrouped && manager.Player2.HasChosen != null && !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
+                    if (int.Parse(manager.Player1.HasChosen.Results.Description.Priority) <
+                        int.Parse(manager.Player2.HasChosen.Results.Description.Priority)) {
+                        Print(manager.Player1.HasChosen, true, manager.Player2.HasChosen, false);
+                    } else {
+                        Print(manager.Player2.HasChosen, false, manager.Player1.HasChosen, true);
+                    }
+                } else {
+                    manager.AddChoiceDescriptionToUI(choiceCopy, true);
+                }
+                if (manager.Player2.HasChosen != null && !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
+                    manager.AddGlobalPres(manager.Player2.HasChosen);
+                }
             }
         }
+        
+        private void Print(Choice first, bool firstBool, Choice second, bool secondBool) {
+            manager.AddChoiceDescriptionToUI(first, firstBool);
+            manager.AddChoiceDescriptionToUI(second, secondBool);
+        } 
 
         public void TalkTo(string npc) {
             manager.Player1.TalkTo(npc);

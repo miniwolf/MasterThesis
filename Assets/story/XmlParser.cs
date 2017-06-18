@@ -20,7 +20,7 @@ namespace Xml2CSharp
     public class Pres {
         [XmlElement(ElementName="present")]
         public List<string> Present { get; set; }
-        [XmlElement(ElementName="effect")]
+        [XmlElement(ElementName="has")]
         public List<string> Effect { get; set; }
         [XmlElement(ElementName="global")]
         public Global Global { get; set; }
@@ -169,6 +169,15 @@ namespace Xml2CSharp
         public Pres Pres { get; set; }
         [XmlElement(ElementName="results")]
         public Results Results { get; set; }
+
+        public override bool Equals(object obj) {
+            var choice = obj as Choice;
+            if (choice == null) {
+                return false;
+            }
+            var other = choice;
+            return other.Name.Equals(Name);
+        }
     }
 
     [XmlRoot(ElementName="choicesResults")]

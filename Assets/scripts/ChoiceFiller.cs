@@ -15,7 +15,7 @@ namespace Assets.scripts {
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
             manager = GameObject.FindGameObjectWithTag("StateManager")
-                .GetComponent<StateManagerContainer>();;
+                .GetComponent<StateManagerContainer>();
 			var NPCname = GameObject.FindGameObjectWithTag("NPCName").GetComponent<Text>();
 			NPCname.text = manager.manager.Player1.CurrentLocation.Npcs.Npc[0];
             FillGrid(manager.manager.PossibleChoices);

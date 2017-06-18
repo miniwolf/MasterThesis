@@ -31,7 +31,7 @@ namespace Assets.Actions {
             if (extra) {
                 var savedLocation = manager.manager.Player1.CurrentLocation;
                 manager.Stay();
-                manager.Goto(savedLocation, true);
+                manager.Goto(savedLocation, true, false);
             } else {
                 manager.Stay();
             }
