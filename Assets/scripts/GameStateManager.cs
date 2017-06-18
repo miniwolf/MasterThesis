@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Xml2CSharp;
+using AssemblyCSharp;
 
 namespace Assets.scripts {
     public class GameStateManager {
@@ -73,9 +74,9 @@ namespace Assets.scripts {
 
         public void AddChoiceDescriptionToUI(Choice choice, bool iDidIt) {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Description.Replace("\r\n", "").Trim());
+				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(choice.Description.Replace("\r\n", "").Trim(), iDidIt ? ClassChoice.Me : ClassChoice.You));
                 if (choice.Results.Description != null) {
-                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(choice.Results.Description.Text.Replace("\r\n", "").Trim());
+					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(choice.Results.Description.Text.Replace("\r\n", "").Trim(), ClassChoice.NPC));
                 }
                 if (choice.Results.DialogueResult == null) {
                     return;
@@ -86,14 +87,14 @@ namespace Assets.scripts {
                     return;
                 }
                 foreach (var dialogue in chosenDialogue.Results.Dialogue) {
-                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(dialogue.Text.Replace("\r\n", "").Trim());
+					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(dialogue.Text.Replace("\r\n", "").Trim(), dialogue.Class.Equals(Player1.ClassString) ? ClassChoice.Me : ClassChoice.You));
                 }
             }
         }
 
         public void SetQuestDescription() {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim());
+				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new AssemblyCSharp.DialogueWrapper(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim(), ClassChoice.NPC));
             }
         }
 

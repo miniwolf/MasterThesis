@@ -25,6 +25,11 @@ namespace Assets.scripts {
                 var buttonInstance = Instantiate(LevelTemplate);
                 var texts = buttonInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = location.Name;
+				foreach (GameObject transform in buttonInstance.transform) {
+					if (transform.name.Equals(location.Name)) {
+						transform.SetActive(true);
+					}
+				}
                 if (manager.IsOtherPlayerAtThisLocation(location)) {
                     texts[2].text = "Player is Here";
                     texts[2].enabled = true;

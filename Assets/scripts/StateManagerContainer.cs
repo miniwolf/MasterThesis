@@ -7,13 +7,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Xml2CSharp;
+using AssemblyCSharp;
 
 namespace Assets.scripts {
     public class StateManagerContainer : MonoBehaviour {
         public readonly GameStateManager manager = new GameStateManager();
         public Client client;
         private string gotoPosition = "";
-        public static Queue<string> TextToBoxListInChoiceScene = new Queue<string>();
+		public static Queue<DialogueWrapper> TextToBoxListInChoiceScene = new Queue<DialogueWrapper>();
+
+		private static Color coloOne = new Color(255f, 135f, 135f);
+		private static Color coloTwo = new Color(180f, 187f, 255f);
+		private static Color coloThree = new Color(156f, 255f, 173f);
 
         private void Start() {
             gotoPosition = "";
@@ -37,15 +42,31 @@ namespace Assets.scripts {
             }
             if (gotoPosition.Length != 0) {
                 SceneManager.LoadScene(gotoPosition);
+				foreach (GameObject transform in GameObject.FindGameObjectWithTag("Canvas").transform) {
+					if (transform.name.Equals(manager.Player1.CurrentLocation.Name)) {
+						transform.SetActive(true);
+					}
+				}
                 gotoPosition = "";
             }
         }
 
-        private static void AddTextBoxToListInChoiceScene(string text) {
+		private static void AddTextBoxToListInChoiceScene(DialogueWrapper text) {
             var textBox = GameObject.FindGameObjectWithTag("Description");
             var template = textBox.transform.parent.GetChild(1);
             var templateCopy = Instantiate(template.transform);
-            templateCopy.GetComponent<Text>().text = text;
+			templateCopy.GetComponent<Text>().text = text.Description;
+			switch(text.Who) {
+			case ClassChoice.Me:
+				templateCopy.GetComponent<Text>().color = coloOne;
+				break;
+			case ClassChoice.You:
+				templateCopy.GetComponent<Text>().color = coloTwo;
+				break;
+			case ClassChoice.NPC:
+				templateCopy.GetComponent<Text>().color = coloThree;
+				break;
+			}
             templateCopy.parent = textBox.transform;
             templateCopy.gameObject.SetActive(true);
         }
