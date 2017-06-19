@@ -287,6 +287,7 @@
             <name>C2.4.1</name>
             <description>The amulet is mine! You must die!</description>
             <results>
+                <description overrule="C2.4.2">Nooooooooooooooo!!! agrrhhhrhhrhddrr..</description>
                 <effectResults>
                     <global>
                         <has>Magician Elminated</has>
@@ -299,6 +300,7 @@
             <name>C2.4.2</name>
             <description>Here you go, let's uncover this together.</description>
             <results>
+                <description>We must be carefull. I fear that others might have learned of what we have uncovered. Go now, in peace.</description>
                 <effectResults>
                     <effect>Magician Companion</effect>
                     <effect>!Amulet</effect>

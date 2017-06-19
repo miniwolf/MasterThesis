@@ -117,6 +117,8 @@ namespace Xml2CSharp
     public class Description {
         [XmlAttribute(AttributeName="priority")]
         public string Priority { get; set; }
+        [XmlAttribute(AttributeName="overrule")]
+        public string Overrule { get; set; }
         [XmlText]
         public string Text { get; set; }
     }

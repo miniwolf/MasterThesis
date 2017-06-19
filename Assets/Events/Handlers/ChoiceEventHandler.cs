@@ -20,7 +20,11 @@ namespace Assets.Events.Handlers {
                 var gameStateManager = manager.manager;
                 if (gameStateManager.IsGrouped) {
                     gameStateManager.AddGlobalPres(gameStateManager.Player2.HasChosen);
-                    if (gameStateManager.Player1.HasChosen.Results.Description.Priority == null
+                    if (gameStateManager.Player1.HasChosen.Results.Description.Overrule != null) {
+                        manager.manager.AddChoiceDescriptionToUI(gameStateManager.Player1.HasChosen, true);
+                    } else if (gameStateManager.Player2.HasChosen.Results.Description.Overrule != null) {
+                        manager.manager.AddChoiceDescriptionToUI(gameStateManager.Player2.HasChosen, false);
+                    } else if (gameStateManager.Player1.HasChosen.Results.Description.Priority == null
                         || gameStateManager.Player2.HasChosen.Results.Description.Priority == null) {
                         Print(gameStateManager.Player1.HasChosen, true, gameStateManager.Player2.HasChosen, false);
                     } else if (int.Parse(gameStateManager.Player1.HasChosen.Results.Description.Priority) <

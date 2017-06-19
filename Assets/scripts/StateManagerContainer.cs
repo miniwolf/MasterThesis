@@ -137,7 +137,11 @@ namespace Assets.scripts {
             } else if (HandleActionBoolean(message) && !manager.WaitingForResponse) {
                 if (manager.IsGrouped && manager.Player2.HasChosen != null &&
                     !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
-                    if (manager.Player1.HasChosen.Results.Description.Priority == null
+                    if (manager.Player1.HasChosen.Results.Description.Overrule != null) {
+                        manager.AddChoiceDescriptionToUI(manager.Player1.HasChosen, true);
+                    } else if (manager.Player2.HasChosen.Results.Description.Overrule != null) {
+                        manager.AddChoiceDescriptionToUI(manager.Player2.HasChosen, false);
+                    } else if (manager.Player1.HasChosen.Results.Description.Priority == null
                         || manager.Player2.HasChosen.Results.Description.Priority == null) {
                         Print(manager.Player1.HasChosen, true, manager.Player2.HasChosen, false);
                     } else if (int.Parse(manager.Player1.HasChosen.Results.Description.Priority) <
