@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Xml2CSharp;
-using AssemblyCSharp;
 
 namespace Assets.scripts {
     public class GameStateManager {
@@ -11,19 +9,29 @@ namespace Assets.scripts {
         private readonly Player player1 = new Player();
         private readonly Player player2 = new Player();
 
-        public Player Player1 { get { return player1; } }
-        public Player Player2 { get { return player2; } }
+        public Player Player1 {
+            get { return player1; }
+        }
+
+        public Player Player2 {
+            get { return player2; }
+        }
 
         private readonly List<Location> locations = new List<Location>();
-        public List<Location> Locations { get { return locations; } }
+
+        public List<Location> Locations {
+            get { return locations; }
+        }
 
         private List<Quest> possibleQuests = new List<Quest>();
+
         public List<Quest> PossibleQuests {
             get { return possibleQuests; }
             set { possibleQuests = value; }
         }
 
         private List<Choice> possibleChoices = new List<Choice>();
+
         public List<Choice> PossibleChoices {
             get { return possibleChoices; }
             set { possibleChoices = value; }
@@ -59,7 +67,9 @@ namespace Assets.scripts {
             if (gHas == null || gHas.Has == null) {
                 return true;
             }
-            return gHas.Has.Contains("!") ? !GlobalHas.Contains(gHas.Has.Substring(1)) : GlobalHas.Contains(gHas.Has);
+            return gHas.Has.Contains("!")
+                ? !GlobalHas.Contains(gHas.Has.Substring(1))
+                : GlobalHas.Contains(gHas.Has);
         }
 
         public void Goto(Location location) {
@@ -75,9 +85,14 @@ namespace Assets.scripts {
 
         public void AddChoiceDescriptionToUI(Choice choice, bool iDidIt) {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(choice.Description.Replace("\r\n", "").Trim(), iDidIt ? ClassChoice.Me : ClassChoice.You));
+                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(
+                    new DialogueWrapper(choice.Description.Replace("\r\n", "").Trim(),
+                        iDidIt ? ClassChoice.Me : ClassChoice.You));
                 if (choice.Results.Description != null) {
-					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(choice.Results.Description.Text.Replace("\r\n", "").Trim(), ClassChoice.NPC));
+                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(
+                        new DialogueWrapper(
+                            choice.Results.Description.Text.Replace("\r\n", "").Trim(),
+                            ClassChoice.NPC));
                 }
                 if (choice.Results.DialogueResult == null) {
                     return;
@@ -91,15 +106,22 @@ namespace Assets.scripts {
                     return;
                 }
                 foreach (var dialogue in chosenDialogue.Results.Dialogue) {
-					StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(dialogue.Text.Replace("\r\n", "").Trim(), 
-					    dialogue.Class.Equals(Player1.ClassString) ? ClassChoice.Me : dialogue.Class.Equals("NPC") ? ClassChoice.NPC : ClassChoice.You));
+                    StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(
+                        dialogue.Text.Replace("\r\n", "").Trim(),
+                        dialogue.Class.Equals(Player1.ClassString)
+                            ? ClassChoice.Me
+                            : dialogue.Class.Equals("NPC")
+                                ? ClassChoice.NPC
+                                : ClassChoice.You));
                 }
             }
         }
 
         public void SetQuestDescription() {
             lock (StateManagerContainer.TextToBoxListInChoiceScene) {
-				StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(new DialogueWrapper(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim(), ClassChoice.NPC));
+                StateManagerContainer.TextToBoxListInChoiceScene.Enqueue(
+                    new DialogueWrapper(Player1.CurrentQuest.Dialogue.Replace("\r\n", "").Trim(),
+                        ClassChoice.NPC));
             }
         }
 

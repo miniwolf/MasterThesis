@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Network.Client;
 using Assets.Network.Shared;
 using Assets.Network.Shared.Actions;
@@ -7,18 +8,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Xml2CSharp;
-using AssemblyCSharp;
 
 namespace Assets.scripts {
     public class StateManagerContainer : MonoBehaviour {
         public readonly GameStateManager manager = new GameStateManager();
         public Client client;
-        private string gotoPosition = "";
-		public static Queue<DialogueWrapper> TextToBoxListInChoiceScene = new Queue<DialogueWrapper>();
+        public static Queue<DialogueWrapper> TextToBoxListInChoiceScene =
+            new Queue<DialogueWrapper>();
 
-		private static Color coloOne = new Color(1f, 0.6f, 0.6f);
-		private static Color coloTwo = new Color(0.7f, 0.7f, 1f);
-		private static Color coloThree = new Color(0.65f, 1f, 0.65f);
+        private string gotoPosition = "";
+        private static Color coloOne = new Color(1f, 0.6f, 0.6f);
+        private static Color coloTwo = new Color(0.7f, 0.7f, 1f);
+        private static Color coloThree = new Color(0.65f, 1f, 0.65f);
 
         private void Start() {
             gotoPosition = "";
@@ -32,7 +33,8 @@ namespace Assets.scripts {
 
         private void Update() {
             if (GameStateManager.UpdateUI) {
-                GameObject.FindGameObjectWithTag("ChoiceFiller").GetComponent<ChoiceFiller>().UpdateSelection();
+                GameObject.FindGameObjectWithTag("ChoiceFiller").GetComponent<ChoiceFiller>()
+                    .UpdateSelection();
                 GameStateManager.UpdateUI = false;
             }
             if (TextToBoxListInChoiceScene.Count != 0) {
@@ -40,28 +42,31 @@ namespace Assets.scripts {
                     AddTextBoxToListInChoiceScene(TextToBoxListInChoiceScene.Dequeue());
                 }
             }
-            if (gotoPosition.Length != 0) {
-                SceneManager.LoadScene(gotoPosition);
-                gotoPosition = "";
+            if (gotoPosition.Length == 0) {
+                return;
             }
+            SceneManager.LoadScene(gotoPosition);
+            gotoPosition = "";
         }
 
-		private static void AddTextBoxToListInChoiceScene(DialogueWrapper text) {
+        private static void AddTextBoxToListInChoiceScene(DialogueWrapper text) {
             var textBox = GameObject.FindGameObjectWithTag("Description");
             var template = textBox.transform.parent.GetChild(1);
             var templateCopy = Instantiate(template.transform);
-			templateCopy.GetComponent<Text>().text = text.Description;
-			switch(text.Who) {
-			case ClassChoice.Me:
-				templateCopy.GetComponent<Text>().color = coloOne;
-				break;
-			case ClassChoice.You:
-				templateCopy.GetComponent<Text>().color = coloTwo;
-				break;
-			case ClassChoice.NPC:
-				templateCopy.GetComponent<Text>().color = coloThree;
-				break;
-			}
+            templateCopy.GetComponent<Text>().text = text.Description;
+            switch (text.Who) {
+                case ClassChoice.Me:
+                    templateCopy.GetComponent<Text>().color = coloOne;
+                    break;
+                case ClassChoice.You:
+                    templateCopy.GetComponent<Text>().color = coloTwo;
+                    break;
+                case ClassChoice.NPC:
+                    templateCopy.GetComponent<Text>().color = coloThree;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             templateCopy.parent = textBox.transform;
             templateCopy.gameObject.SetActive(true);
         }
@@ -82,7 +87,8 @@ namespace Assets.scripts {
             }
             manager.Goto(location);
 
-            HandleAction(new GoingTo(location), location == null ? "scenes/Locations" : "scenes/Npcs");
+            HandleAction(new GoingTo(location),
+                location == null ? "scenes/Locations" : "scenes/Npcs");
         }
 
         private void HandleAction(InGoingMessages obj, string scene) {
@@ -129,8 +135,12 @@ namespace Assets.scripts {
             if (manager.Player1.CurrentQuest == null) {
                 HandleAction(message, "scenes/Quest");
             } else if (HandleActionBoolean(message) && !manager.WaitingForResponse) {
-                if (manager.IsGrouped && manager.Player2.HasChosen != null && !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
-                    if (int.Parse(manager.Player1.HasChosen.Results.Description.Priority) <
+                if (manager.IsGrouped && manager.Player2.HasChosen != null &&
+                    !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
+                    if (manager.Player1.HasChosen.Results.Description.Priority == null
+                        || manager.Player2.HasChosen.Results.Description.Priority == null) {
+                        Print(manager.Player1.HasChosen, true, manager.Player2.HasChosen, false);
+                    } else if (int.Parse(manager.Player1.HasChosen.Results.Description.Priority) <
                         int.Parse(manager.Player2.HasChosen.Results.Description.Priority)) {
                         Print(manager.Player1.HasChosen, true, manager.Player2.HasChosen, false);
                     } else {
@@ -139,16 +149,17 @@ namespace Assets.scripts {
                 } else {
                     manager.AddChoiceDescriptionToUI(choiceCopy, true);
                 }
-                if (manager.Player2.HasChosen != null && !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
+                if (manager.Player2.HasChosen != null &&
+                    !manager.Player2.HasChosen.Name.Equals(choiceCopy.Name)) {
                     manager.AddGlobalPres(manager.Player2.HasChosen);
                 }
             }
         }
-        
+
         private void Print(Choice first, bool firstBool, Choice second, bool secondBool) {
             manager.AddChoiceDescriptionToUI(first, firstBool);
             manager.AddChoiceDescriptionToUI(second, secondBool);
-        } 
+        }
 
         public void TalkTo(string npc) {
             manager.Player1.TalkTo(npc);

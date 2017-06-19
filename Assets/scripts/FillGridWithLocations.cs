@@ -13,7 +13,8 @@ namespace Assets.scripts {
         // Use this for initialization
         public void Start() {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
-            manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
+            manager = GameObject.FindGameObjectWithTag("StateManager")
+                .GetComponent<StateManagerContainer>();
             FillGrid(manager.manager.Locations);
         }
 
@@ -25,11 +26,11 @@ namespace Assets.scripts {
                 var buttonInstance = Instantiate(LevelTemplate);
                 var texts = buttonInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = location.Name;
-				foreach (Transform transform in buttonInstance.transform) {
-					if (transform.name.Equals(location.Name)) {
-						transform.gameObject.SetActive(true);
-					}
-				}
+                foreach (Transform child in buttonInstance.transform) {
+                    if (child.name.Equals(location.Name)) {
+                        child.gameObject.SetActive(true);
+                    }
+                }
                 if (manager.IsOtherPlayerAtThisLocation(location)) {
                     texts[2].text = "Player is Here";
                     texts[2].enabled = true;

@@ -6,8 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
 namespace Network.Server {
-    public class OutputWorker {
-        private bool running = true;
+    public class OutputWorker : Worker {
         private readonly NetworkStream networkStream;
         private readonly BinaryFormatter formatter = new BinaryFormatter();
         private readonly int ID;

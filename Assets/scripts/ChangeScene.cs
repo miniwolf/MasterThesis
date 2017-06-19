@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class ChangeScene : MonoBehaviour {
-
-	public void NextLevelButton(string levelName)
-	{
-		Application.LoadLevel(levelName);
-	}
+namespace Assets.scripts {
+    public class ChangeScene : MonoBehaviour {
+        public void NextLevelButton(string levelName) {
+            SceneManager.LoadScene(levelName);
+        }
+    }
 }

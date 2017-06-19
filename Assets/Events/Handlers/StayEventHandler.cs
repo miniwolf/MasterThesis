@@ -9,7 +9,7 @@ namespace Assets.Events.Handlers {
             manager = GameObject.FindGameObjectWithTag("StateManager").GetComponent<StateManagerContainer>();
             EventManager.SubscribeToEvent(Events.Staying, this);
         }
-        
+
         private void OnDestroy() {
             EventManager.UnsubscribeToEvent(Events.Staying, this);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Xml2CSharp;
@@ -26,7 +25,7 @@ namespace Assets.scripts {
         public string TalkingTo { get; set; }
         public string ClassString { get; set; }
 
-        private List<Choice> previouslyChosen = new List<Choice>();
+        private readonly List<Choice> previouslyChosen = new List<Choice>();
 
         public Player() {
             ClassString = "";
@@ -110,7 +109,7 @@ namespace Assets.scripts {
                 var choiceChild = CurrentLocation.Choices.Choice.First(c => c.Name.Equals(choiceString));
                 res.AddRange(CollectRecursiveChoicesOfAlreadyChosen(choiceChild));
                 if (HasPre(choiceChild.Pres, false, false)) {
-                    res.Add(choiceChild);    
+                    res.Add(choiceChild);
                 }
             }
             return res;
@@ -180,11 +179,11 @@ namespace Assets.scripts {
             if (pres == null) {
                 return true;
             }
-            
+
             if (!overrideCoop && !shouldOnlySee && pres.Coop != null && !Manager.IsGrouped) {
                 return false;
             }
-            
+
             if (pres.Effect != null
                 && !pres.Effect.All(has => has.Contains("!")
                     ? !State.Contains(has.Substring(1))

@@ -21,11 +21,11 @@ namespace Network.Server {
 
             while (running) {
                 Console.Out.WriteLine("Waiting for client");
-                WorkerCreation(listener);
+                WorkerCreation();
             }
         }
 
-        private static void WorkerCreation(TcpListener listener) {
+        private static void WorkerCreation() {
             var tcpClient = listener.AcceptTcpClient();
             var worker = new OutputWorker(tcpClient, ID);
             var inputWorker = new InputWorker(ID, tcpClient, worker);

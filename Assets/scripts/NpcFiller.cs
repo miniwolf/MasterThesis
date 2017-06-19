@@ -20,11 +20,11 @@ namespace Assets.scripts {
                 var npcInstance = Instantiate(NpcsTemplate);
                 var texts = npcInstance.GetComponentsInChildren<Text>(true);
                 texts[0].text = npc;
-				foreach (Transform transform in npcInstance.transform) {
-					if (transform.name.Equals(npc)) {
-						transform.gameObject.SetActive(true);
-					}
-				}
+                foreach (Transform child in npcInstance.transform) {
+                    if (child.name.Equals(npc)) {
+                        child.gameObject.SetActive(true);
+                    }
+                }
                 var button = npcInstance.GetComponentInChildren<Button>();
                 var npcCopy = npc;
                 button.onClick.AddListener(delegate { manager.TalkTo(npcCopy); });

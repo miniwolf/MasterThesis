@@ -16,8 +16,8 @@ namespace Assets.scripts {
             grid = GameObject.FindGameObjectWithTag("LevelGrid");
             manager = GameObject.FindGameObjectWithTag("StateManager")
                 .GetComponent<StateManagerContainer>();
-			var NPCname = GameObject.FindGameObjectWithTag("NPCName").GetComponent<Text>();
-			NPCname.text = manager.manager.Player1.CurrentLocation.Npcs.Npc[0];
+            var NPCname = GameObject.FindGameObjectWithTag("NPCName").GetComponent<Text>();
+            NPCname.text = manager.manager.Player1.CurrentLocation.Npcs.Npc[0];
             FillGrid(manager.manager.PossibleChoices);
             manager.manager.SetQuestDescription();
         }
@@ -41,9 +41,10 @@ namespace Assets.scripts {
             }
         }
 
-        public void FillGridWithItem(Choice choice) {
+        private void FillGridWithItem(Choice choice) {
             var buttonInstance = Instantiate(ButtonTemplate);
-            buttonInstance.GetComponentInChildren<Text>().text = choice.Description.Replace("\r\n", "").Trim();
+            buttonInstance.GetComponentInChildren<Text>().text =
+                choice.Description.Replace("\r\n", "").Trim();
             var button = buttonInstance.GetComponent<Button>();
             var choiceCopy = choice;
             button.onClick.AddListener(delegate { manager.Choose(choiceCopy); });
